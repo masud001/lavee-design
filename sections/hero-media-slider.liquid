@@ -1,104 +1,366 @@
-{% comment %}
-  La Vee Storefront - Hero Media Slider Section
-  Supports theme blocks and section blocks for video & image slides.
-{% endcomment %}
-
 {{ 'section-hero-media-slider.css' | asset_url | stylesheet_tag }}
 
-<div class="hero-media-slider relative w-full overflow-hidden bg-[#161616] section-{{ section.id }}-padding">
-  <div class="hero-media-slider__container relative w-full h-full" data-hero-slider>
-    <div class="hero-media-slider__slides flex transition-transform duration-500 ease-out" data-slider-slides>
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          <div class="hero-media-slider__slide w-full flex-shrink-0" {{ block.shopify_attributes }}>
-            {%- case block.type -%}
-              {%- when 'slide' -%}
-                <div class="hero-slide relative overflow-hidden flex items-center justify-center min-h-[520px] lg:min-h-[760px] w-full">
-                  {%- if block.settings.video != blank -%}
-                    <div class="hero-slide__media absolute inset-0 w-full h-full">
-                      {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'w-full h-full object-cover' }}
-                    </div>
-                  {%- elsif block.settings.image != blank -%}
-                    <div class="hero-slide__media absolute inset-0 w-full h-full">
-                      <img
-                        src="{{ block.settings.image | image_url: width: 2000 }}"
-                        alt="{{ block.settings.heading | escape }}"
-                        loading="lazy"
-                        class="w-full h-full object-cover"
-                        width="2000"
-                        height="1000"
-                      >
-                    </div>
-                  {%- else -%}
-                    <div class="hero-slide__media absolute inset-0 w-full h-full bg-[#3E151A]"></div>
-                  {%- endif -%}
+{%- comment -%}
+  La Vee Luxury Hero Media Slider (Campaign Video & Image Slider) - Node ID: B95Eo
+  - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
+  - Autoplay Campaign Video with Live Badge & Audio Toggle Pill
+  - Dual CTAs, GSAP Entrance Animations, Slide Counter & Line Progress Bar
+  - Full Admin Customization for Heights, Overlays, Videos, Images & Buttons
+{%- endcomment -%}
 
-                  <div class="hero-slide__overlay absolute inset-0 bg-black/40"></div>
+<div 
+  class="lavee-hero-wrapper lavee-hero-height--{{ section.settings.section_height }}"
+  data-section-id="{{ section.id }}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.autoplay_speed }}"
+>
+  <div class="lavee-{{ section.settings.container_type }}" style="height: 100%;">
+    <div class="lavee-hero-slider" id="LaveeHeroSlider-{{ section.id }}">
+      
+      <!-- Top Bar Controls: Live Badge & Audio Toggle Pill -->
+      <div class="lavee-hero-controls-top">
+        {%- if section.settings.show_live_badge -%}
+          <div class="lavee-hero-badge">
+            <span class="lavee-hero-badge__dot"></span>
+            {{ section.settings.live_badge_text | default: "LIVE CAMPAIGN LOOKBOOK" }}
+          </div>
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
 
-                  <div class="hero-slide__content relative z-10 text-center text-white px-6 max-w-4xl mx-auto py-20 flex flex-col items-center">
-                    {%- if block.settings.eyebrow != blank -%}
-                      <span class="hero-slide__eyebrow uppercase tracking-[0.2em] text-xs md:text-sm font-semibold mb-4 text-[#EDE6DC]">
-                        {{ block.settings.eyebrow | escape }}
-                      </span>
+        <button 
+          type="button" 
+          class="lavee-hero-audio-btn" 
+          aria-label="Toggle Campaign Video Audio"
+          onclick="toggleLaveeHeroAudio(this)"
+        >
+          <span class="lavee-hero-audio-icon">🔇</span>
+          <span class="lavee-hero-audio-text">MUTE</span>
+        </button>
+      </div>
+
+      <!-- Main Slides Track -->
+      <div class="lavee-hero-slider__track" id="LaveeHeroTrack-{{ section.id }}">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div 
+              class="lavee-hero-slide{% if forloop.first %} is-active{% endif %}" 
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              <!-- Media Layer (Video or Image) -->
+              <div class="lavee-hero-slide__media">
+                {%- if block.settings.video != blank -%}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'lavee-hero-video' }}
+                {%- elsif block.settings.video_url != blank -%}
+                  <video autoplay loop muted playsinline class="lavee-hero-video">
+                    <source src="{{ block.settings.video_url }}" type="video/mp4">
+                  </video>
+                {%- elsif block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 2200 | image_tag: alt: block.settings.heading, loading: 'lazy' }}
+                {%- else -%}
+                  <div class="lavee-hero-slide__fallback" style="background-color: #3E151A; width: 100%; height: 100%;"></div>
+                {%- endif -%}
+              </div>
+
+              <!-- Dark Overlay Layer -->
+              <div 
+                class="lavee-hero-slide__overlay" 
+                style="background: linear-gradient(180deg, rgba(22, 22, 22, {{ section.settings.overlay_opacity | divided_by: 2.0 | divided_by: 100.0 }}) 0%, rgba(22, 22, 22, {{ section.settings.overlay_opacity | divided_by: 100.0 }}) 100%);"
+              ></div>
+
+              <!-- Slide Content Box -->
+              <div class="lavee-hero-slide__content">
+                {%- if block.settings.eyebrow != blank -%}
+                  <span class="lavee-hero-eyebrow">{{ block.settings.eyebrow | escape }}</span>
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank -%}
+                  <h1 class="lavee-hero-title">{{ block.settings.heading | escape }}</h1>
+                {%- endif -%}
+
+                {%- if block.settings.subtext != blank -%}
+                  <p class="lavee-hero-subtext">{{ block.settings.subtext | escape }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.button_primary_label != blank or block.settings.button_secondary_label != blank -%}
+                  <div class="lavee-hero-buttons">
+                    {%- if block.settings.button_primary_label != blank -%}
+                      <a href="{{ block.settings.button_primary_link | default: routes.all_products_collection_url }}" class="lavee-hero-btn lavee-hero-btn--primary">
+                        {{ block.settings.button_primary_label | escape }}
+                      </a>
                     {%- endif -%}
 
-                    {%- if block.settings.heading != blank -%}
-                      <h2 class="hero-slide__heading font-serif text-3xl md:text-5xl lg:text-7xl font-normal leading-tight mb-6">
-                        {{ block.settings.heading | escape }}
-                      </h2>
-                    {%- endif -%}
-
-                    {%- if block.settings.subtext != blank -%}
-                      <p class="hero-slide__subtext text-sm md:text-base lg:text-lg text-[#F7F4EF]/90 max-w-2xl mb-8 leading-relaxed">
-                        {{ block.settings.subtext | escape }}
-                      </p>
-                    {%- endif -%}
-
-                    {%- if block.settings.button_label != blank -%}
-                      <a
-                        href="{{ block.settings.button_link | default: '#' }}"
-                        class="hero-slide__button inline-block bg-[#161616] hover:bg-[#333333] border border-white/20 text-white px-8 py-4 text-xs md:text-sm font-semibold uppercase tracking-widest transition-all duration-200"
-                      >
-                        {{ block.settings.button_label | escape }}
+                    {%- if block.settings.button_secondary_label != blank -%}
+                      <a href="{{ block.settings.button_secondary_link | default: routes.collections_url }}" class="lavee-hero-btn lavee-hero-btn--secondary">
+                        {{ block.settings.button_secondary_label | escape }}
                       </a>
                     {%- endif -%}
                   </div>
-                </div>
-            {%- endcase -%}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Fallback Slide -->
+          <div class="lavee-hero-slide is-active" data-index="0">
+            <div class="lavee-hero-slide__media" style="background-color: #3E151A;"></div>
+            <div class="lavee-hero-slide__overlay" style="background: rgba(22,22,22,0.5);"></div>
+            <div class="lavee-hero-slide__content">
+              <span class="lavee-hero-eyebrow">AUTUMN/WINTER COUTURE 2026</span>
+              <h1 class="lavee-hero-title">Timeless Elegance &amp; Sculpted Luxury</h1>
+              <p class="lavee-hero-subtext">Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.</p>
+              <div class="lavee-hero-buttons">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-hero-btn lavee-hero-btn--primary">EXPLORE THE COLLECTION</a>
+                <a href="{{ routes.collections_url }}" class="lavee-hero-btn lavee-hero-btn--secondary">VIEW LOOKBOOK</a>
+              </div>
+            </div>
           </div>
-        {%- endfor -%}
-      {%- else -%}
-        {%- content_for 'blocks' -%}
-      {%- endif -%}
-    </div>
-
-    {%- if section.blocks.size > 1 -%}
-      <button class="hero-media-slider__nav hero-media-slider__nav--prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 text-white rounded-full transition-colors" data-slider-prev aria-label="Previous slide">
-        ‹
-      </button>
-      <button class="hero-media-slider__nav hero-media-slider__nav--next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 text-white rounded-full transition-colors" data-slider-next aria-label="Next slide">
-        ›
-      </button>
-
-      <div class="hero-media-slider__dots absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2" data-slider-dots>
-        {%- for block in section.blocks -%}
-          <button class="hero-media-slider__dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-opacity {% if forloop.first %}is-active bg-white{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
-        {%- endfor -%}
+        {%- endif -%}
       </div>
-    {%- endif -%}
+
+      <!-- Bottom Bar Controls: Slide Counter & Nav Arrows -->
+      {%- assign total_slides = section.blocks.size -%}
+      {%- if total_slides == 0 -%}{%- assign total_slides = 1 -%}{%- endif -%}
+      <div class="lavee-hero-controls-bottom">
+        <div class="lavee-hero-counter">
+          <span class="lavee-hero-counter__current" id="LaveeHeroCurrent-{{ section.id }}">01</span>
+          <span class="lavee-hero-counter__divider">/</span>
+          <span class="lavee-hero-counter__total">0{{ total_slides }}</span>
+        </div>
+
+        {%- if total_slides > 1 -%}
+          <div class="lavee-hero-nav-btns">
+            <button 
+              type="button" 
+              class="lavee-hero-nav-btn lavee-hero-nav-btn--prev" 
+              aria-label="Previous Slide"
+              onclick="prevLaveeHeroSlide('{{ section.id }}')"
+            >
+              ‹
+            </button>
+            <button 
+              type="button" 
+              class="lavee-hero-nav-btn lavee-hero-nav-btn--next" 
+              aria-label="Next Slide"
+              onclick="nextLaveeHeroSlide('{{ section.id }}')"
+            >
+              ›
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Slide Duration Progress Bar -->
+      <div class="lavee-hero-progress-track">
+        <div class="lavee-hero-progress-bar" id="LaveeHeroProgress-{{ section.id }}"></div>
+      </div>
+
+    </div>
   </div>
 </div>
 
+<script>
+  function toggleLaveeHeroAudio(btn) {
+    const slider = btn.closest('.lavee-hero-wrapper');
+    if (!slider) return;
+    const videos = slider.querySelectorAll('video');
+    if (!videos.length) return;
+    
+    const icon = btn.querySelector('.lavee-hero-audio-icon');
+    const text = btn.querySelector('.lavee-hero-audio-text');
+    const isMuted = videos[0].muted;
+    
+    videos.forEach(v => {
+      v.muted = !isMuted;
+    });
+    
+    if (isMuted) {
+      if (icon) icon.textContent = '🔊';
+      if (text) text.textContent = 'AUDIO ON';
+    } else {
+      if (icon) icon.textContent = '🔇';
+      if (text) text.textContent = 'MUTE';
+    }
+  }
+
+  function initLaveeHeroSlider(sectionId) {
+    const wrapper = document.querySelector(`[data-section-id="${sectionId}"]`);
+    if (!wrapper) return;
+    
+    const track = wrapper.querySelector('#LaveeHeroTrack-' + sectionId);
+    const slides = wrapper.querySelectorAll('.lavee-hero-slide');
+    const counterCurrent = wrapper.querySelector('#LaveeHeroCurrent-' + sectionId);
+    const progressBar = wrapper.querySelector('#LaveeHeroProgress-' + sectionId);
+    
+    if (!slides.length) return;
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    const isAutoplay = wrapper.dataset.autoplay === 'true';
+    const speedSeconds = parseInt(wrapper.dataset.speed) || 5;
+    let timer = null;
+    let progressInterval = null;
+    let progressPercent = 0;
+    
+    function updateSlide(index) {
+      if (index < 0) index = totalSlides - 1;
+      if (index >= totalSlides) index = 0;
+      
+      currentIndex = index;
+      if (track) {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+      
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('is-active', idx === currentIndex);
+      });
+      
+      if (counterCurrent) {
+        counterCurrent.textContent = (currentIndex + 1 < 10 ? '0' : '') + (currentIndex + 1);
+      }
+      
+      resetProgress();
+    }
+    
+    function resetProgress() {
+      if (progressInterval) clearInterval(progressInterval);
+      progressPercent = 0;
+      if (progressBar) progressBar.style.width = '0%';
+      
+      if (isAutoplay && totalSlides > 1) {
+        const step = 100 / (speedSeconds * 20);
+        progressInterval = setInterval(() => {
+          progressPercent += step;
+          if (progressBar) progressBar.style.width = Math.min(progressPercent, 100) + '%';
+          if (progressPercent >= 100) {
+            clearInterval(progressInterval);
+            updateSlide(currentIndex + 1);
+          }
+        }, 50);
+      }
+    }
+    
+    window['prevLaveeHeroSlide_' + sectionId] = function() {
+      updateSlide(currentIndex - 1);
+    };
+    
+    window['nextLaveeHeroSlide_' + sectionId] = function() {
+      updateSlide(currentIndex + 1);
+    };
+
+    // Touch Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    wrapper.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    wrapper.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        updateSlide(currentIndex + 1);
+      } else if (touchEndX - touchStartX > 50) {
+        updateSlide(currentIndex - 1);
+      }
+    }, { passive: true });
+    
+    updateSlide(0);
+  }
+
+  function prevLaveeHeroSlide(id) {
+    if (window['prevLaveeHeroSlide_' + id]) {
+      window['prevLaveeHeroSlide_' + id]();
+    }
+  }
+
+  function nextLaveeHeroSlide(id) {
+    if (window['nextLaveeHeroSlide_' + id]) {
+      window['nextLaveeHeroSlide_' + id]();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.lavee-hero-wrapper').forEach(wrapper => {
+      const sectionId = wrapper.dataset.sectionId;
+      if (sectionId) initLaveeHeroSlider(sectionId);
+    });
+  });
+
+  document.addEventListener('shopify:section:load', function(e) {
+    const wrapper = e.target.querySelector('.lavee-hero-wrapper');
+    if (wrapper && wrapper.dataset.sectionId) {
+      initLaveeHeroSlider(wrapper.dataset.sectionId);
+    }
+  });
+</script>
+
 {% schema %}
 {
-  "name": "Hero Media Slider",
+  "name": "La Vee Hero Slider",
   "tag": "section",
-  "class": "section-hero-media-slider",
+  "class": "lavee-hero-slider-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Container Width"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": "Section Height Preset",
+      "options": [
+        { "value": "fullscreen", "label": "Full Screen (100vh)" },
+        { "value": "large", "label": "Large (800px)" },
+        { "value": "medium", "label": "Medium (650px)" }
+      ],
+      "default": "fullscreen"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Dark Overlay Opacity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Live Badge & Audio Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_live_badge",
+      "label": "Show Live Lookbook Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "live_badge_text",
+      "label": "Live Badge Content",
+      "default": "LIVE CAMPAIGN LOOKBOOK"
+    },
+    {
+      "type": "header",
+      "content": "Autoplay & Timing"
+    },
     {
       "type": "checkbox",
       "id": "autoplay",
-      "label": "Enable Autoplay",
+      "label": "Enable Slide Autoplay",
       "default": true
     },
     {
@@ -108,77 +370,95 @@
       "max": 10,
       "step": 1,
       "unit": "s",
-      "label": "Autoplay Speed",
+      "label": "Autoplay Duration",
       "default": 5
     }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "Campaign Slide",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Slide Image"
+          "label": "Background Image"
         },
         {
           "type": "video",
           "id": "video",
-          "label": "Background Video"
+          "label": "Background Video (Shopify File)"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "External MP4 Video URL (Fallback)"
         },
         {
           "type": "text",
           "id": "eyebrow",
-          "label": "Eyebrow Text",
+          "label": "Eyebrow Tagline",
           "default": "AUTUMN/WINTER COUTURE 2026"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "Main Heading Title",
           "default": "Timeless Elegance & Sculpted Luxury"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "subtext",
-          "label": "Subtext",
+          "label": "Subtitle Description",
           "default": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes."
         },
         {
           "type": "text",
-          "id": "button_label",
-          "label": "Button Label",
+          "id": "button_primary_label",
+          "label": "Primary Button Label",
           "default": "EXPLORE THE COLLECTION"
         },
         {
           "type": "url",
-          "id": "button_link",
-          "label": "Button Link"
+          "id": "button_primary_link",
+          "label": "Primary Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_secondary_label",
+          "label": "Secondary Button Label",
+          "default": "VIEW LOOKBOOK"
+        },
+        {
+          "type": "url",
+          "id": "button_secondary_link",
+          "label": "Secondary Button Link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Hero Media Slider",
+      "name": "La Vee Hero Slider",
       "blocks": [
         {
           "type": "slide",
           "settings": {
             "eyebrow": "AUTUMN/WINTER COUTURE 2026",
-            "heading": "Naima Hand-Beaded Corset Mini",
-            "subtext": "Designed in London. Crafted with precision corsetry and crystal embellishments.",
-            "button_label": "SHOP THE NAIMA DRESS"
+            "heading": "Timeless Elegance & Sculpted Luxury",
+            "subtext": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.",
+            "button_primary_label": "EXPLORE THE COLLECTION",
+            "button_secondary_label": "VIEW LOOKBOOK"
           }
         },
         {
           "type": "slide",
           "settings": {
-            "eyebrow": "ATELIER EVENING GOWNS",
-            "heading": "Sculpted Silhouette Collection",
-            "subtext": "Empowering confidence through internal structure and Italian silk satin.",
-            "button_label": "VIEW GOWNS"
+            "eyebrow": "THE NAIMA DRESS",
+            "heading": "Hand-Beaded Corset Mini",
+            "subtext": "Crafted with hand-embroidered crystal embellishments and signature internal boning.",
+            "button_primary_label": "SHOP NAIMA NOW",
+            "button_secondary_label": "EXPLORE ATELIER"
           }
         }
       ]

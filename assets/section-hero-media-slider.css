@@ -1,36 +1,394 @@
-/* Hero Media Slider Styles - La Vee Luxury Design System */
+/* Hero Media Slider Styles - La Vee Luxury Design System (Node ID: B95Eo) */
 
-.hero-media-slider {
+.lavee-hero-wrapper {
   position: relative;
   width: 100%;
-  background-color: var(--color-text-primary, #161616);
+  overflow: hidden;
+  background-color: var(--lavee-dark, #161616);
 }
 
-.hero-slide__heading {
-  font-family: var(--font-heading, 'Cormorant Garamond', serif);
-  font-weight: 500;
-  color: var(--color-bg-primary, #F7F4EF);
-  letter-spacing: -0.01em;
+.lavee-hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.hero-slide__eyebrow {
-  color: var(--color-bg-secondary, #EDE6DC);
-  letter-spacing: 0.18em;
+/* Height Presets */
+.lavee-hero-height--fullscreen {
+  height: 100vh;
+  min-height: 650px;
 }
 
-.hero-slide__button {
-  background-color: var(--color-text-primary, #161616);
-  color: #FFFFFF;
+.lavee-hero-height--large {
+  height: 800px;
+  min-height: 600px;
+}
+
+.lavee-hero-height--medium {
+  height: 650px;
+  min-height: 500px;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-height--fullscreen {
+    height: calc(100vh - 60px);
+    min-height: 540px;
+  }
+  .lavee-hero-height--large {
+    height: 580px;
+  }
+  .lavee-hero-height--medium {
+    height: 480px;
+  }
+}
+
+/* Track and Slide Layout */
+.lavee-hero-slider__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.lavee-hero-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Media Background & Zoom Animation */
+.lavee-hero-slide__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.lavee-hero-slide__media img,
+.lavee-hero-slide__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lavee-hero-slide.is-active .lavee-hero-slide__media img,
+.lavee-hero-slide.is-active .lavee-hero-slide__media video {
+  transform: scale(1.04);
+}
+
+.lavee-hero-slide__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(22, 22, 22, 0.35) 0%, rgba(22, 22, 22, 0.65) 100%);
+}
+
+/* Top Badge & Audio Controls */
+.lavee-hero-controls-top {
+  position: absolute;
+  top: 36px;
+  left: 48px;
+  right: 48px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-controls-top {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+.lavee-hero-badge {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(22, 22, 22, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 250ms ease-in-out;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #FFFFFF;
+  text-transform: uppercase;
 }
 
-.hero-slide__button:hover {
-  background-color: var(--color-accent-burgundy, #6E1F2A);
-  border-color: var(--color-accent-burgundy, #6E1F2A);
+.lavee-hero-badge__dot {
+  width: 7px;
+  height: 7px;
+  background-color: #E53935;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #E53935;
+  animation: laveePulseRed 2s infinite;
 }
 
-.hero-media-slider__dot.is-active {
-  background-color: #FFFFFF;
-  opacity: 1;
+@keyframes laveePulseRed {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.lavee-hero-audio-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 22, 22, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.lavee-hero-audio-btn:hover {
+  background: rgba(22, 22, 22, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Content Box Styling */
+.lavee-hero-slide__content {
+  position: relative;
+  z-index: 10;
+  max-width: 860px;
+  padding: 0 48px;
+  text-align: center;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-slide__content {
+    padding: 0 24px;
+  }
+}
+
+.lavee-hero-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--lavee-bg-announcement, #EDE6DC);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.lavee-hero-title {
+  font-family: var(--font-serif);
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--lavee-bg-ivory, #F7F4EF);
+  margin: 0 0 20px 0;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 990px) {
+  .lavee-hero-title {
+    font-size: 44px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-title {
+    font-size: 32px;
+  }
+}
+
+.lavee-hero-subtext {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(247, 244, 239, 0.88);
+  max-width: 620px;
+  margin: 0 0 32px 0;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-subtext {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+}
+
+.lavee-hero-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lavee-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 36px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.lavee-hero-btn--primary {
+  background-color: var(--lavee-burgundy, #6E1F2A);
+  color: #FFFFFF;
+  border: 1px solid var(--lavee-burgundy, #6E1F2A);
+}
+
+.lavee-hero-btn--primary:hover {
+  background-color: #52161F;
+  border-color: #52161F;
+  box-shadow: 0 8px 24px rgba(110, 31, 42, 0.4);
+}
+
+.lavee-hero-btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.lavee-hero-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: #FFFFFF;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-btn {
+    padding: 12px 24px;
+    font-size: 11px;
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* Bottom Controls, Counter & Progress Bar */
+.lavee-hero-controls-bottom {
+  position: absolute;
+  bottom: 32px;
+  left: 48px;
+  right: 48px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-controls-bottom {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+.lavee-hero-counter {
+  pointer-events: auto;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lavee-hero-counter__current {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lavee-gold, #D4AF37);
+}
+
+.lavee-hero-nav-btns {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lavee-hero-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(22, 22, 22, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.lavee-hero-nav-btn:hover {
+  background-color: var(--lavee-burgundy, #6E1F2A);
+  border-color: var(--lavee-burgundy, #6E1F2A);
+  transform: scale(1.05);
+}
+
+/* Continuous Progress Bar Line */
+.lavee-hero-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 25;
+}
+
+.lavee-hero-progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--lavee-gold, #D4AF37);
+  transition: width 0.1s linear;
 }

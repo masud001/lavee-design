@@ -9,7 +9,8 @@
             "eyebrow": "AUTUMN/WINTER COUTURE 2026",
             "heading": "Timeless Elegance & Sculpted Luxury",
             "subtext": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.",
-            "button_label": "EXPLORE THE COLLECTION"
+            "button_primary_label": "EXPLORE THE COLLECTION",
+            "button_secondary_label": "VIEW LOOKBOOK"
           }
         },
         "slide_2": {
@@ -18,7 +19,8 @@
             "eyebrow": "THE NAIMA DRESS",
             "heading": "Hand-Beaded Corset Mini",
             "subtext": "Crafted with hand-embroidered crystal embellishments and signature internal boning.",
-            "button_label": "SHOP NAIMA NOW"
+            "button_primary_label": "SHOP NAIMA NOW",
+            "button_secondary_label": "EXPLORE ATELIER"
           }
         }
       },
@@ -27,6 +29,11 @@
         "slide_2"
       ],
       "settings": {
+        "container_type": "container-fluid",
+        "section_height": "fullscreen",
+        "overlay_opacity": 40,
+        "show_live_badge": true,
+        "live_badge_text": "LIVE CAMPAIGN LOOKBOOK",
         "autoplay": true,
         "autoplay_speed": 5
       }
