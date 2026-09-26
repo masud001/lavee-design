@@ -1,37 +1,117 @@
 {{ 'lavee-header-footer.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  La Vee Luxury Announcement Bar - Node ID: twkN3
+  La Vee Luxury Announcement Bar with Infinite Marquee Animation - Node ID: twkN3
+  - Responsive across Mobile, Tablet, Desktop
+  - Accessible (a11y), Pauses on Hover & Focus
+  - Prefers-Reduced-Motion Support
+  - Merchant Customizations: Padding, Colors, Speed, Block Gaps
 {% endcomment %}
 
-<div class="lavee-announcement-bar" style="background-color: {{ section.settings.bg_color }};">
-  {%- if section.settings.text != blank -%}
-    {%- if section.settings.link != blank -%}
-      <a href="{{ section.settings.link }}" class="lavee-announcement-bar__text" style="color: {{ section.settings.text_color }};">
-        {{ section.settings.text }}
-      </a>
-    {%- else -%}
-      <p class="lavee-announcement-bar__text" style="color: {{ section.settings.text_color }};">
-        {{ section.settings.text }}
-      </p>
-    {%- endif -%}
-  {%- endif -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .lavee-announcement-bar {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+
+  #shopify-section-{{ section.id }} .lavee-marquee__track {
+    animation-duration: {{ section.settings.marquee_speed }}s;
+    gap: {{ section.settings.block_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .lavee-marquee__item {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.font_size }}px;
+    font-weight: {{ section.settings.font_weight }};
+    letter-spacing: {{ section.settings.letter_spacing }}em;
+  }
+
+  #shopify-section-{{ section.id }} .lavee-marquee__item a {
+    color: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<div 
+  class="lavee-announcement-bar lavee-marquee-wrapper" 
+  role="region" 
+  aria-label="{{ 'sections.header.announcement' | t | default: 'Announcement Bar' }}"
+>
+  <div class="lavee-marquee">
+    <!-- Duplicate tracks for seamless infinite loop -->
+    <div class="lavee-marquee__track" aria-hidden="false">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="lavee-marquee__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset">
+                <span>{{ block.settings.text }}</span>
+              </a>
+            {%- else -%}
+              <span>{{ block.settings.text }}</span>
+            {%- endif -%}
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Fallback Default Announcements -->
+        <div class="lavee-marquee__item">
+          <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+        <div class="lavee-marquee__item">
+          <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+        <div class="lavee-marquee__item">
+          <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Duplicate track 2 for continuous loop -->
+    <div class="lavee-marquee__track" aria-hidden="true">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="lavee-marquee__item">
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset" tabindex="-1">
+                <span>{{ block.settings.text }}</span>
+              </a>
+            {%- else -%}
+              <span>{{ block.settings.text }}</span>
+            {%- endif -%}
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="lavee-marquee__item">
+          <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+        <div class="lavee-marquee__item">
+          <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+        <div class="lavee-marquee__item">
+          <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
+          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
 </div>
 
 {% schema %}
 {
   "name": "La Vee Announcement Bar",
+  "class": "lavee-announcement-bar-section",
   "settings": [
     {
-      "type": "inline_richtext",
-      "id": "text",
-      "label": "Announcement Text",
-      "default": "COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN"
-    },
-    {
-      "type": "url",
-      "id": "link",
-      "label": "Announcement Link"
+      "type": "header",
+      "content": "Appearance & Colors"
     },
     {
       "type": "color",
@@ -44,11 +124,138 @@
       "id": "text_color",
       "label": "Text Color",
       "default": "#161616"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bottom Border Color",
+      "default": "#D8D2CA"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Animation"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "Letter Spacing",
+      "options": [
+        { "value": "0", "label": "Normal (0em)" },
+        { "value": "0.04", "label": "Subtle (0.04em)" },
+        { "value": "0.08", "label": "Luxury Spacing (0.08em)" },
+        { "value": "0.12", "label": "Wide (0.12em)" }
+      ],
+      "default": "0.08"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Marquee Animation Speed",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "block_gap",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Blocks",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement Text",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Announcement Text",
+          "default": "COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "La Vee Announcement Bar"
+      "name": "La Vee Announcement Bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER"
+          }
+        }
+      ]
     }
   ]
 }

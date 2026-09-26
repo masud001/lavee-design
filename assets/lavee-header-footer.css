@@ -12,26 +12,88 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* --- 01. ANNOUNCEMENT BAR --- */
+/* --- 01. ANNOUNCEMENT BAR (Accessible Infinite Marquee) --- */
 .lavee-announcement-bar {
-  background-color: var(--lavee-bg-announcement);
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   width: 100%;
-  border-bottom: 1px solid rgba(216, 210, 202, 0.4);
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 110;
 }
 
-.lavee-announcement-bar__text {
+.lavee-marquee {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+  contain: content;
+}
+
+.lavee-marquee__track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 100%;
+  white-space: nowrap;
+  animation: laveeMarqueeScroll 25s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Pause on Hover & Focus for Web Accessibility (a11y) */
+.lavee-marquee:hover .lavee-marquee__track,
+.lavee-marquee:focus-within .lavee-marquee__track {
+  animation-play-state: paused;
+}
+
+.lavee-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: var(--lavee-dark);
   text-transform: uppercase;
-  margin: 0;
+}
+
+.lavee-marquee__link {
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.lavee-marquee__link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.lavee-marquee__separator {
+  opacity: 0.5;
+  margin-left: inherit;
+  font-size: 14px;
+}
+
+/* Keyframes for seamless continuous marquee loop */
+@keyframes laveeMarqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .lavee-marquee__track {
+    animation: none !important;
+    transform: none !important;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .lavee-marquee__track[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 /* --- 02. HEADER & NAVIGATION --- */
