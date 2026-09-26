@@ -33,11 +33,15 @@
   #shopify-section-{{ section.id }} .lavee-marquee__item strong,
   #shopify-section-{{ section.id }} .lavee-marquee__item b {
     font-weight: 700;
-    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .lavee-marquee__item em,
+  #shopify-section-{{ section.id }} .lavee-marquee__item i {
+    font-style: italic;
   }
 
   #shopify-section-{{ section.id }} .lavee-marquee__item a {
-    color: {{ section.settings.text_color }};
+    color: inherit;
     text-decoration: underline;
     text-underline-offset: 3px;
     transition: opacity 0.2s ease;
@@ -47,20 +51,14 @@
     opacity: 0.75;
   }
 
-  .lavee-marquee__highlight-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    margin-left: 6px;
-    border-radius: 3px;
-    font-size: 0.9em;
-    line-height: 1.2;
-    letter-spacing: 0.05em;
-    vertical-align: middle;
-  }
-
-  .lavee-marquee__highlight-badge.is-bold {
-    font-weight: 700;
-  }
+  {%- for block in section.blocks -%}
+    {%- if block.settings.accent_color != blank -%}
+      #shopify-section-{{ section.id }} .block-{{ block.id }} strong,
+      #shopify-section-{{ section.id }} .block-{{ block.id }} b {
+        color: {{ block.settings.accent_color }};
+      }
+    {%- endif -%}
+  {%- endfor -%}
 
   @media screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} .lavee-announcement-bar {
@@ -90,29 +88,13 @@
       <div class="lavee-marquee__track" aria-hidden="false">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
-            <div class="lavee-marquee__item" {{ block.shopify_attributes }}>
+            <div class="lavee-marquee__item block-{{ block.id }}" {{ block.shopify_attributes }}>
               {%- if block.settings.link != blank -%}
                 <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset">
                   <span class="lavee-marquee__text">{{ block.settings.text }}</span>
-                  {%- if block.settings.highlight_text != blank -%}
-                    <span 
-                      class="lavee-marquee__highlight-badge{% if block.settings.highlight_bold %} is-bold{% endif %}"
-                      style="color: {{ block.settings.highlight_color }}; background-color: {{ block.settings.highlight_bg }};"
-                    >
-                      {{ block.settings.highlight_text }}
-                    </span>
-                  {%- endif -%}
                 </a>
               {%- else -%}
                 <span class="lavee-marquee__text">{{ block.settings.text }}</span>
-                {%- if block.settings.highlight_text != blank -%}
-                  <span 
-                    class="lavee-marquee__highlight-badge{% if block.settings.highlight_bold %} is-bold{% endif %}"
-                    style="color: {{ block.settings.highlight_color }}; background-color: {{ block.settings.highlight_bg }};"
-                  >
-                    {{ block.settings.highlight_text }}
-                  </span>
-                {%- endif -%}
               {%- endif -%}
               <span class="lavee-marquee__separator" aria-hidden="true">•</span>
             </div>
@@ -120,16 +102,15 @@
         {%- else -%}
           <!-- Fallback Default Announcements -->
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">COMPLIMENTARY <strong>EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN</span>
+            <span class="lavee-marquee__text">COMPLIMENTARY <strong style="color: #6E1F2A;">EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN</span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
-            <span class="lavee-marquee__highlight-badge is-bold" style="color: #6E1F2A; background-color: #F7F4EF;">NEW</span>
+            <span class="lavee-marquee__text">AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED — <em>EXPLORE NOW</em></span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">JOIN LA VEE ATELIER PRIVÉ FOR <strong>15% OFF</strong> YOUR FIRST ORDER</span>
+            <span class="lavee-marquee__text">JOIN LA VEE ATELIER PRIVÉ FOR <strong style="color: #6E1F2A;">15% OFF</strong> YOUR FIRST ORDER</span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
         {%- endif -%}
@@ -139,45 +120,28 @@
       <div class="lavee-marquee__track" aria-hidden="true">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
-            <div class="lavee-marquee__item">
+            <div class="lavee-marquee__item block-{{ block.id }}">
               {%- if block.settings.link != blank -%}
                 <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset" tabindex="-1">
                   <span class="lavee-marquee__text">{{ block.settings.text }}</span>
-                  {%- if block.settings.highlight_text != blank -%}
-                    <span 
-                      class="lavee-marquee__highlight-badge{% if block.settings.highlight_bold %} is-bold{% endif %}"
-                      style="color: {{ block.settings.highlight_color }}; background-color: {{ block.settings.highlight_bg }};"
-                    >
-                      {{ block.settings.highlight_text }}
-                    </span>
-                  {%- endif -%}
                 </a>
               {%- else -%}
                 <span class="lavee-marquee__text">{{ block.settings.text }}</span>
-                {%- if block.settings.highlight_text != blank -%}
-                  <span 
-                    class="lavee-marquee__highlight-badge{% if block.settings.highlight_bold %} is-bold{% endif %}"
-                    style="color: {{ block.settings.highlight_color }}; background-color: {{ block.settings.highlight_bg }};"
-                  >
-                    {{ block.settings.highlight_text }}
-                  </span>
-                {%- endif -%}
               {%- endif -%}
               <span class="lavee-marquee__separator" aria-hidden="true">•</span>
             </div>
           {%- endfor -%}
         {%- else -%}
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">COMPLIMENTARY <strong>EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN</span>
+            <span class="lavee-marquee__text">COMPLIMENTARY <strong style="color: #6E1F2A;">EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN</span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
-            <span class="lavee-marquee__highlight-badge is-bold" style="color: #6E1F2A; background-color: #F7F4EF;">NEW</span>
+            <span class="lavee-marquee__text">AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED — <em>EXPLORE NOW</em></span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
           <div class="lavee-marquee__item">
-            <span class="lavee-marquee__text">JOIN LA VEE ATELIER PRIVÉ FOR <strong>15% OFF</strong> YOUR FIRST ORDER</span>
+            <span class="lavee-marquee__text">JOIN LA VEE ATELIER PRIVÉ FOR <strong style="color: #6E1F2A;">15% OFF</strong> YOUR FIRST ORDER</span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
         {%- endif -%}
@@ -380,42 +344,21 @@
           "type": "inline_richtext",
           "id": "text",
           "label": "Announcement Text",
-          "info": "Use editor formatting for bold (Ctrl+B) or inline links",
+          "info": "Use editor formatting for Bold (B), Italic (I), or inline Links",
           "default": "COMPLIMENTARY <strong>EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Bold Text Accent Color",
+          "info": "Applies custom color to bold words in this block",
+          "default": "#6E1F2A"
         },
         {
           "type": "url",
           "id": "link",
           "label": "Block Link (Optional)",
           "info": "Links the whole announcement item"
-        },
-        {
-          "type": "header",
-          "content": "Highlight Badge (Optional)"
-        },
-        {
-          "type": "text",
-          "id": "highlight_text",
-          "label": "Highlight Badge Text",
-          "info": "e.g. 'NEW', '15% OFF', 'EXCLUSIVE'"
-        },
-        {
-          "type": "color",
-          "id": "highlight_color",
-          "label": "Badge Text Color",
-          "default": "#6E1F2A"
-        },
-        {
-          "type": "color",
-          "id": "highlight_bg",
-          "label": "Badge Background Color",
-          "default": "#F7F4EF"
-        },
-        {
-          "type": "checkbox",
-          "id": "highlight_bold",
-          "label": "Make Badge Text Bold",
-          "default": true
         }
       ]
     }
@@ -427,22 +370,22 @@
         {
           "type": "announcement",
           "settings": {
-            "text": "COMPLIMENTARY <strong>EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN"
+            "text": "COMPLIMENTARY <strong>EXPRESS SHIPPING</strong> ON ORDERS OVER $150 — EXPLORE NEW IN",
+            "accent_color": "#6E1F2A"
           }
         },
         {
           "type": "announcement",
           "settings": {
-            "text": "AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED",
-            "highlight_text": "NEW IN",
-            "highlight_color": "#6E1F2A",
-            "highlight_bg": "#F7F4EF"
+            "text": "AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED — <em>EXPLORE NOW</em>",
+            "accent_color": "#6E1F2A"
           }
         },
         {
           "type": "announcement",
           "settings": {
-            "text": "JOIN LA VEE ATELIER PRIVÉ FOR <strong>15% OFF</strong> YOUR FIRST ORDER"
+            "text": "JOIN LA VEE ATELIER PRIVÉ FOR <strong>15% OFF</strong> YOUR FIRST ORDER",
+            "accent_color": "#6E1F2A"
           }
         }
       ]
