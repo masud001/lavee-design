@@ -2,52 +2,57 @@
 
 {% comment %}
   La Vee Luxury Header & Navigation - Node ID: twkN3
+  - Layout Width Option: Container vs Container Fluid
 {% endcomment %}
 
-<header class="lavee-header" style="background-color: {{ section.settings.bg_color }};">
-  <!-- Left: Navigation Links -->
-  <nav class="lavee-header__nav" aria-label="Main Navigation">
-    {%- if section.settings.menu != blank -%}
-      {%- for link in section.settings.menu.links -%}
-        {%- assign is_new_in = false -%}
-        {%- assign link_title_up = link.title | upcase -%}
-        {%- if link_title_up contains 'NEW IN' or link_title_up contains 'NEW' -%}
-          {%- assign is_new_in = true -%}
+<header class="lavee-header-wrapper" style="background-color: {{ section.settings.bg_color }};">
+  <div class="lavee-{{ section.settings.container_type }}">
+    <div class="lavee-header">
+      <!-- Left: Navigation Links -->
+      <nav class="lavee-header__nav" aria-label="Main Navigation">
+        {%- if section.settings.menu != blank -%}
+          {%- for link in section.settings.menu.links -%}
+            {%- assign is_new_in = false -%}
+            {%- assign link_title_up = link.title | upcase -%}
+            {%- if link_title_up contains 'NEW IN' or link_title_up contains 'NEW' -%}
+              {%- assign is_new_in = true -%}
+            {%- endif -%}
+            <a 
+              href="{{ link.url }}" 
+              class="lavee-header__nav-link{% if is_new_in %} lavee-header__nav-link--accent{% endif %}"
+            >
+              {{ link.title }}
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Fallback Links from Pen.dev Node twkN3 -->
+          <a href="{{ routes.collections_url }}/new-in" class="lavee-header__nav-link lavee-header__nav-link--accent">NEW IN</a>
+          <a href="{{ routes.collections_url }}/dresses" class="lavee-header__nav-link">DRESSES</a>
+          <a href="{{ routes.collections_url }}/sets" class="lavee-header__nav-link">SETS</a>
+          <a href="{{ routes.collections_url }}/tops" class="lavee-header__nav-link">TOPS</a>
+          <a href="{{ routes.collections_url }}/occasion" class="lavee-header__nav-link">OCCASION</a>
+          <a href="{{ routes.collections_url }}/best-sellers" class="lavee-header__nav-link">BEST SELLERS</a>
         {%- endif -%}
-        <a 
-          href="{{ link.url }}" 
-          class="lavee-header__nav-link{% if is_new_in %} lavee-header__nav-link--accent{% endif %}"
-        >
-          {{ link.title }}
+      </nav>
+
+      <!-- Center: Brand Logo -->
+      <a href="{{ routes.root_url }}" class="lavee-header__logo">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
+        {%- else -%}
+          {{ section.settings.logo_text | default: "LA VEE" }}
+        {%- endif -%}
+      </a>
+
+      <!-- Right: Header Actions -->
+      <div class="lavee-header__actions">
+        <a href="{{ routes.search_url }}" class="lavee-header__action-link">SEARCH</a>
+        <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link">WISHLIST</a>
+        <a href="{{ routes.cart_url }}" class="lavee-header__action-link">
+          BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
         </a>
-      {%- endfor -%}
-    {%- else -%}
-      <!-- Default Fallback Links from Pen.dev Node twkN3 -->
-      <a href="{{ routes.collections_url }}/new-in" class="lavee-header__nav-link lavee-header__nav-link--accent">NEW IN</a>
-      <a href="{{ routes.collections_url }}/dresses" class="lavee-header__nav-link">DRESSES</a>
-      <a href="{{ routes.collections_url }}/sets" class="lavee-header__nav-link">SETS</a>
-      <a href="{{ routes.collections_url }}/tops" class="lavee-header__nav-link">TOPS</a>
-      <a href="{{ routes.collections_url }}/occasion" class="lavee-header__nav-link">OCCASION</a>
-      <a href="{{ routes.collections_url }}/best-sellers" class="lavee-header__nav-link">BEST SELLERS</a>
-    {%- endif -%}
-  </nav>
-
-  <!-- Center: Brand Logo -->
-  <a href="{{ routes.root_url }}" class="lavee-header__logo">
-    {%- if section.settings.logo != blank -%}
-      {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
-    {%- else -%}
-      {{ section.settings.logo_text | default: "LA VEE" }}
-    {%- endif -%}
-  </a>
-
-  <!-- Right: Header Actions -->
-  <div class="lavee-header__actions">
-    <a href="{{ routes.search_url }}" class="lavee-header__action-link">SEARCH</a>
-    <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link">WISHLIST</a>
-    <a href="{{ routes.cart_url }}" class="lavee-header__action-link">
-      BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
-    </a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -55,6 +60,24 @@
 {
   "name": "La Vee Header",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout Width"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "header",
+      "content": "Content & Branding"
+    },
     {
       "type": "text",
       "id": "logo_text",

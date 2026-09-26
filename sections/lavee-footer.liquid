@@ -2,111 +2,116 @@
 
 {% comment %}
   La Vee Ultimate Luxury Footer - Node ID: twkN3 / Section 16
+  - Layout Width Option: Container vs Container Fluid
 {% endcomment %}
 
-<footer class="lavee-footer" style="background-color: {{ section.settings.bg_color }};">
-  <!-- Element 1: Top Brand Headline -->
-  <div class="lavee-footer__headline">
-    <h2 class="lavee-footer__headline-text">
-      {{ section.settings.headline_text | default: "It's ALWAYS La Vee" }}
-    </h2>
-  </div>
-
-  <div class="lavee-footer__divider"></div>
-
-  <!-- Element 2: Top Reassurance Bar -->
-  <div class="lavee-footer__reassurance">
-    <div class="lavee-footer__reassurance-item">
-      <span class="lavee-footer__reassurance-title">RETURNS & REFUNDS</span>
-      <span class="lavee-footer__reassurance-sub">Easy 30-day exchange policy</span>
-    </div>
-    <div class="lavee-footer__reassurance-item">
-      <span class="lavee-footer__reassurance-title">VIP LOYALTY BENEFITS</span>
-      <span class="lavee-footer__reassurance-sub">Earn points & exclusive rewards</span>
-    </div>
-    <div class="lavee-footer__reassurance-item">
-      <span class="lavee-footer__reassurance-title">BUY NOW PAY LATER</span>
-      <span class="lavee-footer__reassurance-sub">Klarna & Afterpay available</span>
-    </div>
-    <div class="lavee-footer__reassurance-item">
-      <span class="lavee-footer__reassurance-title">EXPRESS FAST DELIVERY</span>
-      <span class="lavee-footer__reassurance-sub">Tracked 2-4 day global shipping</span>
-    </div>
-  </div>
-
-  <div class="lavee-footer__divider"></div>
-
-  <!-- Element 3 & 4: Main Footer Grid & Newsletter -->
-  <div class="lavee-footer__grid">
-    <!-- Left Navigation Columns -->
-    <div class="lavee-footer__columns">
-      <!-- Column 1: Need Help -->
-      <div>
-        <h3 class="lavee-footer__col-title">NEED SOME HELP?</h3>
-        <ul class="lavee-footer__col-list">
-          <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
-          <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs & Help Center</a></li>
-          <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders & Tracking</a></li>
-          <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries & Shipping</a></li>
-          <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns & Exchanges</a></li>
-          <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size & Fit Guide</a></li>
-        </ul>
+<footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color }};">
+  <div class="lavee-{{ section.settings.container_type }}">
+    <div class="lavee-footer">
+      <!-- Element 1: Top Brand Headline -->
+      <div class="lavee-footer__headline">
+        <h2 class="lavee-footer__headline-text">
+          {{ section.settings.headline_text | default: "It's ALWAYS La Vee" }}
+        </h2>
       </div>
 
-      <!-- Column 2: About La Vee -->
-      <div>
-        <h3 class="lavee-footer__col-title">ABOUT LA VEE</h3>
-        <ul class="lavee-footer__col-list">
-          <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">Our Story</a></li>
-          <li><a href="{{ routes.root_url }}pages/craftsmanship" class="lavee-footer__col-link">Atelier Craftsmanship</a></li>
-          <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
-          <li><a href="{{ routes.root_url }}pages/press" class="lavee-footer__col-link">Press & Editorial</a></li>
-          <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
-          <li><a href="{{ routes.root_url }}pages/stores" class="lavee-footer__col-link">Store Locator</a></li>
-        </ul>
+      <div class="lavee-footer__divider"></div>
+
+      <!-- Element 2: Top Reassurance Bar -->
+      <div class="lavee-footer__reassurance">
+        <div class="lavee-footer__reassurance-item">
+          <span class="lavee-footer__reassurance-title">RETURNS & REFUNDS</span>
+          <span class="lavee-footer__reassurance-sub">Easy 30-day exchange policy</span>
+        </div>
+        <div class="lavee-footer__reassurance-item">
+          <span class="lavee-footer__reassurance-title">VIP LOYALTY BENEFITS</span>
+          <span class="lavee-footer__reassurance-sub">Earn points & exclusive rewards</span>
+        </div>
+        <div class="lavee-footer__reassurance-item">
+          <span class="lavee-footer__reassurance-title">BUY NOW PAY LATER</span>
+          <span class="lavee-footer__reassurance-sub">Klarna & Afterpay available</span>
+        </div>
+        <div class="lavee-footer__reassurance-item">
+          <span class="lavee-footer__reassurance-title">EXPRESS FAST DELIVERY</span>
+          <span class="lavee-footer__reassurance-sub">Tracked 2-4 day global shipping</span>
+        </div>
       </div>
 
-      <!-- Column 3: Legal & Policies -->
-      <div>
-        <h3 class="lavee-footer__col-title">LEGAL & POLICIES</h3>
-        <ul class="lavee-footer__col-list">
-          <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms of Service</a></li>
-          <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
-          <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Settings</a></li>
-          <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
-          <li><a href="{{ routes.root_url }}pages/ip" class="lavee-footer__col-link">Intellectual Property</a></li>
-        </ul>
+      <div class="lavee-footer__divider"></div>
+
+      <!-- Element 3 & 4: Main Footer Grid & Newsletter -->
+      <div class="lavee-footer__grid">
+        <!-- Left Navigation Columns -->
+        <div class="lavee-footer__columns">
+          <!-- Column 1: Need Help -->
+          <div>
+            <h3 class="lavee-footer__col-title">NEED SOME HELP?</h3>
+            <ul class="lavee-footer__col-list">
+              <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
+              <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs & Help Center</a></li>
+              <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders & Tracking</a></li>
+              <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries & Shipping</a></li>
+              <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns & Exchanges</a></li>
+              <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size & Fit Guide</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 2: About La Vee -->
+          <div>
+            <h3 class="lavee-footer__col-title">ABOUT LA VEE</h3>
+            <ul class="lavee-footer__col-list">
+              <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">Our Story</a></li>
+              <li><a href="{{ routes.root_url }}pages/craftsmanship" class="lavee-footer__col-link">Atelier Craftsmanship</a></li>
+              <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
+              <li><a href="{{ routes.root_url }}pages/press" class="lavee-footer__col-link">Press & Editorial</a></li>
+              <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
+              <li><a href="{{ routes.root_url }}pages/stores" class="lavee-footer__col-link">Store Locator</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Legal & Policies -->
+          <div>
+            <h3 class="lavee-footer__col-title">LEGAL & POLICIES</h3>
+            <ul class="lavee-footer__col-list">
+              <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms of Service</a></li>
+              <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
+              <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Settings</a></li>
+              <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
+              <li><a href="{{ routes.root_url }}pages/ip" class="lavee-footer__col-link">Intellectual Property</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Newsletter Box -->
+        <div class="lavee-footer__newsletter-card">
+          <span class="lavee-footer__newsletter-eyebrow">LA VEE ATELIER PRIVÉ</span>
+          <h3 class="lavee-footer__newsletter-title">Join the Atelier Circle</h3>
+          <p class="lavee-footer__newsletter-desc">
+            Receive private access to new collection drops, runway previews, and exclusive invitations.
+          </p>
+          {% form 'customer', class: 'lavee-footer__form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input 
+              type="email" 
+              name="contact[email]" 
+              class="lavee-footer__input" 
+              placeholder="Enter your email address..."
+              required
+            >
+            <button type="submit" class="lavee-footer__submit">SUBSCRIBE</button>
+          {% endform %}
+        </div>
       </div>
-    </div>
 
-    <!-- Right Newsletter Box -->
-    <div class="lavee-footer__newsletter-card">
-      <span class="lavee-footer__newsletter-eyebrow">LA VEE ATELIER PRIVÉ</span>
-      <h3 class="lavee-footer__newsletter-title">Join the Atelier Circle</h3>
-      <p class="lavee-footer__newsletter-desc">
-        Receive private access to new collection drops, runway previews, and exclusive invitations.
-      </p>
-      {% form 'customer', class: 'lavee-footer__form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <input 
-          type="email" 
-          name="contact[email]" 
-          class="lavee-footer__input" 
-          placeholder="Enter your email address..."
-          required
-        >
-        <button type="submit" class="lavee-footer__submit">SUBSCRIBE</button>
-      {% endform %}
-    </div>
-  </div>
+      <div class="lavee-footer__divider"></div>
 
-  <div class="lavee-footer__divider"></div>
-
-  <!-- Bottom Legal Bar -->
-  <div class="lavee-footer__bottom">
-    <span>© 2026 LA VEE COUTURE. ALL RIGHTS RESERVED.</span>
-    <div>
-      <span>CURRENCY: USD ($) | AUD ($) | EUR (€) | GBP (£)</span>
+      <!-- Bottom Legal Bar -->
+      <div class="lavee-footer__bottom">
+        <span>© 2026 LA VEE COUTURE. ALL RIGHTS RESERVED.</span>
+        <div>
+          <span>CURRENCY: USD ($) | AUD ($) | EUR (€) | GBP (£)</span>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
@@ -115,6 +120,24 @@
 {
   "name": "La Vee Luxury Footer",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout Width"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "header",
+      "content": "Content & Branding"
+    },
     {
       "type": "text",
       "id": "headline_text",

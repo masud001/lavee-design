@@ -2,6 +2,7 @@
 
 {% comment %}
   La Vee Luxury Announcement Bar with Infinite Marquee Animation - Node ID: twkN3
+  - Layout Width Option: Container vs Container Fluid
   - Responsive across Mobile, Tablet, Desktop
   - Accessible (a11y), Pauses on Hover & Focus
   - Prefers-Reduced-Motion Support
@@ -38,68 +39,70 @@
   role="region" 
   aria-label="{{ 'sections.header.announcement' | t | default: 'Announcement Bar' }}"
 >
-  <div class="lavee-marquee">
-    <!-- Duplicate tracks for seamless infinite loop -->
-    <div class="lavee-marquee__track" aria-hidden="false">
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          <div class="lavee-marquee__item" {{ block.shopify_attributes }}>
-            {%- if block.settings.link != blank -%}
-              <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset">
+  <div class="lavee-{{ section.settings.container_type }}">
+    <div class="lavee-marquee">
+      <!-- Duplicate tracks for seamless infinite loop -->
+      <div class="lavee-marquee__track" aria-hidden="false">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div class="lavee-marquee__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset">
+                  <span>{{ block.settings.text }}</span>
+                </a>
+              {%- else -%}
                 <span>{{ block.settings.text }}</span>
-              </a>
-            {%- else -%}
-              <span>{{ block.settings.text }}</span>
-            {%- endif -%}
-            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-          </div>
-        {%- endfor -%}
-      {%- else -%}
-        <!-- Fallback Default Announcements -->
-        <div class="lavee-marquee__item">
-          <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-        <div class="lavee-marquee__item">
-          <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-        <div class="lavee-marquee__item">
-          <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-      {%- endif -%}
-    </div>
-
-    <!-- Duplicate track 2 for continuous loop -->
-    <div class="lavee-marquee__track" aria-hidden="true">
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
+              {%- endif -%}
+              <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Fallback Default Announcements -->
           <div class="lavee-marquee__item">
-            {%- if block.settings.link != blank -%}
-              <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset" tabindex="-1">
-                <span>{{ block.settings.text }}</span>
-              </a>
-            {%- else -%}
-              <span>{{ block.settings.text }}</span>
-            {%- endif -%}
+            <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
             <span class="lavee-marquee__separator" aria-hidden="true">•</span>
           </div>
-        {%- endfor -%}
-      {%- else -%}
-        <div class="lavee-marquee__item">
-          <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-        <div class="lavee-marquee__item">
-          <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-        <div class="lavee-marquee__item">
-          <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
-          <span class="lavee-marquee__separator" aria-hidden="true">•</span>
-        </div>
-      {%- endif -%}
+          <div class="lavee-marquee__item">
+            <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+          <div class="lavee-marquee__item">
+            <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Duplicate track 2 for continuous loop -->
+      <div class="lavee-marquee__track" aria-hidden="true">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div class="lavee-marquee__item">
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="lavee-marquee__link focus-inset" tabindex="-1">
+                  <span>{{ block.settings.text }}</span>
+                </a>
+              {%- else -%}
+                <span>{{ block.settings.text }}</span>
+              {%- endif -%}
+              <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="lavee-marquee__item">
+            <span>COMPLIMENTARY EXPRESS SHIPPING ON ORDERS OVER $150 — EXPLORE NEW IN</span>
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+          <div class="lavee-marquee__item">
+            <span>AUTUMN / WINTER 2026 COLLECTION HAS OFFICIALLY LANDED</span>
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+          <div class="lavee-marquee__item">
+            <span>JOIN LA VEE ATELIER PRIVÉ FOR 15% OFF YOUR FIRST ORDER</span>
+            <span class="lavee-marquee__separator" aria-hidden="true">•</span>
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </div>
@@ -109,6 +112,20 @@
   "name": "La Vee Announcement Bar",
   "class": "lavee-announcement-bar-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout Width"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
     {
       "type": "header",
       "content": "Appearance & Colors"
