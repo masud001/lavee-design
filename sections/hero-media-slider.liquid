@@ -3,9 +3,9 @@
 {%- comment -%}
   La Vee Luxury Hero Media Slider (Campaign Video & Image Slider) - Node ID: B95Eo
   - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
-  - Autoplay Campaign Video with Live Badge & Audio Toggle Pill
-  - Dual CTAs, GSAP Entrance Animations, Slide Counter & Line Progress Bar
-  - Full Admin Customization for Heights, Overlays, Videos, Images & Buttons
+  - Autoplay Campaign Video with Live Badge & Audio Toggle Pill (SOUND: ON / 4K CINEMATIC PRORES)
+  - Interactive Slide Tabs at bottom right (01. Campaign Film, 02. Silk Gowns, etc.)
+  - Dual CTAs, Entrance Animations, Slide Counter, Line Progress Bar & Touch Swipe
 {%- endcomment -%}
 
 <div 
@@ -22,7 +22,7 @@
         {%- if section.settings.show_live_badge -%}
           <div class="lavee-hero-badge">
             <span class="lavee-hero-badge__dot"></span>
-            {{ section.settings.live_badge_text | default: "LIVE CAMPAIGN LOOKBOOK" }}
+            {{ section.settings.live_badge_text | default: "VIDEO LOOKBOOK • AUTUMN/WINTER 2026" }}
           </div>
         {%- else -%}
           <div></div>
@@ -34,8 +34,8 @@
           aria-label="Toggle Campaign Video Audio"
           onclick="toggleLaveeHeroAudio(this)"
         >
-          <span class="lavee-hero-audio-icon">🔇</span>
-          <span class="lavee-hero-audio-text">MUTE</span>
+          <span class="lavee-hero-audio-icon">🔊</span>
+          <span class="lavee-hero-audio-text">{{ section.settings.audio_btn_text | default: "SOUND: ON | 4K CINEMATIC PRORES" }}</span>
         </button>
       </div>
 
@@ -44,7 +44,7 @@
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
             <div 
-              class="lavee-hero-slide{% if forloop.first %} is-active{% endif %}" 
+              class="lavee-hero-slide{% if forloop.first %} is-active{% endif %} lavee-hero-slide--align-{{ block.settings.content_alignment | default: 'left' }}" 
               data-index="{{ forloop.index0 }}"
               {{ block.shopify_attributes }}
             >
@@ -88,11 +88,13 @@
                     {%- if block.settings.button_primary_label != blank -%}
                       <a href="{{ block.settings.button_primary_link | default: routes.all_products_collection_url }}" class="lavee-hero-btn lavee-hero-btn--primary">
                         {{ block.settings.button_primary_label | escape }}
+                        <span class="lavee-hero-btn-arrow">→</span>
                       </a>
                     {%- endif -%}
 
                     {%- if block.settings.button_secondary_label != blank -%}
                       <a href="{{ block.settings.button_secondary_link | default: routes.collections_url }}" class="lavee-hero-btn lavee-hero-btn--secondary">
+                        <span class="lavee-hero-btn-icon">►</span>
                         {{ block.settings.button_secondary_label | escape }}
                       </a>
                     {%- endif -%}
@@ -103,33 +105,33 @@
           {%- endfor -%}
         {%- else -%}
           <!-- Default Fallback Slide -->
-          <div class="lavee-hero-slide is-active" data-index="0">
+          <div class="lavee-hero-slide is-active lavee-hero-slide--align-left" data-index="0">
             <div class="lavee-hero-slide__media" style="background-color: #3E151A;"></div>
             <div class="lavee-hero-slide__overlay" style="background: rgba(22,22,22,0.5);"></div>
             <div class="lavee-hero-slide__content">
-              <span class="lavee-hero-eyebrow">AUTUMN/WINTER COUTURE 2026</span>
-              <h1 class="lavee-hero-title">Timeless Elegance &amp; Sculpted Luxury</h1>
-              <p class="lavee-hero-subtext">Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.</p>
+              <span class="lavee-hero-eyebrow">LA VEE ATELIER — EXCLUSIVE CAMPAIGN</span>
+              <h1 class="lavee-hero-title">Made to Be Remembered.</h1>
+              <p class="lavee-hero-subtext">Experience our Autumn/Winter 2026 Video Campaign. Sculpted silhouettes, liquid silks, and dramatic eveningwear crafted for iconic entrances.</p>
               <div class="lavee-hero-buttons">
-                <a href="{{ routes.all_products_collection_url }}" class="lavee-hero-btn lavee-hero-btn--primary">EXPLORE THE COLLECTION</a>
-                <a href="{{ routes.collections_url }}" class="lavee-hero-btn lavee-hero-btn--secondary">VIEW LOOKBOOK</a>
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-hero-btn lavee-hero-btn--primary">
+                  SHOP THE LOOKBOOK <span class="lavee-hero-btn-arrow">→</span>
+                </a>
+                <a href="{{ routes.collections_url }}" class="lavee-hero-btn lavee-hero-btn--secondary">
+                  <span class="lavee-hero-btn-icon">►</span> WATCH FULL FILM (2:45)
+                </a>
               </div>
             </div>
           </div>
         {%- endif -%}
       </div>
 
-      <!-- Bottom Bar Controls: Slide Counter & Nav Arrows -->
+      <!-- Bottom Bar Controls: Slide Counter, Nav Arrows, Line Progress, & Slide Selector Tabs -->
       {%- assign total_slides = section.blocks.size -%}
-      {%- if total_slides == 0 -%}{%- assign total_slides = 1 -%}{%- endif -%}
+      {%- if total_slides == 0 -%}{%- assign total_slides = 4 -%}{%- endif -%}
+      
       <div class="lavee-hero-controls-bottom">
-        <div class="lavee-hero-counter">
-          <span class="lavee-hero-counter__current" id="LaveeHeroCurrent-{{ section.id }}">01</span>
-          <span class="lavee-hero-counter__divider">/</span>
-          <span class="lavee-hero-counter__total">0{{ total_slides }}</span>
-        </div>
-
-        {%- if total_slides > 1 -%}
+        <!-- Left Side: Nav Arrows + Counter + Progress Bar -->
+        <div class="lavee-hero-controls-left">
           <div class="lavee-hero-nav-btns">
             <button 
               type="button" 
@@ -139,6 +141,15 @@
             >
               ‹
             </button>
+          </div>
+
+          <div class="lavee-hero-counter">
+            <span class="lavee-hero-counter__current" id="LaveeHeroCurrent-{{ section.id }}">01</span>
+            <span class="lavee-hero-counter__divider">/</span>
+            <span class="lavee-hero-counter__total">0{{ total_slides }}</span>
+          </div>
+
+          <div class="lavee-hero-nav-btns">
             <button 
               type="button" 
               class="lavee-hero-nav-btn lavee-hero-nav-btn--next" 
@@ -148,12 +159,55 @@
               ›
             </button>
           </div>
-        {%- endif -%}
-      </div>
 
-      <!-- Slide Duration Progress Bar -->
-      <div class="lavee-hero-progress-track">
-        <div class="lavee-hero-progress-bar" id="LaveeHeroProgress-{{ section.id }}"></div>
+          <!-- Line Progress Bar -->
+          <div class="lavee-hero-progress-track">
+            <div class="lavee-hero-progress-bar" id="LaveeHeroProgress-{{ section.id }}"></div>
+          </div>
+        </div>
+
+        <!-- Right Side: Slide Selector Tabs (Pen.dev Design Spec) -->
+        <div class="lavee-hero-tabs" id="LaveeHeroTabs-{{ section.id }}">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <button 
+                type="button"
+                class="lavee-hero-tab-pill{% if forloop.first %} is-active{% endif %}"
+                data-slide-target="{{ forloop.index0 }}"
+                onclick="goToLaveeHeroSlide('{{ section.id }}', {{ forloop.index0 }})"
+              >
+                <span class="lavee-hero-tab-pill__icon">
+                  {%- if block.settings.video != blank or block.settings.video_url != blank -%}
+                    ►
+                  {%- else -%}
+                    📷
+                  {%- endif -%}
+                </span>
+                <span class="lavee-hero-tab-pill__title">
+                  {{ block.settings.tab_title | default: block.settings.heading | default: 'Slide' }}
+                </span>
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback Pen.dev Design Tabs -->
+            <button type="button" class="lavee-hero-tab-pill is-active" onclick="goToLaveeHeroSlide('{{ section.id }}', 0)">
+              <span class="lavee-hero-tab-pill__icon">►</span>
+              <span class="lavee-hero-tab-pill__title">01. Campaign Film</span>
+            </button>
+            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 1)">
+              <span class="lavee-hero-tab-pill__icon">📷</span>
+              <span class="lavee-hero-tab-pill__title">02. Silk Gowns</span>
+            </button>
+            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 2)">
+              <span class="lavee-hero-tab-pill__icon">📷</span>
+              <span class="lavee-hero-tab-pill__title">03. Atelier Craft</span>
+            </button>
+            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 3)">
+              <span class="lavee-hero-tab-pill__icon">►</span>
+              <span class="lavee-hero-tab-pill__title">04. Tailored Edit</span>
+            </button>
+          {%- endif -%}
+        </div>
       </div>
 
     </div>
@@ -177,10 +231,10 @@
     
     if (isMuted) {
       if (icon) icon.textContent = '🔊';
-      if (text) text.textContent = 'AUDIO ON';
+      if (text) text.textContent = 'SOUND: ON | 4K CINEMATIC PRORES';
     } else {
       if (icon) icon.textContent = '🔇';
-      if (text) text.textContent = 'MUTE';
+      if (text) text.textContent = 'SOUND: MUTE | 4K CINEMATIC PRORES';
     }
   }
 
@@ -192,6 +246,7 @@
     const slides = wrapper.querySelectorAll('.lavee-hero-slide');
     const counterCurrent = wrapper.querySelector('#LaveeHeroCurrent-' + sectionId);
     const progressBar = wrapper.querySelector('#LaveeHeroProgress-' + sectionId);
+    const tabPills = wrapper.querySelectorAll('.lavee-hero-tab-pill');
     
     if (!slides.length) return;
     
@@ -199,7 +254,6 @@
     const totalSlides = slides.length;
     const isAutoplay = wrapper.dataset.autoplay === 'true';
     const speedSeconds = parseInt(wrapper.dataset.speed) || 5;
-    let timer = null;
     let progressInterval = null;
     let progressPercent = 0;
     
@@ -214,6 +268,10 @@
       
       slides.forEach((slide, idx) => {
         slide.classList.toggle('is-active', idx === currentIndex);
+      });
+      
+      tabPills.forEach((pill, idx) => {
+        pill.classList.toggle('is-active', idx === currentIndex);
       });
       
       if (counterCurrent) {
@@ -249,6 +307,10 @@
       updateSlide(currentIndex + 1);
     };
 
+    window['goToLaveeHeroSlide_' + sectionId] = function(idx) {
+      updateSlide(idx);
+    };
+
     // Touch Swipe Support
     let touchStartX = 0;
     let touchEndX = 0;
@@ -278,6 +340,12 @@
   function nextLaveeHeroSlide(id) {
     if (window['nextLaveeHeroSlide_' + id]) {
       window['nextLaveeHeroSlide_' + id]();
+    }
+  }
+
+  function goToLaveeHeroSlide(id, index) {
+    if (window['goToLaveeHeroSlide_' + id]) {
+      window['goToLaveeHeroSlide_' + id](index);
     }
   }
 
@@ -351,7 +419,13 @@
       "type": "text",
       "id": "live_badge_text",
       "label": "Live Badge Content",
-      "default": "LIVE CAMPAIGN LOOKBOOK"
+      "default": "VIDEO LOOKBOOK • AUTUMN/WINTER 2026"
+    },
+    {
+      "type": "text",
+      "id": "audio_btn_text",
+      "label": "Audio Button Initial Text",
+      "default": "SOUND: ON | 4K CINEMATIC PRORES"
     },
     {
       "type": "header",
@@ -396,27 +470,43 @@
         },
         {
           "type": "text",
+          "id": "tab_title",
+          "label": "Bottom Slide Tab Label",
+          "default": "01. Campaign Film"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content Box Alignment",
+          "options": [
+            { "value": "left", "label": "Left Aligned (Pen.dev Design)" },
+            { "value": "center", "label": "Centered" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
           "id": "eyebrow",
           "label": "Eyebrow Tagline",
-          "default": "AUTUMN/WINTER COUTURE 2026"
+          "default": "LA VEE ATELIER — EXCLUSIVE CAMPAIGN"
         },
         {
           "type": "text",
           "id": "heading",
           "label": "Main Heading Title",
-          "default": "Timeless Elegance & Sculpted Luxury"
+          "default": "Made to Be Remembered."
         },
         {
           "type": "textarea",
           "id": "subtext",
           "label": "Subtitle Description",
-          "default": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes."
+          "default": "Experience our Autumn/Winter 2026 Video Campaign. Sculpted silhouettes, liquid silks, and dramatic eveningwear crafted for iconic entrances."
         },
         {
           "type": "text",
           "id": "button_primary_label",
           "label": "Primary Button Label",
-          "default": "EXPLORE THE COLLECTION"
+          "default": "SHOP THE LOOKBOOK"
         },
         {
           "type": "url",
@@ -427,7 +517,7 @@
           "type": "text",
           "id": "button_secondary_label",
           "label": "Secondary Button Label",
-          "default": "VIEW LOOKBOOK"
+          "default": "WATCH FULL FILM (2:45)"
         },
         {
           "type": "url",
@@ -444,21 +534,49 @@
         {
           "type": "slide",
           "settings": {
+            "tab_title": "01. Campaign Film",
+            "content_alignment": "left",
+            "eyebrow": "LA VEE ATELIER — EXCLUSIVE CAMPAIGN",
+            "heading": "Made to Be Remembered.",
+            "subtext": "Experience our Autumn/Winter 2026 Video Campaign. Sculpted silhouettes, liquid silks, and dramatic eveningwear crafted for iconic entrances.",
+            "button_primary_label": "SHOP THE LOOKBOOK",
+            "button_secondary_label": "WATCH FULL FILM (2:45)"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "tab_title": "02. Silk Gowns",
+            "content_alignment": "left",
             "eyebrow": "AUTUMN/WINTER COUTURE 2026",
-            "heading": "Timeless Elegance & Sculpted Luxury",
-            "subtext": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.",
-            "button_primary_label": "EXPLORE THE COLLECTION",
+            "heading": "Liquid Silks & Evening Wear",
+            "subtext": "Discover floor-sweeping silk gowns, draped backs, and bespoke tailoring.",
+            "button_primary_label": "EXPLORE SILKS",
             "button_secondary_label": "VIEW LOOKBOOK"
           }
         },
         {
           "type": "slide",
           "settings": {
-            "eyebrow": "THE NAIMA DRESS",
-            "heading": "Hand-Beaded Corset Mini",
+            "tab_title": "03. Atelier Craft",
+            "content_alignment": "left",
+            "eyebrow": "BESPOKE CRAFTSMANSHIP",
+            "heading": "Hand-Beaded Atelier Mini",
             "subtext": "Crafted with hand-embroidered crystal embellishments and signature internal boning.",
-            "button_primary_label": "SHOP NAIMA NOW",
-            "button_secondary_label": "EXPLORE ATELIER"
+            "button_primary_label": "SHOP ATELIER NOW",
+            "button_secondary_label": "DISCOVER MORE"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "tab_title": "04. Tailored Edit",
+            "content_alignment": "left",
+            "eyebrow": "THE TAILORED SUIT",
+            "heading": "Sculpted Power Tailoring",
+            "subtext": "Sharp blazers, high-waisted trousers, and structured modern luxury separates.",
+            "button_primary_label": "SHOP TAILORED EDIT",
+            "button_secondary_label": "EXPLORE SUITS"
           }
         }
       ]
@@ -466,3 +584,4 @@
   ]
 }
 {% endschema %}
+

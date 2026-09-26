@@ -183,16 +183,29 @@
   z-index: 10;
   max-width: 860px;
   padding: 0 48px;
-  text-align: center;
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
+}
+
+.lavee-hero-slide--align-left .lavee-hero-slide__content {
+  align-items: flex-start;
+  text-align: left;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.lavee-hero-slide--align-center .lavee-hero-slide__content {
   align-items: center;
+  text-align: center;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 768px) {
   .lavee-hero-slide__content {
     padding: 0 24px;
+    align-items: flex-start !important;
+    text-align: left !important;
   }
 }
 
@@ -201,10 +214,10 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: var(--lavee-bg-announcement, #EDE6DC);
+  color: var(--lavee-gold, #D4AF37);
   text-transform: uppercase;
   margin-bottom: 16px;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .lavee-hero-title {
@@ -250,7 +263,6 @@
 .lavee-hero-buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -259,6 +271,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 16px 36px;
   font-family: var(--font-sans);
   font-size: 12px;
@@ -268,6 +281,12 @@
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
+}
+
+.lavee-hero-btn-arrow,
+.lavee-hero-btn-icon {
+  font-size: 14px;
+  transition: transform 0.2s ease;
 }
 
 .lavee-hero-btn--primary {
@@ -280,6 +299,10 @@
   background-color: #52161F;
   border-color: #52161F;
   box-shadow: 0 8px 24px rgba(110, 31, 42, 0.4);
+}
+
+.lavee-hero-btn--primary:hover .lavee-hero-btn-arrow {
+  transform: translateX(4px);
 }
 
 .lavee-hero-btn--secondary {
@@ -296,6 +319,9 @@
 }
 
 @media screen and (max-width: 768px) {
+  .lavee-hero-buttons {
+    width: 100%;
+  }
   .lavee-hero-btn {
     padding: 12px 24px;
     font-size: 11px;
@@ -304,7 +330,7 @@
   }
 }
 
-/* Bottom Controls, Counter & Progress Bar */
+/* Bottom Controls, Counter, Progress Bar & Slide Tabs */
 .lavee-hero-controls-bottom {
   position: absolute;
   bottom: 32px;
@@ -315,18 +341,29 @@
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
+  gap: 24px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 990px) {
   .lavee-hero-controls-bottom {
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
   }
 }
 
-.lavee-hero-counter {
+/* Left Side Controls (Counter + Nav Arrows + Line Progress) */
+.lavee-hero-controls-left {
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lavee-hero-counter {
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
@@ -334,25 +371,32 @@
   color: #FFFFFF;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .lavee-hero-counter__current {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--lavee-gold, #D4AF37);
+  color: #FFFFFF;
+}
+
+.lavee-hero-counter__divider {
+  opacity: 0.6;
+}
+
+.lavee-hero-counter__total {
+  opacity: 0.6;
 }
 
 .lavee-hero-nav-btns {
-  pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .lavee-hero-nav-btn {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(22, 22, 22, 0.5);
   backdrop-filter: blur(8px);
@@ -375,15 +419,13 @@
   transform: scale(1.05);
 }
 
-/* Continuous Progress Bar Line */
+/* Line Progress Bar Track */
 .lavee-hero-progress-track {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  width: 140px;
   height: 3px;
-  background: rgba(255, 255, 255, 0.15);
-  z-index: 25;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .lavee-hero-progress-bar {
@@ -392,3 +434,61 @@
   background-color: var(--lavee-gold, #D4AF37);
   transition: width 0.1s linear;
 }
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-progress-track {
+    width: 80px;
+  }
+}
+
+/* Right Side: Slide Selector Tabs (Pen.dev Design Spec) */
+.lavee-hero-tabs {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lavee-hero-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(22, 22, 22, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lavee-hero-tab-pill:hover {
+  background: rgba(22, 22, 22, 0.85);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+}
+
+.lavee-hero-tab-pill.is-active {
+  background: var(--lavee-burgundy, #6E1F2A);
+  border-color: var(--lavee-gold, #D4AF37);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(110, 31, 42, 0.4);
+}
+
+.lavee-hero-tab-pill__icon {
+  font-size: 11px;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-tabs {
+    display: none; /* Mobile uses touch swipe & counter */
+  }
+}
+
