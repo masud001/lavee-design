@@ -19,6 +19,7 @@
 {%- style -%}
   #shopify-section-{{ section.id }} .lavee-header-wrapper {
     background-color: {{ section.settings.bg_color }};
+    --lavee-header-sticky-bg: {{ section.settings.bg_color | color_modify: 'alpha', 0.85 }};
   }
 
   #shopify-section-{{ section.id }} .lavee-header {
@@ -56,6 +57,10 @@
   }
 
   {%- if section.settings.enable_transparent -%}
+    #shopify-section-{{ section.id }} .lavee-header-wrapper.is-transparent-header.is-sticky {
+      --lavee-header-sticky-bg: {{ section.settings.bg_color | default: "#F7F4EF" | color_modify: 'alpha', 0.85 }};
+    }
+
     .lavee-header-wrapper.is-transparent-header:not(.is-sticky) {
       background-color: transparent !important;
       position: relative;
