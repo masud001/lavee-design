@@ -122,7 +122,11 @@
 
 /* --- 02. HEADER & NAVIGATION --- */
 .lavee-header-wrapper {
-  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   z-index: 200;
   width: 100%;
@@ -134,9 +138,44 @@
   left: 0 !important;
   width: 100% !important;
   z-index: 999 !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  background-color: var(--lavee-bg-ivory) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+  background-color: rgba(247, 244, 239, 0.95) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   margin-bottom: 0 !important;
+}
+
+.lavee-header-wrapper.is-sticky:not(.sticky-scroll-up) {
+  animation: laveeStickySlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes laveeStickySlideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.lavee-header-wrapper.is-sticky .lavee-header {
+  min-height: 58px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.lavee-header-wrapper.is-sticky .lavee-header__tier-menu {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.lavee-header-wrapper.is-sticky .lavee-header__logo-text,
+.lavee-header-wrapper.is-sticky .lavee-header__logo-img,
+.lavee-header-wrapper.is-sticky .lavee-header__logo-svg svg {
+  transform: scale(0.88);
+  transform-origin: center center;
 }
 
 .lavee-header-wrapper.is-sticky .lavee-header__nav-link,
@@ -157,6 +196,9 @@
   z-index: 100;
   width: 100%;
   box-sizing: border-box;
+  transition: min-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lavee-container-fluid .lavee-header {
@@ -235,6 +277,8 @@
   padding: 14px 0;
   border-top: 1px solid var(--lavee-border);
   width: 100%;
+  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lavee-container-fluid .lavee-header__tier-menu {
@@ -294,6 +338,14 @@
   color: var(--lavee-burgundy);
 }
 
+.lavee-header__logo-text,
+.lavee-header__logo-img,
+.lavee-header__logo-svg svg {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s ease;
+}
+
 .lavee-header__logo {
   font-family: var(--font-serif);
   font-size: 32px;
@@ -307,6 +359,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lavee-header__logo-img {
