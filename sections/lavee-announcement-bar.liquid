@@ -1,9 +1,10 @@
 {{ 'lavee-header-footer.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  La Vee Luxury Announcement Bar with Infinite Marquee Animation - Node ID: twkN3
+  La Vee Luxury Announcement Bar with Infinite Marquee Animation - Node ID: twkN3 & XBJqN
   - Layout Width Option: Container vs Container Fluid
   - Responsive across Mobile, Tablet, Desktop
+  - Independent Mobile Font Size & Letter Spacing Controls
   - Accessible (a11y), Pauses on Hover & Focus
   - Prefers-Reduced-Motion Support
   - Merchant Customizations: Padding, Colors, Speed, Block Gaps
@@ -31,6 +32,22 @@
 
   #shopify-section-{{ section.id }} .lavee-marquee__item a {
     color: {{ section.settings.text_color }};
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .lavee-announcement-bar {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .lavee-marquee__track {
+      gap: {{ section.settings.block_gap_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .lavee-marquee__item {
+      font-size: {{ section.settings.font_size_mobile }}px;
+      letter-spacing: {{ section.settings.letter_spacing_mobile }}em;
+    }
   }
 {%- endstyle -%}
 
@@ -150,7 +167,7 @@
     },
     {
       "type": "header",
-      "content": "Typography & Animation"
+      "content": "Desktop Typography"
     },
     {
       "type": "range",
@@ -159,7 +176,7 @@
       "max": 16,
       "step": 1,
       "unit": "px",
-      "label": "Font Size",
+      "label": "Desktop Font Size",
       "default": 12
     },
     {
@@ -177,7 +194,7 @@
     {
       "type": "select",
       "id": "letter_spacing",
-      "label": "Letter Spacing",
+      "label": "Desktop Letter Spacing",
       "options": [
         { "value": "0", "label": "Normal (0em)" },
         { "value": "0.04", "label": "Subtle (0.04em)" },
@@ -185,6 +202,37 @@
         { "value": "0.12", "label": "Wide (0.12em)" }
       ],
       "default": "0.08"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Font Size",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing_mobile",
+      "label": "Mobile Letter Spacing",
+      "options": [
+        { "value": "0", "label": "Normal (0em)" },
+        { "value": "0.04", "label": "Subtle (0.04em)" },
+        { "value": "0.06", "label": "Mobile Luxury (0.06em)" },
+        { "value": "0.08", "label": "Luxury Spacing (0.08em)" },
+        { "value": "0.12", "label": "Wide (0.12em)" }
+      ],
+      "default": "0.06"
+    },
+    {
+      "type": "header",
+      "content": "Animation & Gaps"
     },
     {
       "type": "range",
@@ -203,8 +251,18 @@
       "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "Gap Between Blocks",
+      "label": "Desktop Gap Between Blocks",
       "default": 36
+    },
+    {
+      "type": "range",
+      "id": "block_gap_mobile",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Gap Between Blocks",
+      "default": 20
     },
     {
       "type": "header",
@@ -217,7 +275,7 @@
       "max": 24,
       "step": 2,
       "unit": "px",
-      "label": "Padding Top",
+      "label": "Desktop Padding Top",
       "default": 8
     },
     {
@@ -227,8 +285,28 @@
       "max": 24,
       "step": 2,
       "unit": "px",
-      "label": "Padding Bottom",
+      "label": "Desktop Padding Bottom",
       "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 6
     }
   ],
   "blocks": [
