@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "shopify theme dev --store lavee-design.myshopify.com --store-password eushia",
-    "push": "shopify theme push --store lavee-design.myshopify.com --theme 188521709755",
+    "push": "shopify theme push --store lavee-design.myshopify.com",
     "pull": "shopify theme pull --store lavee-design.myshopify.com",
     "check": "shopify theme check",
     "package": "shopify theme package"
