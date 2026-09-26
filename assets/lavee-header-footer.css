@@ -410,31 +410,67 @@
 /* Mobile Responsive Adjustments (02. Mobile Header Spec) */
 @media screen and (max-width: 768px) {
   .lavee-header {
-    height: 60px;
-    padding: 0 16px;
+    min-height: 60px !important;
+    padding: 0 16px !important;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .lavee-container-fluid .lavee-header,
+  .lavee-container .lavee-header {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   .lavee-header__mobile-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 15;
   }
 
   .lavee-header__nav {
-    display: none;
+    display: none !important;
+  }
+
+  .lavee-header__tier-menu {
+    display: none !important;
   }
 
   .lavee-header__action-link--desktop {
-    display: none;
+    display: none !important;
   }
 
+  /* Force Logo to be dead-centered on mobile */
+  .lavee-header__slot-center,
   .lavee-header__logo {
-    font-size: 26px;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    pointer-events: auto;
+    z-index: 10;
+  }
+
+  .lavee-header__logo-text {
+    font-size: 24px !important;
   }
 
   .lavee-header__action-link--bag {
     font-size: 12px;
-    letter-spacing: 0px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  /* Mobile Sticky Squeeze */
+  .lavee-header-wrapper.is-sticky .lavee-header {
+    min-height: 50px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .lavee-header-wrapper.is-sticky .lavee-header__slot-center,
+  .lavee-header-wrapper.is-sticky .lavee-header__logo {
+    transform: translateX(-50%) scale(0.85) !important;
   }
 }
 
