@@ -123,16 +123,17 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(22, 22, 22, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 14px;
-  border-radius: 20px;
+  background: rgba(22, 22, 22, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  padding: 8px 18px;
+  border-radius: 30px;
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: #FFFFFF;
   text-transform: uppercase;
 }
@@ -142,7 +143,7 @@
   height: 7px;
   background-color: #E53935;
   border-radius: 50%;
-  box-shadow: 0 0 8px #E53935;
+  box-shadow: 0 0 10px #E53935;
   animation: laveePulseRed 2s infinite;
 }
 
@@ -156,25 +157,27 @@
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(22, 22, 22, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 14px;
-  border-radius: 20px;
+  gap: 8px;
+  background: rgba(22, 22, 22, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  padding: 8px 18px;
+  border-radius: 30px;
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: #FFFFFF;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .lavee-hero-audio-btn:hover {
-  background: rgba(22, 22, 22, 0.8);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(22, 22, 22, 0.75);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35), 0 10px 36px 0 rgba(0, 0, 0, 0.45);
 }
 
 /* Content Box Styling */
@@ -273,49 +276,51 @@
   justify-content: center;
   gap: 10px;
   padding: 16px 36px;
+  border-radius: 4px;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
 .lavee-hero-btn-arrow,
 .lavee-hero-btn-icon {
   font-size: 14px;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
 .lavee-hero-btn--primary {
-  background-color: var(--lavee-burgundy, #6E1F2A);
+  background: rgba(110, 31, 42, 0.85);
   color: #FFFFFF;
-  border: 1px solid var(--lavee-burgundy, #6E1F2A);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 24px rgba(110, 31, 42, 0.4);
 }
 
 .lavee-hero-btn--primary:hover {
-  background-color: #52161F;
-  border-color: #52161F;
-  box-shadow: 0 8px 24px rgba(110, 31, 42, 0.4);
-}
-
-.lavee-hero-btn--primary:hover .lavee-hero-btn-arrow {
-  transform: translateX(4px);
+  background: rgba(110, 31, 42, 0.98);
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35), 0 12px 32px rgba(110, 31, 42, 0.6);
 }
 
 .lavee-hero-btn--secondary {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.12);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .lavee-hero-btn--secondary:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.24);
   border-color: #FFFFFF;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35), 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 @media screen and (max-width: 768px) {
@@ -395,28 +400,29 @@
 }
 
 .lavee-hero-nav-btn {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(22, 22, 22, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(22, 22, 22, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3);
   color: #FFFFFF;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   padding: 0;
   line-height: 1;
 }
 
 .lavee-hero-nav-btn:hover {
   background-color: var(--lavee-burgundy, #6E1F2A);
-  border-color: var(--lavee-burgundy, #6E1F2A);
-  transform: scale(1.05);
+  border-color: var(--lavee-gold, #D4AF37);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(110, 31, 42, 0.5);
 }
 
 /* Line Progress Bar Track */
@@ -454,11 +460,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: rgba(22, 22, 22, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 18px;
+  background: rgba(22, 22, 22, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 6px 20px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.85);
   font-family: var(--font-sans);
@@ -466,21 +473,32 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .lavee-hero-tab-pill:hover {
-  background: rgba(22, 22, 22, 0.85);
+  background: rgba(22, 22, 22, 0.8);
   border-color: rgba(255, 255, 255, 0.4);
   color: #FFFFFF;
 }
 
 .lavee-hero-tab-pill.is-active {
-  background: var(--lavee-burgundy, #6E1F2A);
+  background: rgba(110, 31, 42, 0.9);
   border-color: var(--lavee-gold, #D4AF37);
   color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(110, 31, 42, 0.4);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(110, 31, 42, 0.5);
 }
+
+.lavee-hero-tab-pill__icon {
+  font-size: 11px;
+}
+
+@media screen and (max-width: 768px) {
+  .lavee-hero-tabs {
+    display: none; /* Mobile uses touch swipe & counter */
+  }
+}
+
 
 .lavee-hero-tab-pill__icon {
   font-size: 11px;

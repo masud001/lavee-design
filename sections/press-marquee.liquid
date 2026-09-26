@@ -1,0 +1,184 @@
+{{ 'section-press-marquee.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  La Vee Press & Media Marquee Section - Node ID: twkN3
+  - Responsive Width: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
+  - Color Schemes: Ivory, Dark, Burgundy
+  - Infinite Smooth Marquee Loop with Pause on Hover
+  - Image Logo or High-End Serif Text Logo with Optional Quotes
+{%- endcomment -%}
+
+<div class="lavee-press-section lavee-press-section--{{ section.settings.color_scheme | default: 'ivory' }}">
+  <div class="lavee-{{ section.settings.container_type }}">
+    
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="lavee-press-header">
+        <span class="lavee-press-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="lavee-press-marquee">
+      <div 
+        class="lavee-press-marquee__content"
+        style="animation-duration: {{ section.settings.marquee_speed | default: 35 }}s;"
+      >
+        {%- capture marquee_items -%}
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <div class="lavee-press-item" {{ block.shopify_attributes }}>
+                {%- if block.settings.logo_image != blank -%}
+                  {%- if block.settings.link != blank -%}
+                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener" aria-label="{{ block.settings.publication_name | default: 'Press' }}">
+                  {%- endif -%}
+                  {{ block.settings.logo_image | image_url: width: 400 | image_tag: alt: block.settings.publication_name, class: 'lavee-press-logo-img' }}
+                  {%- if block.settings.link != blank -%}</a>{%- endif -%}
+                {%- elsif block.settings.publication_name != blank -%}
+                  {%- if block.settings.link != blank -%}
+                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">
+                  {%- endif -%}
+                  <span class="lavee-press-logo-text">{{ block.settings.publication_name | escape }}</span>
+                  {%- if block.settings.link != blank -%}</a>{%- endif -%}
+                {%- endif -%}
+
+                {%- if block.settings.quote != blank -%}
+                  <span class="lavee-press-quote">“{{ block.settings.quote | escape }}”</span>
+                {%- endif -%}
+
+                <span class="lavee-press-divider"></span>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback Default Press Logos -->
+            <div class="lavee-press-item"><span class="lavee-press-logo-text">VOGUE</span><span class="lavee-press-quote">“Pinnacle of Modern Couture”</span><span class="lavee-press-divider"></span></div>
+            <div class="lavee-press-item"><span class="lavee-press-logo-text">HARPER'S BAZAAR</span><span class="lavee-press-quote">“Unrivaled Corsetry Craftsmanship”</span><span class="lavee-press-divider"></span></div>
+            <div class="lavee-press-item"><span class="lavee-press-logo-text">ELLE</span><span class="lavee-press-quote">“Sculpted Silhouettes for the Modern Era”</span><span class="lavee-press-divider"></span></div>
+            <div class="lavee-press-item"><span class="lavee-press-logo-text">L'OFFICIEL</span><span class="lavee-press-quote">“Timeless Luxury Eveningwear”</span><span class="lavee-press-divider"></span></div>
+            <div class="lavee-press-item"><span class="lavee-press-logo-text">GRAZIA</span><span class="lavee-press-quote">“Redefining Atelier Excellence”</span><span class="lavee-press-divider"></span></div>
+          {%- endif -%}
+        {%- endcapture -%}
+
+        <!-- Duplicate 3 Times for Seamless Loop -->
+        {{ marquee_items }}
+        {{ marquee_items }}
+        {{ marquee_items }}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "La Vee Press Marquee",
+  "tag": "section",
+  "class": "lavee-press-marquee-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Background Color Scheme",
+      "options": [
+        { "value": "ivory", "label": "Ivory (#F7F4EF)" },
+        { "value": "dark", "label": "Dark Luxe (#161616)" },
+        { "value": "burgundy", "label": "Burgundy (#6E1F2A)" }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section Eyebrow Heading",
+      "default": "AS SEEN IN WORLDWIDE PUBLICATIONS"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "min": 15,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Marquee Loop Speed",
+      "default": 35
+    }
+  ],
+  "blocks": [
+    {
+      "type": "press_item",
+      "name": "Press Publication",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Publication Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "publication_name",
+          "label": "Publication Name (Text Logo)",
+          "default": "VOGUE"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Press Quote / Endorsement",
+          "default": "Pinnacle of Modern Couture"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article / Press Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "La Vee Press Marquee",
+      "blocks": [
+        {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "VOGUE",
+            "quote": "Pinnacle of Modern Couture & Corsetry"
+          }
+        },
+        {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "HARPER'S BAZAAR",
+            "quote": "Unrivaled Craftsmanship & Tailoring"
+          }
+        },
+        {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "ELLE",
+            "quote": "Sculpted Silhouettes for the Modern Era"
+          }
+        },
+        {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "L'OFFICIEL",
+            "quote": "Timeless Luxury & Eveningwear Excellence"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

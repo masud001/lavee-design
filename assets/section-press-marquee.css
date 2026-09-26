@@ -1,0 +1,159 @@
+/* Press Marquee Styles - La Vee Luxury Design System (Node ID: twkN3) */
+
+.lavee-press-section {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 48px 0;
+  background-color: var(--lavee-bg-ivory, #F7F4EF);
+  border-top: 1px solid rgba(22, 22, 22, 0.08);
+  border-bottom: 1px solid rgba(22, 22, 22, 0.08);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Color Scheme Options */
+.lavee-press-section--ivory {
+  background-color: var(--lavee-bg-ivory, #F7F4EF);
+  color: var(--lavee-dark, #161616);
+}
+
+.lavee-press-section--dark {
+  background-color: var(--lavee-dark, #161616);
+  color: var(--lavee-bg-ivory, #F7F4EF);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lavee-press-section--burgundy {
+  background-color: var(--lavee-burgundy, #6E1F2A);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Section Eyebrow / Header */
+.lavee-press-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 0 24px;
+}
+
+.lavee-press-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* Infinite Marquee Track */
+.lavee-press-marquee {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.lavee-press-marquee__content {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  animation: laveeMarqueeScroll 35s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.lavee-press-marquee:hover .lavee-press-marquee__content {
+  animation-play-state: paused;
+}
+
+@keyframes laveeMarqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Press Item Block */
+.lavee-press-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px;
+  opacity: 0.75;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lavee-press-item:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.lavee-press-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.lavee-press-section--dark .lavee-press-logo-img,
+.lavee-press-section--burgundy .lavee-press-logo-img {
+  filter: grayscale(100%) brightness(200%);
+}
+
+.lavee-press-item:hover .lavee-press-logo-img {
+  filter: grayscale(0%);
+}
+
+.lavee-press-logo-text {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.lavee-press-quote {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.lavee-press-divider {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--lavee-gold, #D4AF37);
+  display: inline-block;
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .lavee-press-section {
+    padding: 32px 0;
+  }
+  .lavee-press-header {
+    margin-bottom: 24px;
+  }
+  .lavee-press-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+  .lavee-press-marquee__content {
+    gap: 40px;
+    animation-duration: 25s;
+  }
+  .lavee-press-logo-text {
+    font-size: 22px;
+  }
+  .lavee-press-logo-img {
+    height: 28px;
+  }
+}

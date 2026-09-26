@@ -38,6 +38,51 @@
         "autoplay_speed": 5
       }
     },
+    "press_marquee": {
+      "type": "press-marquee",
+      "blocks": {
+        "press_1": {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "VOGUE",
+            "quote": "Pinnacle of Modern Couture & Corsetry"
+          }
+        },
+        "press_2": {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "HARPER'S BAZAAR",
+            "quote": "Unrivaled Craftsmanship & Tailoring"
+          }
+        },
+        "press_3": {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "ELLE",
+            "quote": "Sculpted Silhouettes for the Modern Era"
+          }
+        },
+        "press_4": {
+          "type": "press_item",
+          "settings": {
+            "publication_name": "L'OFFICIEL",
+            "quote": "Timeless Luxury & Eveningwear Excellence"
+          }
+        }
+      },
+      "block_order": [
+        "press_1",
+        "press_2",
+        "press_3",
+        "press_4"
+      ],
+      "settings": {
+        "container_type": "container-fluid",
+        "color_scheme": "ivory",
+        "eyebrow": "AS SEEN IN WORLDWIDE PUBLICATIONS",
+        "marquee_speed": 35
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {

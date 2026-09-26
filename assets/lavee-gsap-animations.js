@@ -109,5 +109,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  console.log('✨ La Vee GSAP ScrollTrigger Animation Engine Initialized Successfully.');
+  // 5. GSAP INTERACTIVE HOVER ENGINE FOR ALL FROSTED GLASS CONTROLS & BUTTONS
+  const interactiveElements = document.querySelectorAll(
+    '.lavee-hero-btn, .lavee-hero-audio-btn, .lavee-hero-nav-btn, .lavee-hero-tab-pill, .lavee-hero-badge, .lavee-btn, .button'
+  );
+
+  interactiveElements.forEach((el) => {
+    const arrow = el.querySelector('.lavee-hero-btn-arrow, .lavee-hero-btn-icon');
+    const text = el.querySelector('.lavee-hero-tab-pill__title, .lavee-hero-audio-text');
+
+    el.addEventListener('mouseenter', () => {
+      gsap.to(el, {
+        y: -3,
+        scale: 1.035,
+        duration: 0.3,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+
+      if (arrow) {
+        gsap.to(arrow, {
+          x: 4,
+          duration: 0.25,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      }
+
+      if (text) {
+        gsap.to(text, {
+          letterSpacing: '0.08em',
+          duration: 0.25,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      }
+    });
+
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, {
+        y: 0,
+        scale: 1,
+        duration: 0.3,
+        ease: 'power2.inOut',
+        overwrite: 'auto'
+      });
+
+      if (arrow) {
+        gsap.to(arrow, {
+          x: 0,
+          duration: 0.25,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      }
+
+      if (text) {
+        gsap.to(text, {
+          letterSpacing: '0.05em',
+          duration: 0.25,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      }
+    });
+  });
+
+  console.log('✨ La Vee GSAP ScrollTrigger & Frosted Glass Hover Engine Initialized Successfully.');
 });
+
