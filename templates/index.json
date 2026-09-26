@@ -1,0 +1,67 @@
+{
+  "sections": {
+    "hero_media_slider": {
+      "type": "hero-media-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "AUTUMN/WINTER COUTURE 2026",
+            "heading": "Timeless Elegance & Sculpted Luxury",
+            "subtext": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.",
+            "button_label": "EXPLORE THE COLLECTION"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "THE NAIMA DRESS",
+            "heading": "Hand-Beaded Corset Mini",
+            "subtext": "Crafted with hand-embroidered crystal embellishments and signature internal boning.",
+            "button_label": "SHOP NAIMA NOW"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured products",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "hero_media_slider",
+    "featured_collection"
+  ]
+}

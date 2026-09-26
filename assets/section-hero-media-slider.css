@@ -1,0 +1,36 @@
+/* Hero Media Slider Styles - La Vee Luxury Design System */
+
+.hero-media-slider {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-text-primary, #161616);
+}
+
+.hero-slide__heading {
+  font-family: var(--font-heading, 'Cormorant Garamond', serif);
+  font-weight: 500;
+  color: var(--color-bg-primary, #F7F4EF);
+  letter-spacing: -0.01em;
+}
+
+.hero-slide__eyebrow {
+  color: var(--color-bg-secondary, #EDE6DC);
+  letter-spacing: 0.18em;
+}
+
+.hero-slide__button {
+  background-color: var(--color-text-primary, #161616);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 250ms ease-in-out;
+}
+
+.hero-slide__button:hover {
+  background-color: var(--color-accent-burgundy, #6E1F2A);
+  border-color: var(--color-accent-burgundy, #6E1F2A);
+}
+
+.hero-media-slider__dot.is-active {
+  background-color: #FFFFFF;
+  opacity: 1;
+}
