@@ -2,15 +2,80 @@
 
 {% comment %}
   La Vee Luxury Header & Navigation - Node ID: twkN3 & 02. Mobile Header
-  - Responsive Desktop (80px height) & Mobile (60px height)
-  - Layout Width Option: Container vs Container Fluid
-  - Mobile Drawer Navigation with Smooth Backdrop Overlay
-  - Accessible (a11y) Hamburger Menu Toggle
+  - Full Admin Customization: Text Logo, Image Logo (PNG/JPG/WebP/SVG), Transparent Hero Logo
+  - Custom Width, Height, Top/Bottom Padding for Logo (Desktop & Mobile)
+  - Logo Position: Center, Left, Center-Bottom (Stacked)
+  - Menu Position: Left, Center, Right, Bottom
+  - Sticky Behavior: Always Sticky, Hide on Scroll Down / Show on Scroll Up
+  - Overlay Transparent Header with custom contrast text color
+  - Fully Responsive across Desktop, Tablet, and Mobile devices
 {% endcomment %}
 
-<header class="lavee-header-wrapper" style="background-color: {{ section.settings.bg_color }};">
+{%- style -%}
+  #shopify-section-{{ section.id }} .lavee-header-wrapper {
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  #shopify-section-{{ section.id }} .lavee-header {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .lavee-header__logo-img,
+  #shopify-section-{{ section.id }} .lavee-header__logo-svg svg {
+    max-width: {{ section.settings.logo_width_desktop }}px;
+    max-height: {{ section.settings.logo_height_desktop }}px;
+    width: auto;
+    height: auto;
+    margin-top: {{ section.settings.logo_padding_top }}px;
+    margin-bottom: {{ section.settings.logo_padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .lavee-header__logo-text {
+    font-size: {{ section.settings.logo_font_size_desktop }}px;
+    margin-top: {{ section.settings.logo_padding_top }}px;
+    margin-bottom: {{ section.settings.logo_padding_bottom }}px;
+    color: {{ section.settings.text_color }};
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .lavee-header__logo-img,
+    #shopify-section-{{ section.id }} .lavee-header__logo-svg svg {
+      max-width: {{ section.settings.logo_width_mobile }}px;
+      max-height: {{ section.settings.logo_height_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .lavee-header__logo-text {
+      font-size: {{ section.settings.logo_font_size_mobile }}px;
+    }
+  }
+
+  {%- if section.settings.enable_transparent -%}
+    .lavee-header-wrapper.is-transparent-header:not(.is-sticky) {
+      background-color: transparent !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      border-bottom-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .lavee-header-wrapper.is-transparent-header:not(.is-sticky) .lavee-header__nav-link,
+    .lavee-header-wrapper.is-transparent-header:not(.is-sticky) .lavee-header__logo-text,
+    .lavee-header-wrapper.is-transparent-header:not(.is-sticky) .lavee-header__action-link,
+    .lavee-header-wrapper.is-transparent-header:not(.is-sticky) .lavee-header__mobile-toggle {
+      color: {{ section.settings.transparent_text_color }};
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<header 
+  class="lavee-header-wrapper{% if section.settings.enable_sticky %} has-sticky{% if section.settings.sticky_type == 'scroll_up' %} sticky-scroll-up{% endif %}{% endif %}{% if section.settings.enable_transparent %} is-transparent-header{% endif %}"
+  data-sticky="{{ section.settings.enable_sticky }}"
+>
   <div class="lavee-{{ section.settings.container_type }}">
-    <div class="lavee-header">
+    <div class="lavee-header lavee-header--logo-{{ section.settings.logo_position }} lavee-header--menu-{{ section.settings.menu_position }}">
       
       <!-- Mobile Hamburger Button -->
       <button 
@@ -24,7 +89,36 @@
         <span class="lavee-header__hamburger-icon" aria-hidden="true">☰</span>
       </button>
 
-      <!-- Left: Desktop Navigation Links -->
+      <!-- Logo Element for Left Logo Placement -->
+      {%- if section.settings.logo_position == 'left' -%}
+        <a href="{{ routes.root_url }}" class="lavee-header__logo">
+          {%- case section.settings.logo_type -%}
+            {%- when 'image' -%}
+              {%- if section.settings.logo != blank -%}
+                {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--standard' }}
+                {%- if section.settings.enable_transparent and section.settings.logo_transparent != blank -%}
+                  {{ section.settings.logo_transparent | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--transparent' }}
+                {%- endif -%}
+              {%- else -%}
+                <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+              {%- endif -%}
+
+            {%- when 'svg' -%}
+              {%- if section.settings.logo_svg_code != blank -%}
+                <div class="lavee-header__logo-svg">
+                  {{ section.settings.logo_svg_code }}
+                </div>
+              {%- else -%}
+                <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+              {%- endif -%}
+
+            {%- else -%}
+              <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+          {%- endcase -%}
+        </a>
+      {%- endif -%}
+
+      <!-- Desktop Navigation Links -->
       <nav class="lavee-header__nav" aria-label="Main Navigation">
         {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
           {%- for link in section.settings.menu.links -%}
@@ -51,14 +145,34 @@
         {%- endif -%}
       </nav>
 
-      <!-- Center: Brand Logo -->
-      <a href="{{ routes.root_url }}" class="lavee-header__logo">
-        {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'lavee-header__logo-img' }}
-        {%- else -%}
-          <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
-        {%- endif -%}
-      </a>
+      <!-- Logo Element for Center / Center-Bottom Logo Placement -->
+      {%- if section.settings.logo_position != 'left' -%}
+        <a href="{{ routes.root_url }}" class="lavee-header__logo">
+          {%- case section.settings.logo_type -%}
+            {%- when 'image' -%}
+              {%- if section.settings.logo != blank -%}
+                {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--standard' }}
+                {%- if section.settings.enable_transparent and section.settings.logo_transparent != blank -%}
+                  {{ section.settings.logo_transparent | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--transparent' }}
+                {%- endif -%}
+              {%- else -%}
+                <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+              {%- endif -%}
+
+            {%- when 'svg' -%}
+              {%- if section.settings.logo_svg_code != blank -%}
+                <div class="lavee-header__logo-svg">
+                  {{ section.settings.logo_svg_code }}
+                </div>
+              {%- else -%}
+                <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+              {%- endif -%}
+
+            {%- else -%}
+              <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+          {%- endcase -%}
+        </a>
+      {%- endif -%}
 
       <!-- Right: Desktop & Mobile Actions -->
       <div class="lavee-header__actions">
@@ -69,6 +183,26 @@
         </a>
       </div>
     </div>
+
+    <!-- Secondary Tier Navigation for Center-Bottom Layout -->
+    {%- if section.settings.logo_position == 'center_bottom' or section.settings.menu_position == 'bottom' -%}
+      <div class="lavee-header__tier-menu">
+        <nav class="lavee-header__nav lavee-header__nav--bottom" aria-label="Tier Navigation">
+          {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+            {%- for link in section.settings.menu.links -%}
+              <a href="{{ link.url }}" class="lavee-header__nav-link">{{ link.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            <a href="{{ routes.collections_url }}/new-in" class="lavee-header__nav-link lavee-header__nav-link--accent">NEW IN</a>
+            <a href="{{ routes.collections_url }}/dresses" class="lavee-header__nav-link">DRESSES</a>
+            <a href="{{ routes.collections_url }}/sets" class="lavee-header__nav-link">SETS</a>
+            <a href="{{ routes.collections_url }}/tops" class="lavee-header__nav-link">TOPS</a>
+            <a href="{{ routes.collections_url }}/occasion" class="lavee-header__nav-link">OCCASION</a>
+            <a href="{{ routes.collections_url }}/best-sellers" class="lavee-header__nav-link">BEST SELLERS</a>
+          {%- endif -%}
+        </nav>
+      </div>
+    {%- endif -%}
   </div>
 
   <!-- Mobile Drawer Menu Overlay -->
@@ -119,6 +253,38 @@
     drawer.classList.toggle('is-open');
     document.body.classList.toggle('lavee-mobile-menu-open');
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const headerWrapper = document.querySelector('.lavee-header-wrapper');
+    if (!headerWrapper) return;
+    
+    const isSticky = headerWrapper.classList.contains('has-sticky');
+    const isScrollUp = headerWrapper.classList.contains('sticky-scroll-up');
+    let lastScrollY = window.scrollY;
+    
+    if (isSticky) {
+      window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 80) {
+          headerWrapper.classList.add('is-sticky');
+          
+          if (isScrollUp) {
+            if (currentScrollY > lastScrollY && currentScrollY > 180) {
+              headerWrapper.style.transform = 'translateY(-100%)';
+            } else {
+              headerWrapper.style.transform = 'translateY(0)';
+            }
+          }
+        } else {
+          headerWrapper.classList.remove('is-sticky');
+          headerWrapper.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollY = currentScrollY;
+      }, { passive: true });
+    }
+  });
 </script>
 
 {% schema %}
@@ -128,7 +294,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Layout Width"
+      "content": "Layout Width & Header Style"
     },
     {
       "type": "select",
@@ -141,19 +307,180 @@
       "default": "container-fluid"
     },
     {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sticky_type",
+      "label": "Sticky Behavior",
+      "options": [
+        { "value": "always_sticky", "label": "Always Sticky" },
+        { "value": "scroll_up", "label": "Hide on Scroll Down / Show on Scroll Up" }
+      ],
+      "default": "always_sticky"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent",
+      "label": "Enable Overlay Transparent Header (over Hero Media)",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "transparent_text_color",
+      "label": "Transparent State Text Color",
+      "default": "#FFFFFF"
+    },
+    {
       "type": "header",
-      "content": "Content & Branding"
+      "content": "Logo Design & Formats"
+    },
+    {
+      "type": "select",
+      "id": "logo_type",
+      "label": "Logo Format Type",
+      "options": [
+        { "value": "text", "label": "Text Logo" },
+        { "value": "image", "label": "Image Logo (PNG / JPG / WebP)" },
+        { "value": "svg", "label": "SVG Code / HTML Logo" }
+      ],
+      "default": "text"
     },
     {
       "type": "text",
       "id": "logo_text",
-      "label": "Logo Text",
+      "label": "Text Logo Content",
       "default": "LA VEE"
     },
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo Image"
+      "label": "Standard Logo Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_transparent",
+      "label": "Transparent State Logo Image (Optional)"
+    },
+    {
+      "type": "html",
+      "id": "logo_svg_code",
+      "label": "SVG Logo Code Snippet",
+      "info": "Paste raw <svg>...</svg> code here"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_desktop",
+      "min": 80,
+      "max": 320,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop Logo Max Width",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "logo_height_desktop",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Logo Max Height",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_desktop",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Text Logo Font Size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 60,
+      "max": 220,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Logo Max Width",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "logo_height_mobile",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Logo Max Height",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_mobile",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Text Logo Font Size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "logo_padding_top",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "logo_padding_bottom",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Positions & Alignment"
+    },
+    {
+      "type": "select",
+      "id": "logo_position",
+      "label": "Logo Position",
+      "options": [
+        { "value": "center", "label": "Center (Standard 3-Column)" },
+        { "value": "left", "label": "Left" },
+        { "value": "center_bottom", "label": "Center Top (Stacked Menu Below)" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "menu_position",
+      "label": "Desktop Menu Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" },
+        { "value": "right", "label": "Right Aligned" },
+        { "value": "bottom", "label": "Bottom Tier (Below Logo)" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Navigation & Colors"
     },
     {
       "type": "link_list",
@@ -164,8 +491,38 @@
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color",
+      "label": "Header Background Color",
       "default": "#F7F4EF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Icon Color",
+      "default": "#161616"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Padding Bottom",
+      "default": 0
     }
   ],
   "presets": [

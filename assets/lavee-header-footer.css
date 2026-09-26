@@ -121,9 +121,30 @@
 }
 
 /* --- 02. HEADER & NAVIGATION --- */
+.lavee-header-wrapper {
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 200;
+}
+
+.lavee-header-wrapper.is-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  background-color: var(--lavee-bg-ivory) !important;
+}
+
+.lavee-header-wrapper.is-sticky .lavee-header__nav-link,
+.lavee-header-wrapper.is-sticky .lavee-header__logo-text,
+.lavee-header-wrapper.is-sticky .lavee-header__action-link,
+.lavee-header-wrapper.is-sticky .lavee-header__mobile-toggle {
+  color: var(--lavee-dark) !important;
+}
+
 .lavee-header {
-  background-color: var(--lavee-bg-ivory);
-  height: 80px;
+  background-color: transparent;
+  min-height: 80px;
   padding: 0 48px;
   display: flex;
   justify-content: space-between;
@@ -133,6 +154,43 @@
   z-index: 100;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Positioning Layout Modes */
+.lavee-header--logo-left {
+  justify-content: space-between;
+}
+
+.lavee-header--logo-left .lavee-header__logo {
+  order: 1;
+}
+
+.lavee-header--logo-left .lavee-header__nav {
+  order: 2;
+  margin-left: 36px;
+  margin-right: auto;
+}
+
+.lavee-header--logo-left .lavee-header__actions {
+  order: 3;
+}
+
+.lavee-header--menu-center .lavee-header__nav {
+  justify-content: center;
+}
+
+.lavee-header--menu-right .lavee-header__nav {
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.lavee-header__tier-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0 16px 0;
+  border-bottom: 1px solid var(--lavee-border);
 }
 
 .lavee-header__mobile-toggle {
@@ -183,6 +241,31 @@
   text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lavee-header__logo-img {
+  display: block;
+  object-fit: contain;
+}
+
+.lavee-logo--transparent {
+  display: none;
+}
+
+.is-transparent-header:not(.is-sticky) .lavee-logo--standard {
+  display: none;
+}
+
+.is-transparent-header:not(.is-sticky) .lavee-logo--transparent {
+  display: block;
+}
+
+.lavee-header__logo-svg svg {
+  display: block;
+  fill: currentColor;
 }
 
 .lavee-header__actions {
