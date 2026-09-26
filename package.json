@@ -1,0 +1,27 @@
+{
+  "name": "lavee-design",
+  "version": "1.0.0",
+  "description": "La Vee Luxury Couture Shopify OS 2.0 Theme",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "shopify theme dev --store lavee-design.myshopify.com",
+    "push": "shopify theme push --store lavee-design.myshopify.com --theme lavee-design --unpublished",
+    "push:live": "shopify theme push --store lavee-design.myshopify.com --live --allow-live",
+    "pull": "shopify theme pull --store lavee-design.myshopify.com",
+    "check": "shopify theme check",
+    "package": "shopify theme package"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "liquid",
+    "lavee-design",
+    "luxury-storefront"
+  ],
+  "author": "masud001 <madhnagar@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@shopify/cli": "^3.60.0"
+  }
+}
