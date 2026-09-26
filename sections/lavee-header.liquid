@@ -152,7 +152,7 @@
           {%- if section.settings.menu_position == 'left' -%}
             {{ header_menu_html }}
           {%- endif -%}
-        {%- elsif section.settings.logo_position == 'center' and section.settings.menu_position != 'bottom' -%}
+        {%- elsif section.settings.logo_position == 'center' and section.settings.menu_position == 'left' -%}
           {{ header_menu_html }}
         {%- endif -%}
       </div>
@@ -176,7 +176,7 @@
           <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop">SEARCH</a>
           <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop">WISHLIST</a>
           <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag">
-            BAG ({% if cart != null %}{{ cart.item_count }}{% else %}2{% endif %})
+            BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
           </a>
         </div>
       </div>
