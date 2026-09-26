@@ -239,7 +239,7 @@
     document.body.classList.toggle('lavee-mobile-menu-open');
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  function initLaveeHeader() {
     const headerWrapper = document.querySelector('.lavee-header-wrapper');
     if (!headerWrapper) return;
     
@@ -247,27 +247,39 @@
     const isScrollUp = headerWrapper.classList.contains('sticky-scroll-up');
     let lastScrollY = window.scrollY;
     
-    if (isSticky) {
-      window.addEventListener('scroll', function() {
-        const currentScrollY = window.scrollY;
+    function onHeaderScroll() {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 60) {
+        headerWrapper.classList.add('is-sticky');
         
-        if (currentScrollY > 80) {
-          headerWrapper.classList.add('is-sticky');
-          
-          if (isScrollUp) {
-            if (currentScrollY > lastScrollY && currentScrollY > 180) {
-              headerWrapper.style.transform = 'translateY(-100%)';
-            } else {
-              headerWrapper.style.transform = 'translateY(0)';
-            }
+        if (isScrollUp) {
+          if (currentScrollY > lastScrollY && currentScrollY > 180) {
+            headerWrapper.style.transform = 'translateY(-100%)';
+          } else {
+            headerWrapper.style.transform = 'translateY(0)';
           }
-        } else {
-          headerWrapper.classList.remove('is-sticky');
-          headerWrapper.style.transform = 'translateY(0)';
         }
-        
-        lastScrollY = currentScrollY;
-      }, { passive: true });
+      } else {
+        headerWrapper.classList.remove('is-sticky');
+        headerWrapper.style.transform = 'translateY(0)';
+      }
+      
+      lastScrollY = currentScrollY;
+    }
+
+    if (isSticky) {
+      window.removeEventListener('scroll', window._laveeHeaderScrollHandler);
+      window._laveeHeaderScrollHandler = onHeaderScroll;
+      window.addEventListener('scroll', onHeaderScroll, { passive: true });
+      onHeaderScroll();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initLaveeHeader);
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.detail && e.detail.sectionId && e.detail.sectionId.includes('header')) {
+      initLaveeHeader();
     }
   });
 </script>

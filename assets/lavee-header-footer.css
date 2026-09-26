@@ -125,6 +125,7 @@
   transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   z-index: 200;
+  width: 100%;
 }
 
 .lavee-header-wrapper.is-sticky {
@@ -145,7 +146,6 @@
 .lavee-header {
   background-color: transparent;
   min-height: 80px;
-  padding: 0 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -154,6 +154,14 @@
   z-index: 100;
   width: 100%;
   box-sizing: border-box;
+}
+
+.lavee-container-fluid .lavee-header {
+  padding: 0 48px;
+}
+
+.lavee-container .lavee-header {
+  padding: 0;
 }
 
 /* Slot Layout Modes */
@@ -175,11 +183,13 @@
 
 /* Absolute centering for Logo Center / Logo Center-Bottom / Menu Center */
 .lavee-header--logo-center .lavee-header__slot-center,
-.lavee-header--logo-center_bottom .lavee-header__slot-center {
+.lavee-header--logo-center_bottom .lavee-header__slot-center,
+.lavee-header--menu-center .lavee-header__slot-center {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: auto;
+  white-space: nowrap;
 }
 
 .lavee-header__slot-right {
@@ -219,9 +229,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 14px 0 14px 0;
+  padding: 14px 0;
   border-top: 1px solid var(--lavee-border);
   width: 100%;
+}
+
+.lavee-container-fluid .lavee-header__tier-menu {
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.lavee-container .lavee-header__tier-menu {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .lavee-header__tier-menu .lavee-header__nav {
