@@ -114,6 +114,7 @@
   },
   "order": [
     "hero_media_slider",
+    "press_marquee",
     "featured_collection"
   ]
 }
