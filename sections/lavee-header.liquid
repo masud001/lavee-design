@@ -1,16 +1,32 @@
 {{ 'lavee-header-footer.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  La Vee Luxury Header & Navigation - Node ID: twkN3
+  La Vee Luxury Header & Navigation - Node ID: twkN3 & 02. Mobile Header
+  - Responsive Desktop (80px height) & Mobile (60px height)
   - Layout Width Option: Container vs Container Fluid
+  - Mobile Drawer Navigation with Smooth Backdrop Overlay
+  - Accessible (a11y) Hamburger Menu Toggle
 {% endcomment %}
 
 <header class="lavee-header-wrapper" style="background-color: {{ section.settings.bg_color }};">
   <div class="lavee-{{ section.settings.container_type }}">
     <div class="lavee-header">
-      <!-- Left: Navigation Links -->
+      
+      <!-- Mobile Hamburger Button -->
+      <button 
+        type="button" 
+        class="lavee-header__mobile-toggle" 
+        aria-label="{{ 'sections.header.menu' | t | default: 'Toggle Mobile Menu' }}"
+        aria-expanded="false"
+        aria-controls="LaveeMobileDrawer"
+        onclick="toggleLaveeMobileMenu()"
+      >
+        <span class="lavee-header__hamburger-icon" aria-hidden="true">☰</span>
+      </button>
+
+      <!-- Left: Desktop Navigation Links -->
       <nav class="lavee-header__nav" aria-label="Main Navigation">
-        {%- if section.settings.menu != blank -%}
+        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
           {%- for link in section.settings.menu.links -%}
             {%- assign is_new_in = false -%}
             {%- assign link_title_up = link.title | upcase -%}
@@ -25,7 +41,7 @@
             </a>
           {%- endfor -%}
         {%- else -%}
-          <!-- Default Fallback Links from Pen.dev Node twkN3 -->
+          <!-- Default Fallback Links from Pen.dev Spec -->
           <a href="{{ routes.collections_url }}/new-in" class="lavee-header__nav-link lavee-header__nav-link--accent">NEW IN</a>
           <a href="{{ routes.collections_url }}/dresses" class="lavee-header__nav-link">DRESSES</a>
           <a href="{{ routes.collections_url }}/sets" class="lavee-header__nav-link">SETS</a>
@@ -38,27 +54,77 @@
       <!-- Center: Brand Logo -->
       <a href="{{ routes.root_url }}" class="lavee-header__logo">
         {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
+          {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'lavee-header__logo-img' }}
         {%- else -%}
-          {{ section.settings.logo_text | default: "LA VEE" }}
+          <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
         {%- endif -%}
       </a>
 
-      <!-- Right: Header Actions -->
+      <!-- Right: Desktop & Mobile Actions -->
       <div class="lavee-header__actions">
-        <a href="{{ routes.search_url }}" class="lavee-header__action-link">SEARCH</a>
-        <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link">WISHLIST</a>
-        <a href="{{ routes.cart_url }}" class="lavee-header__action-link">
-          BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
+        <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop">SEARCH</a>
+        <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop">WISHLIST</a>
+        <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag">
+          BAG ({% if cart != null %}{{ cart.item_count }}{% else %}2{% endif %})
         </a>
       </div>
     </div>
   </div>
+
+  <!-- Mobile Drawer Menu Overlay -->
+  <div id="LaveeMobileDrawer" class="lavee-mobile-drawer" aria-hidden="true">
+    <div class="lavee-mobile-drawer__overlay" onclick="toggleLaveeMobileMenu()"></div>
+    <div class="lavee-mobile-drawer__content">
+      <div class="lavee-mobile-drawer__header">
+        <span class="lavee-mobile-drawer__title">{{ section.settings.logo_text | default: "LA VEE" }}</span>
+        <button type="button" class="lavee-mobile-drawer__close" aria-label="Close menu" onclick="toggleLaveeMobileMenu()">✕</button>
+      </div>
+      <nav class="lavee-mobile-drawer__nav">
+        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+          {%- for link in section.settings.menu.links -%}
+            {%- assign is_new_in = false -%}
+            {%- assign link_title_up = link.title | upcase -%}
+            {%- if link_title_up contains 'NEW IN' or link_title_up contains 'NEW' -%}
+              {%- assign is_new_in = true -%}
+            {%- endif -%}
+            <a href="{{ link.url }}" class="lavee-mobile-drawer__link{% if is_new_in %} lavee-mobile-drawer__link--accent{% endif %}">
+              {{ link.title }}
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="{{ routes.collections_url }}/new-in" class="lavee-mobile-drawer__link lavee-mobile-drawer__link--accent">NEW IN</a>
+          <a href="{{ routes.collections_url }}/dresses" class="lavee-mobile-drawer__link">DRESSES</a>
+          <a href="{{ routes.collections_url }}/sets" class="lavee-mobile-drawer__link">SETS</a>
+          <a href="{{ routes.collections_url }}/tops" class="lavee-mobile-drawer__link">TOPS</a>
+          <a href="{{ routes.collections_url }}/occasion" class="lavee-mobile-drawer__link">OCCASION</a>
+          <a href="{{ routes.collections_url }}/best-sellers" class="lavee-mobile-drawer__link">BEST SELLERS</a>
+        {%- endif -%}
+        <div class="lavee-mobile-drawer__divider"></div>
+        <a href="{{ routes.search_url }}" class="lavee-mobile-drawer__link">SEARCH</a>
+        <a href="{{ routes.root_url }}pages/wishlist" class="lavee-mobile-drawer__link">WISHLIST</a>
+      </nav>
+    </div>
+  </div>
 </header>
+
+<script>
+  function toggleLaveeMobileMenu() {
+    const drawer = document.getElementById('LaveeMobileDrawer');
+    const toggleBtn = document.querySelector('.lavee-header__mobile-toggle');
+    if (!drawer || !toggleBtn) return;
+    
+    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    toggleBtn.setAttribute('aria-expanded', !isExpanded);
+    drawer.setAttribute('aria-hidden', isExpanded);
+    drawer.classList.toggle('is-open');
+    document.body.classList.toggle('lavee-mobile-menu-open');
+  }
+</script>
 
 {% schema %}
 {
   "name": "La Vee Header",
+  "class": "lavee-header-section",
   "settings": [
     {
       "type": "header",
@@ -92,7 +158,7 @@
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "Navigation Menu",
       "default": "main-menu"
     },
     {
