@@ -2,12 +2,15 @@
 
 {% comment %}
   La Vee Ultimate Luxury Footer - Node ID: twkN3 / Section 16
-  - Layout Width Option: Container vs Container Fluid
+  - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
+  - Elements: Top Brand Headline, Reassurance Bar, Main Navigation, Newsletter Card, Acknowledgement, Bottom Utility Bar
+  - Mobile Accordions for Navigation Columns with smooth animation & centered alignment
 {% endcomment %}
 
-<footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color }};">
+<footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color | default: '#F7F4EF' }};">
   <div class="lavee-{{ section.settings.container_type }}">
     <div class="lavee-footer">
+      
       <!-- Element 1: Top Brand Headline -->
       <div class="lavee-footer__headline">
         <h2 class="lavee-footer__headline-text">
@@ -17,104 +20,209 @@
 
       <div class="lavee-footer__divider"></div>
 
-      <!-- Element 2: Top Reassurance Bar -->
+      <!-- Element 2: Top Reassurance Bar (Desktop Row / Mobile Box Grid) -->
       <div class="lavee-footer__reassurance">
         <div class="lavee-footer__reassurance-item">
-          <span class="lavee-footer__reassurance-title">RETURNS & REFUNDS</span>
-          <span class="lavee-footer__reassurance-sub">Easy 30-day exchange policy</span>
+          <span class="lavee-footer__reassurance-title">RETURNS &amp; REFUNDS</span>
+          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Easy 30-day exchange policy</span>
+          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Easy 30-day exchange</span>
         </div>
         <div class="lavee-footer__reassurance-item">
           <span class="lavee-footer__reassurance-title">VIP LOYALTY BENEFITS</span>
-          <span class="lavee-footer__reassurance-sub">Earn points & exclusive rewards</span>
+          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Earn points &amp; exclusive rewards</span>
+          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Earn points on orders</span>
         </div>
         <div class="lavee-footer__reassurance-item">
           <span class="lavee-footer__reassurance-title">BUY NOW PAY LATER</span>
-          <span class="lavee-footer__reassurance-sub">Klarna & Afterpay available</span>
+          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Klarna &amp; Afterpay available</span>
+          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Klarna &amp; Afterpay</span>
         </div>
         <div class="lavee-footer__reassurance-item">
           <span class="lavee-footer__reassurance-title">EXPRESS FAST DELIVERY</span>
-          <span class="lavee-footer__reassurance-sub">Tracked 2-4 day global shipping</span>
+          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Tracked 2-4 day global shipping</span>
+          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Tracked 2-4 day shipping</span>
         </div>
       </div>
 
       <div class="lavee-footer__divider"></div>
 
-      <!-- Element 3 & 4: Main Footer Grid & Newsletter -->
+      <!-- Element 3 & 4: Main Footer Grid & Newsletter Box -->
       <div class="lavee-footer__grid">
-        <!-- Left Navigation Columns -->
+        
+        <!-- Left Navigation Columns (Desktop Grid / Mobile Accordions) -->
         <div class="lavee-footer__columns">
+          
           <!-- Column 1: Need Help -->
-          <div>
-            <h3 class="lavee-footer__col-title">NEED SOME HELP?</h3>
-            <ul class="lavee-footer__col-list">
-              <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
-              <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs & Help Center</a></li>
-              <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders & Tracking</a></li>
-              <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries & Shipping</a></li>
-              <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns & Exchanges</a></li>
-              <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size & Fit Guide</a></li>
-            </ul>
+          <div class="lavee-footer__col">
+            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+              <span class="lavee-footer__col-title">NEED SOME HELP?</span>
+              <span class="lavee-footer__accordion-icon">+</span>
+            </button>
+            <div class="lavee-footer__col-content">
+              <ul class="lavee-footer__col-list">
+                <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
+                <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs &amp; Help Center</a></li>
+                <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders &amp; Tracking</a></li>
+                <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries &amp; Shipping</a></li>
+                <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns &amp; Exchanges</a></li>
+                <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size &amp; Fit Guide</a></li>
+              </ul>
+            </div>
           </div>
 
           <!-- Column 2: About La Vee -->
-          <div>
-            <h3 class="lavee-footer__col-title">ABOUT LA VEE</h3>
-            <ul class="lavee-footer__col-list">
-              <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">Our Story</a></li>
-              <li><a href="{{ routes.root_url }}pages/craftsmanship" class="lavee-footer__col-link">Atelier Craftsmanship</a></li>
-              <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
-              <li><a href="{{ routes.root_url }}pages/press" class="lavee-footer__col-link">Press & Editorial</a></li>
-              <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
-              <li><a href="{{ routes.root_url }}pages/stores" class="lavee-footer__col-link">Store Locator</a></li>
-            </ul>
+          <div class="lavee-footer__col">
+            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+              <span class="lavee-footer__col-title">ABOUT LA VEE</span>
+              <span class="lavee-footer__accordion-icon">+</span>
+            </button>
+            <div class="lavee-footer__col-content">
+              <ul class="lavee-footer__col-list">
+                <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">House Of La Vee</a></li>
+                <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
+                <li><a href="{{ routes.root_url }}pages/fabrics" class="lavee-footer__col-link">Our Fabrics &amp; Tailoring</a></li>
+                <li><a href="{{ routes.root_url }}pages/design" class="lavee-footer__col-link">Designed in Sydney</a></li>
+                <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
+              </ul>
+            </div>
           </div>
 
-          <!-- Column 3: Legal & Policies -->
-          <div>
-            <h3 class="lavee-footer__col-title">LEGAL & POLICIES</h3>
-            <ul class="lavee-footer__col-list">
-              <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms of Service</a></li>
-              <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
-              <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Settings</a></li>
-              <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
-              <li><a href="{{ routes.root_url }}pages/ip" class="lavee-footer__col-link">Intellectual Property</a></li>
-            </ul>
+          <!-- Column 3: Terms & Legals -->
+          <div class="lavee-footer__col">
+            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+              <span class="lavee-footer__col-title">TERMS &amp; LEGALS</span>
+              <span class="lavee-footer__accordion-icon">+</span>
+            </button>
+            <div class="lavee-footer__col-content">
+              <ul class="lavee-footer__col-list">
+                <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms &amp; Conditions</a></li>
+                <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
+                <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Preferences</a></li>
+                <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
+                <li><a href="{{ routes.account_url }}" class="lavee-footer__col-link">My Account &amp; Wishlist</a></li>
+              </ul>
+            </div>
           </div>
+
         </div>
 
-        <!-- Right Newsletter Box -->
+        <!-- Right Newsletter & Social Box -->
         <div class="lavee-footer__newsletter-card">
-          <span class="lavee-footer__newsletter-eyebrow">LA VEE ATELIER PRIVÉ</span>
-          <h3 class="lavee-footer__newsletter-title">Join the Atelier Circle</h3>
+          <h3 class="lavee-footer__newsletter-title">StayCONNECTED</h3>
           <p class="lavee-footer__newsletter-desc">
-            Receive private access to new collection drops, runway previews, and exclusive invitations.
+            Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order.
           </p>
+          
           {% form 'customer', class: 'lavee-footer__form' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
-            <input 
-              type="email" 
-              name="contact[email]" 
-              class="lavee-footer__input" 
-              placeholder="Enter your email address..."
-              required
-            >
-            <button type="submit" class="lavee-footer__submit">SUBSCRIBE</button>
+            <div class="lavee-footer__input-wrapper">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                class="lavee-footer__input" 
+                placeholder="Enter your email address..."
+                required
+              >
+              <button type="submit" class="lavee-footer__submit">SUBSCRIBE</button>
+            </div>
           {% endform %}
+
+          <!-- Social Media Row -->
+          <div class="lavee-footer__social-row">
+            <a href="https://tiktok.com" target="_blank" rel="noopener" class="lavee-footer__social-link">TIKTOK</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="lavee-footer__social-link">FACEBOOK</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="lavee-footer__social-link">INSTAGRAM</a>
+            <a href="https://pinterest.com" target="_blank" rel="noopener" class="lavee-footer__social-link">PINTEREST</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener" class="lavee-footer__social-link lavee-desktop-only">YOUTUBE</a>
+          </div>
         </div>
+
+      </div>
+
+      <!-- Element 5: Brand Acknowledgement Statement -->
+      <div class="lavee-footer__acknowledgement">
+        <p class="lavee-footer__acknowledgement-text">
+          La Vee acknowledges the Traditional Custodians of the land on which we gather &amp; pay our respects to Elders past, present and emerging.
+        </p>
       </div>
 
       <div class="lavee-footer__divider"></div>
 
-      <!-- Bottom Legal Bar -->
+      <!-- Element 6: Bottom Utility Bar -->
       <div class="lavee-footer__bottom">
-        <span>© 2026 LA VEE COUTURE. ALL RIGHTS RESERVED.</span>
-        <div>
-          <span>CURRENCY: USD ($) | AUD ($) | EUR (€) | GBP (£)</span>
+        <!-- Currency & Country Selector -->
+        <div class="lavee-footer__currency-selector">
+          <button type="button" class="lavee-footer__currency-btn">
+            United States (USD $) <span class="lavee-footer__currency-arrow">▼</span>
+          </button>
+        </div>
+
+        <!-- Payment Icons / Text List -->
+        <div class="lavee-footer__payments">
+          <span class="lavee-footer__payments-text">
+            PAYPAL • AFTERPAY • APPLE PAY • KLARNA • VISA • MASTERCARD
+          </span>
+        </div>
+
+        <!-- Brand Stamp Seal -->
+        <div class="lavee-footer__brand-seal">
+          <span class="lavee-footer__brand-seal-text">LAVEE DESIGN • EST. 2026</span>
+        </div>
+
+        <!-- Copyright Notice -->
+        <div class="lavee-footer__copyright">
+          <span>© 2026 La Vee Design Limited. All Rights Reserved.</span>
         </div>
       </div>
+
     </div>
   </div>
 </footer>
+
+<script>
+  function initLaveeFooterAccordion() {
+    const accordionBtns = document.querySelectorAll('.lavee-footer__accordion-btn');
+    accordionBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const parent = this.closest('.lavee-footer__col');
+        if (!parent) return;
+        const content = parent.querySelector('.lavee-footer__col-content');
+        const icon = this.querySelector('.lavee-footer__accordion-icon');
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+        // Close all other accordions on mobile
+        accordionBtns.forEach(otherBtn => {
+          if (otherBtn !== this) {
+            otherBtn.setAttribute('aria-expanded', 'false');
+            const otherParent = otherBtn.closest('.lavee-footer__col');
+            if (otherParent) {
+              otherParent.classList.remove('is-open');
+              const otherIcon = otherBtn.querySelector('.lavee-footer__accordion-icon');
+              if (otherIcon) otherIcon.textContent = '+';
+              const otherContent = otherParent.querySelector('.lavee-footer__col-content');
+              if (otherContent) otherContent.style.maxHeight = null;
+            }
+          }
+        });
+
+        if (isExpanded) {
+          this.setAttribute('aria-expanded', 'false');
+          parent.classList.remove('is-open');
+          if (icon) icon.textContent = '+';
+          if (content) content.style.maxHeight = null;
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+          parent.classList.add('is-open');
+          if (icon) icon.textContent = '-';
+          if (content) content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initLaveeFooterAccordion);
+  document.addEventListener('shopify:section:load', initLaveeFooterAccordion);
+</script>
 
 {% schema %}
 {
@@ -158,3 +266,4 @@
   ]
 }
 {% endschema %}
+
