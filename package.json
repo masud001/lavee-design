@@ -6,9 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "shopify theme dev --store lavee-design.myshopify.com --store-password eushia",
-    "push": "shopify theme push --store lavee-design.myshopify.com --theme lavee-design --unpublished --store-password eushia",
-    "push:live": "shopify theme push --store lavee-design.myshopify.com --live --allow-live --store-password eushia",
-    "pull": "shopify theme pull --store lavee-design.myshopify.com --store-password eushia",
+    "push": "shopify theme push --store lavee-design.myshopify.com --theme 188521709755",
+    "pull": "shopify theme pull --store lavee-design.myshopify.com",
     "check": "shopify theme check",
     "package": "shopify theme package"
   },
