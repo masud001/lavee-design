@@ -433,7 +433,7 @@
         .then(cart => {
           if (cart && typeof cart.item_count !== 'undefined') {
             document.querySelectorAll('.bag-count, .cart-count, [data-cart-count]').forEach(el => {
-              el.textContent = `BAG (${cart.item_count})`;
+              el.textContent = cart.item_count;
             });
           }
         })

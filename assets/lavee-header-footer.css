@@ -19,8 +19,11 @@
 .lavee-footer-wrapper button:focus-visible,
 .lavee-footer-wrapper input:focus-visible,
 .lavee-announcement-bar a:focus-visible {
-  outline: 2px solid var(--lavee-burgundy) !important;
-  outline-offset: 3px !important;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* --- LAYOUT CONTAINER UTILITIES --- */

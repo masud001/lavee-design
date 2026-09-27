@@ -1449,6 +1449,78 @@
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
         "default": "scheme-1"
+      },
+      {
+        "type": "header",
+        "content": "Free Offer Progress Bar & Milestones (1 to 5 Custom Thresholds)"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_progress_enable",
+        "label": "Enable Progress Bar",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "cart_progress_threshold_1",
+        "label": "Threshold 1 Amount ($)",
+        "default": 150
+      },
+      {
+        "type": "text",
+        "id": "cart_progress_reward_1",
+        "label": "Threshold 1 Reward Title",
+        "default": "Free Ship"
+      },
+      {
+        "type": "number",
+        "id": "cart_progress_threshold_2",
+        "label": "Threshold 2 Amount ($)",
+        "default": 300
+      },
+      {
+        "type": "text",
+        "id": "cart_progress_reward_2",
+        "label": "Threshold 2 Reward Title",
+        "default": "Velvet Pouch"
+      },
+      {
+        "type": "number",
+        "id": "cart_progress_threshold_3",
+        "label": "Threshold 3 Amount ($)",
+        "default": 500
+      },
+      {
+        "type": "text",
+        "id": "cart_progress_reward_3",
+        "label": "Threshold 3 Reward Title",
+        "default": "Silk Scrunchie"
+      },
+      {
+        "type": "number",
+        "id": "cart_progress_threshold_4",
+        "label": "Threshold 4 Amount ($) (Optional)",
+        "default": 0,
+        "info": "Set to 0 to disable"
+      },
+      {
+        "type": "text",
+        "id": "cart_progress_reward_4",
+        "label": "Threshold 4 Reward Title (Optional)",
+        "default": "Atelier Tote"
+      },
+      {
+        "type": "number",
+        "id": "cart_progress_threshold_5",
+        "label": "Threshold 5 Amount ($) (Optional)",
+        "default": 0,
+        "info": "Set to 0 to disable"
+      },
+      {
+        "type": "text",
+        "id": "cart_progress_reward_5",
+        "label": "Threshold 5 Reward Title (Optional)",
+        "default": "VIP Box"
       }
     ]
   },

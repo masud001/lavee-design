@@ -55,29 +55,37 @@
     {% render 'meta-tags' %}
 
     <script type="module">
-      import * as StandardEvents from 'https://cdn.shopify.com/storefront/standard-events.js';
-
-      window.StandardEvents = StandardEvents;
-
-      customElements.define('collection-component', StandardEvents.createViewEventElement());
-      customElements.define(
-        'product-component',
-        StandardEvents.createViewEventElement(HTMLElement, { defaultTrigger: 'intersect' }),
-      );
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const template = document.querySelector('main[data-template]')?.dataset.template || '';
-        document.dispatchEvent(
-          new StandardEvents.PageViewEvent({
-            page: { template, title: document.title, url: window.location.href },
-          })
-        );
-      }, { once: true });
+      try {
+        const StandardEvents = await import('https://cdn.shopify.com/storefront/standard-events.js');
+        if (StandardEvents && StandardEvents.createViewEventElement) {
+          window.StandardEvents = StandardEvents;
+          if (!customElements.get('collection-component')) {
+            customElements.define('collection-component', StandardEvents.createViewEventElement());
+          }
+          if (!customElements.get('product-component')) {
+            customElements.define(
+              'product-component',
+              StandardEvents.createViewEventElement(HTMLElement, { defaultTrigger: 'intersect' })
+            );
+          }
+          document.addEventListener('DOMContentLoaded', () => {
+            const template = document.querySelector('main[data-template]')?.dataset.template || '';
+            document.dispatchEvent(
+              new StandardEvents.PageViewEvent({
+                page: { template, title: document.title, url: window.location.href },
+              })
+            );
+          }, { once: true });
+        }
+      } catch (e) {
+        // Catch optional storefront events script network errors gracefully
+      }
     </script>
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'cart-disclosure-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'cart-disclosure-tooltip.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>

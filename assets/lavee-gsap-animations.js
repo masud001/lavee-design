@@ -3,7 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Ensure GSAP and ScrollTrigger are loaded
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    console.warn('GSAP or ScrollTrigger not loaded yet.');
     return;
   }
 
@@ -334,6 +333,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initFooterGSAPUnderlines();
 
-  console.log('✨ La Vee GSAP ScrollTrigger & Footer Underline Engine Initialized Successfully.');
 });
 

@@ -2,13 +2,15 @@
   position: fixed;
   z-index: 1000;
   left: 0;
+  right: 0;
   top: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: flex-end;
   background-color: rgba(var(--color-foreground), 0.5);
   transition: visibility var(--duration-default) ease;
+  overflow: hidden;
 }
 
 .drawer.active {
@@ -115,16 +117,16 @@ cart-drawer:not(.is-empty) .cart-drawer__collection {
   padding: 1.5rem 0;
 }
 
-cart-drawer-items.is-empty + .drawer__footer {
+cart-drawer-items.is-empty+.drawer__footer {
   display: none;
 }
 
-.drawer__footer > details {
+.drawer__footer>details {
   margin-top: -1.5rem;
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.2);
 }
 
-.drawer__footer > details[open] {
+.drawer__footer>details[open] {
   padding-bottom: 1.5rem;
 }
 
@@ -135,7 +137,7 @@ cart-drawer-items.is-empty + .drawer__footer {
   padding: 1.5rem 2.8rem 1.5rem 0;
 }
 
-.drawer__footer > details + .cart-drawer__footer {
+.drawer__footer>details+.cart-drawer__footer {
   padding-top: 1.5rem;
 }
 
@@ -143,8 +145,10 @@ cart-drawer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  right: 0;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .cart-drawer__overlay {
@@ -264,7 +268,7 @@ cart-drawer-items {
   padding-top: 1rem;
 }
 
-.cart-drawer .cart-item > td + td {
+.cart-drawer .cart-item>td+td {
   padding-left: 1rem;
 }
 
@@ -280,7 +284,7 @@ cart-drawer-items {
   justify-content: flex-end;
 }
 
-.cart-drawer.cart-drawer .cart-item__price-wrapper > *:only-child {
+.cart-drawer.cart-drawer .cart-item__price-wrapper>*:only-child {
   margin-top: 0;
 }
 
@@ -305,7 +309,7 @@ cart-drawer-items {
   }
 }
 
-.cart-drawer__footer > * + * {
+.cart-drawer__footer>*+* {
   margin-top: 1rem;
 }
 
@@ -326,7 +330,7 @@ cart-drawer-items {
   word-break: break-word;
 }
 
-.cart-drawer details[open] > summary .icon-caret {
+.cart-drawer details[open]>summary .icon-caret {
   transform: rotate(180deg);
 }
 
@@ -349,26 +353,26 @@ cart-drawer-items {
   justify-content: flex-start;
 }
 
-.drawer__footer #dynamic-checkout-cart ul > li {
+.drawer__footer #dynamic-checkout-cart ul>li {
   flex-basis: calc(50% - 0.5rem) !important;
   margin: 0 !important;
 }
 
-.drawer__footer #dynamic-checkout-cart ul > li:only-child {
+.drawer__footer #dynamic-checkout-cart ul>li:only-child {
   flex-basis: 100% !important;
   margin-right: 0.5rem !important;
 }
 
 @media screen and (min-width: 750px) {
-  .drawer__footer #dynamic-checkout-cart ul > li {
+  .drawer__footer #dynamic-checkout-cart ul>li {
     flex-basis: calc(100% / 3 - 0.5rem) !important;
     margin: 0 !important;
   }
 
-  .drawer__footer #dynamic-checkout-cart ul > li:first-child:nth-last-child(2),
-  .drawer__footer #dynamic-checkout-cart ul > li:first-child:nth-last-child(2) ~ li,
-  .drawer__footer #dynamic-checkout-cart ul > li:first-child:nth-last-child(4),
-  .drawer__footer #dynamic-checkout-cart ul > li:first-child:nth-last-child(4) ~ li {
+  .drawer__footer #dynamic-checkout-cart ul>li:first-child:nth-last-child(2),
+  .drawer__footer #dynamic-checkout-cart ul>li:first-child:nth-last-child(2)~li,
+  .drawer__footer #dynamic-checkout-cart ul>li:first-child:nth-last-child(4),
+  .drawer__footer #dynamic-checkout-cart ul>li:first-child:nth-last-child(4)~li {
     flex-basis: calc(50% - 0.5rem) !important;
   }
 }
@@ -399,16 +403,1128 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   margin-top: 0.8rem;
 }
 
-.cart-drawer .quantity-popover__info + .cart-item__error {
+.cart-drawer .quantity-popover__info+.cart-item__error {
   margin-top: 0.2rem;
 }
 
+
+
 @media screen and (min-width: 750px) {
-  .cart-drawer .cart-item__quantity--info quantity-popover > * {
+  .cart-drawer .cart-item__quantity--info quantity-popover>* {
     padding-left: 0;
   }
 
   .cart-drawer .cart-item__error {
     margin-left: 0;
   }
+}
+
+/* ==========================================================================
+   La Vee Atelier Luxury Cart Drawer Component (Node ID: nnz3f - Compact Specs)
+   ========================================================================== */
+
+.lavee-cart-drawer-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 99999;
+  visibility: hidden;
+  pointer-events: none;
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  color: #161616;
+  overflow: hidden;
+}
+
+.lavee-cart-drawer-wrapper.is-open,
+.lavee-cart-drawer-wrapper.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Backdrop */
+.lavee-cart-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(22, 22, 22, 0.5);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.lavee-cart-drawer-wrapper.is-open .lavee-cart-drawer-backdrop,
+.lavee-cart-drawer-wrapper.active .lavee-cart-drawer-backdrop {
+  opacity: 1;
+}
+
+/* Dialog Container (Compact Responsive Width) */
+.lavee-cart-drawer-dialog {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 420px;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #F7F4EF;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.lavee-cart-drawer-wrapper.is-open .lavee-cart-drawer-dialog,
+.lavee-cart-drawer-wrapper.active .lavee-cart-drawer-dialog {
+  transform: translateX(0);
+}
+
+/* 01. Cart Drawer Header */
+.lavee-cart-drawer-header {
+  padding: 16px 20px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #E6E1D8;
+  background-color: #F7F4EF;
+  flex-shrink: 0;
+}
+
+.lavee-cart-drawer-title-stack {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lavee-cart-drawer-title {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin: 0;
+  color: #161616;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.lavee-cart-drawer-count-badge {
+  background-color: #6E1F2A;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lavee-cart-drawer-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #161616;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lavee-cart-drawer-close-btn:hover {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
+/* 02. Multi-Tier Free Offer Progress Meter */
+.lavee-cart-drawer-progress-container {
+  padding: 10px 16px;
+  background-color: #EFEAE2;
+  border-bottom: 1px solid #E2DDD5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lavee-cart-drawer-banner-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #6E1F2A;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.lavee-cart-drawer-progress-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lavee-cart-drawer-progress-bar-track {
+  width: 100%;
+  height: 5px;
+  background-color: #D9D2C7;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.lavee-cart-drawer-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6E1F2A 0%, #A43343 100%);
+  border-radius: 3px;
+  transition: width 0.35s ease;
+}
+
+.lavee-cart-drawer-milestones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px 8px;
+  flex-wrap: wrap;
+  font-size: 9.5px;
+  color: #77716B;
+  font-weight: 500;
+}
+
+.lavee-milestone.is-unlocked {
+  color: #6E1F2A;
+  font-weight: 700;
+}
+
+/* 03. Cart Items Stack */
+.lavee-cart-drawer-items-stack {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #D5CFB5 transparent;
+}
+
+.lavee-cart-drawer-items-stack::-webkit-scrollbar {
+  width: 3px;
+}
+
+.lavee-cart-drawer-items-stack::-webkit-scrollbar-thumb {
+  background-color: #C5BFB5;
+  border-radius: 3px;
+}
+
+/* Empty State */
+.lavee-cart-drawer-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 16px;
+  gap: 10px;
+  height: 100%;
+}
+
+.lavee-cart-drawer-empty-icon {
+  font-size: 36px;
+  margin-bottom: 2px;
+}
+
+.lavee-cart-drawer-empty-title {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 0;
+  color: #161616;
+}
+
+.lavee-cart-drawer-empty-desc {
+  font-size: 12px;
+  color: #77716B;
+  margin: 0;
+  line-height: 1.35;
+  max-width: 260px;
+}
+
+.lavee-cart-drawer-shop-btn {
+  margin-top: 8px;
+  background-color: #161616;
+  color: #FFFFFF;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background-color 0.25s ease;
+}
+
+.lavee-cart-drawer-shop-btn:hover {
+  background-color: #6E1F2A;
+}
+
+/* Cart Item Card */
+.lavee-cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 10px 12px;
+  background-color: #FFFFFF;
+  border: 1px solid #EBE6DF;
+  border-radius: 4px;
+  gap: 12px;
+}
+
+.lavee-cart-item__left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.lavee-cart-item__thumb-link {
+  display: block;
+  flex-shrink: 0;
+}
+
+.lavee-cart-item__thumb {
+  width: 55px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid #EFEAE2;
+  display: block;
+}
+
+.lavee-cart-item__thumb-fallback {
+  width: 55px;
+  height: 72px;
+  background-color: #F7F4EF;
+  border-radius: 2px;
+}
+
+.lavee-cart-item__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.lavee-cart-item__title {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #161616;
+  text-decoration: none;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lavee-cart-item__title:hover {
+  color: #6E1F2A;
+}
+
+.lavee-cart-item__options {
+  font-size: 10.5px;
+  color: #77716B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lavee-cart-item__qty-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #DCD6CD;
+  border-radius: 2px;
+  background-color: #FDFBF8;
+  width: 76px;
+  max-width: 76px;
+  height: 24px;
+  margin-top: 4px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.lavee-cart-item__qty-btn {
+  background: transparent;
+  border: none;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #161616;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.lavee-cart-item__qty-btn:hover {
+  background-color: #EFEAE2;
+}
+
+.lavee-cart-item__qty-num {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 4px;
+  color: #161616;
+  min-width: 16px;
+  text-align: center;
+}
+
+.lavee-cart-item__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: max-content;
+}
+
+.lavee-cart-item__remove-btn {
+  background: transparent;
+  border: none;
+  color: #A09990;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.lavee-cart-item__remove-btn:hover {
+  color: #6E1F2A;
+  transform: scale(1.1);
+}
+
+.lavee-remove-icon {
+  display: block;
+  stroke: currentColor;
+  width: 14px;
+  height: 14px;
+}
+
+.lavee-cart-item__price {
+  font-size: 13px;
+  font-weight: 700;
+  color: #6E1F2A;
+  text-align: right;
+  margin-top: auto;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+/* 04. In-Cart Upsell Carousel & Collapsible Section */
+.lavee-cart-drawer-upsell-container {
+  padding: 8px 16px;
+  border-top: 1px solid #E6E1D8;
+  background-color: #FDFBF7;
+  flex-shrink: 0;
+  transition: all 0.35s ease;
+}
+
+.lavee-cart-drawer-upsell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lavee-cart-drawer-upsell-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lavee-cart-drawer-upsell-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #77716B;
+  text-transform: uppercase;
+}
+
+.lavee-cart-drawer-upsell-toggle-icon {
+  font-size: 9px;
+  color: #77716B;
+  transition: transform 0.25s ease;
+}
+
+.lavee-cart-upsell-slider-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lavee-cart-upsell-nav-btn {
+  background-color: #FFFFFF;
+  border: 1px solid #E6E1D8;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  color: #161616;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.lavee-cart-upsell-nav-btn:hover {
+  background-color: #6E1F2A;
+  border-color: #6E1F2A;
+  color: #FFFFFF;
+}
+
+/* Collapsible Content Wrapper */
+.lavee-cart-drawer-upsell-content {
+  max-height: 220px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+}
+
+.lavee-cart-drawer-upsell-container.is-collapsed .lavee-cart-drawer-upsell-content {
+  max-height: 0px;
+  opacity: 0;
+  margin: 0;
+}
+
+.lavee-cart-drawer-upsell-container.is-collapsed {
+  padding-bottom: 8px;
+}
+
+/* Slider Carousel Layout */
+.lavee-cart-drawer-upsell-cards {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.lavee-cart-drawer-upsell-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.lavee-cart-upsell-card {
+  min-width: 145px;
+  max-width: 145px;
+  scroll-snap-align: start;
+  background-color: #FFFFFF;
+  border: 1px solid #E6E1D8;
+  padding: 8px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.lavee-cart-upsell-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #6E1F2A;
+  color: #FFFFFF;
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 2px;
+}
+
+.lavee-cart-upsell-badge--black {
+  background-color: #161616;
+}
+
+.lavee-cart-upsell-img {
+  width: 100%;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.lavee-cart-upsell-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #161616;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lavee-cart-upsell-price {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.lavee-upsell-sale {
+  color: #6E1F2A;
+}
+
+.lavee-upsell-old {
+  text-decoration: line-through;
+  color: #A09990;
+  font-weight: 400;
+  font-size: 9px;
+  margin-left: 3px;
+}
+
+.lavee-cart-upsell-add-btn {
+  background-color: #161616;
+  color: #FFFFFF;
+  border: none;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 5px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.lavee-cart-upsell-add-btn:hover {
+  background-color: #6E1F2A;
+}
+
+/* 05. Promo & 06. Gift Packaging */
+.lavee-cart-drawer-promo-section,
+.lavee-cart-drawer-gift-option {
+  padding: 8px 16px;
+  border-top: 1px solid #E6E1D8;
+  background-color: #F7F4EF;
+  flex-shrink: 0;
+}
+
+.lavee-cart-drawer-promo-box {
+  display: flex;
+  gap: 6px;
+}
+
+.lavee-cart-drawer-promo-input {
+  flex: 1;
+  border: 1px solid #D9D2C7;
+  padding: 6px 10px;
+  font-size: 10px;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  color: #161616;
+}
+
+.lavee-cart-drawer-promo-btn {
+  background-color: #161616;
+  color: #FFFFFF;
+  border: none;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.lavee-cart-drawer-gift-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lavee-cart-drawer-gift-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #161616;
+}
+
+.lavee-cart-drawer-gift-subtitle {
+  font-size: 9px;
+  color: #77716B;
+}
+
+.lavee-cart-drawer-gift-toggle {
+  background: transparent;
+  border: none;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #6E1F2A;
+  cursor: pointer;
+}
+
+/* 07. Order Summary & Express Checkout */
+.lavee-cart-drawer-footer {
+  padding: 14px 16px;
+  background-color: #FFFFFF;
+  border-top: 1px solid #E6E1D8;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lavee-cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #161616;
+}
+
+.lavee-summary-row--discount {
+  color: #6E1F2A;
+  font-weight: 600;
+}
+
+.lavee-summary-val--free {
+  color: #6E1F2A;
+  font-weight: 700;
+}
+
+.lavee-cart-summary-divider {
+  height: 1px;
+  background-color: #E6E1D8;
+  margin: 2px 0;
+}
+
+.lavee-cart-summary-row--total {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lavee-summary-total-val {
+  font-size: 15px;
+  color: #6E1F2A;
+}
+
+.lavee-cart-cta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.lavee-cart-checkout-form {
+  margin: 0;
+  width: 100%;
+}
+
+.lavee-cart-checkout-btn {
+  width: 100%;
+  height: 100%;
+  background-color: #161616;
+  color: #FFFFFF;
+  border: 1px solid #161616;
+  padding: 10px 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lavee-cart-checkout-btn:hover {
+  background-color: #6E1F2A;
+  border-color: #6E1F2A;
+}
+
+.lavee-cart-view-page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #161616;
+  background-color: #FFFFFF;
+  border: 1px solid #161616;
+  text-decoration: none;
+  padding: 10px 8px;
+  border-radius: 3px;
+  transition: all 0.25s ease;
+}
+
+.lavee-cart-view-page-btn:hover {
+  background-color: #161616;
+  color: #FFFFFF;
+}
+
+.lavee-cart-payment-badges {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.lavee-pay-badge {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #77716B;
+  background-color: #F7F4EF;
+  padding: 3px 6px;
+  border-radius: 2px;
+  border: 1px solid #E6E1D8;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints Optimization (Desktop / Tablet / Mobile)
+   ========================================================================== */
+
+/* Tablet Optimization (481px to 768px) */
+@media screen and (max-width: 768px) {
+  .lavee-cart-drawer-dialog {
+    width: 380px;
+  }
+
+  .lavee-cart-drawer-header {
+    padding: 14px 16px 12px;
+  }
+
+  .lavee-cart-drawer-title {
+    font-size: 17px;
+  }
+
+  .lavee-cart-item__title {
+    font-size: 14px;
+  }
+}
+
+/* Mobile Devices Optimization (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .lavee-cart-drawer-dialog {
+    width: 100%;
+  }
+
+  .lavee-cart-drawer-header {
+    padding: 12px 14px 10px;
+  }
+
+  .lavee-cart-drawer-title {
+    font-size: 16px;
+  }
+
+  .lavee-cart-drawer-progress-container {
+    padding: 8px 12px;
+  }
+
+  .lavee-cart-drawer-banner-text {
+    font-size: 9.5px;
+  }
+
+  .lavee-cart-drawer-items-stack {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .lavee-cart-item {
+    padding: 8px 10px;
+  }
+
+  .lavee-cart-item__thumb {
+    width: 50px;
+    height: 65px;
+  }
+
+  .lavee-cart-item__title {
+    font-size: 13.5px;
+  }
+
+  .lavee-cart-item__options {
+    font-size: 10px;
+  }
+
+  .lavee-cart-item__price {
+    font-size: 12px;
+  }
+
+  .lavee-cart-item__qty-box {
+    width: 70px;
+    max-width: 70px;
+    height: 22px;
+  }
+
+  .lavee-cart-item__qty-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 11.5px;
+  }
+
+  .lavee-cart-item__qty-num {
+    font-size: 10.5px;
+  }
+
+  .lavee-cart-drawer-upsell-container {
+    padding: 8px 12px;
+  }
+
+  .lavee-cart-upsell-card {
+    min-width: 135px;
+    max-width: 135px;
+    padding: 6px;
+  }
+
+  .lavee-cart-upsell-img {
+    height: 60px;
+  }
+
+  .lavee-cart-drawer-footer {
+    padding: 12px 14px;
+    gap: 5px;
+  }
+
+  .lavee-cart-checkout-btn {
+    padding: 10px;
+    font-size: 10.5px;
+  }
+}
+
+/* ==========================================================================
+   Quick Action Buttons & Bottom-Sheet Popover Modal
+   ========================================================================== */
+
+.lavee-cart-drawer-actions-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #FAFAFA;
+  border-top: 1px solid #E6E1D8;
+  border-bottom: 1px solid #E6E1D8;
+}
+
+.lavee-cart-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: #FFFFFF;
+  border: 1px solid #E0DAD0;
+  border-radius: 4px;
+  padding: 6px 4px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #2D2723;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.lavee-cart-action-btn:hover {
+  border-color: #6E1F2A;
+  color: #6E1F2A;
+  background-color: #FDF9F8;
+}
+
+.lavee-action-icon {
+  font-size: 11px;
+}
+
+/* Bottom-Sheet Popover Styling */
+.lavee-cart-popover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border-top: 2px solid #6E1F2A;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+  z-index: 50;
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lavee-cart-popover.is-active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lavee-cart-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #FDF9F8;
+  border-bottom: 1px solid #E6E1D8;
+}
+
+.lavee-cart-popover-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6E1F2A;
+  text-transform: uppercase;
+}
+
+.lavee-cart-popover-close {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #77716B;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.lavee-cart-popover-close:hover {
+  color: #161616;
+  background-color: #E6E1D8;
+}
+
+.lavee-cart-popover-body {
+  padding: 16px;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #4A443F;
+}
+
+/* Coupon Popover Inner Layout */
+.lavee-popover-coupon {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lavee-popover-desc {
+  margin: 0;
+  font-size: 11.5px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.lavee-popover-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.lavee-popover-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.lavee-popover-input:focus {
+  border-color: #6E1F2A;
+}
+
+.lavee-popover-submit-btn {
+  background-color: #6E1F2A;
+  color: #FFF;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.lavee-popover-submit-btn:hover {
+  background-color: #161616;
+}
+
+.lavee-popover-status-msg {
+  font-size: 11px;
+  color: #1D7A46;
+  background-color: #EBF7EE;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #C3E6CB;
+}
+
+/* Trust & Shipping List Layouts */
+.lavee-popover-trust,
+.lavee-popover-shipping {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lavee-trust-item,
+.lavee-shipping-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #F0ECE6;
+}
+
+.lavee-trust-item:last-child,
+.lavee-shipping-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.lavee-trust-icon,
+.lavee-ship-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.lavee-trust-info strong,
+.lavee-ship-info strong {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #161616;
+  margin-bottom: 2px;
+}
+
+.lavee-trust-info p,
+.lavee-ship-info p {
+  margin: 0;
+  font-size: 10.5px;
+  color: #666;
+  line-height: 1.35;
 }
