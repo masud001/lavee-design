@@ -145,7 +145,7 @@
   border-radius: 30px;
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   color: #FFFFFF;
   cursor: pointer;
@@ -219,7 +219,7 @@
 .lavee-hero-eyebrow {
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.18em;
   color: var(--lavee-gold, #D4AF37);
   text-transform: uppercase;
@@ -283,7 +283,7 @@
   border-radius: 4px;
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
@@ -394,7 +394,7 @@
 .lavee-hero-counter {
   font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: #FFFFFF;
   display: flex;
@@ -404,7 +404,7 @@
 
 .lavee-hero-counter__current {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   color: #FFFFFF;
 }
 
@@ -501,7 +501,7 @@
   color: rgba(255, 255, 255, 0.85);
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;

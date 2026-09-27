@@ -39,7 +39,7 @@
 .lavee-press-eyebrow {
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -120,7 +120,7 @@
 .lavee-press-logo-text {
   font-family: var(--font-serif);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
