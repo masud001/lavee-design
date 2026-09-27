@@ -191,6 +191,7 @@
               assign collection_obj = block.settings.collection
               assign category_title = block.settings.title | default: collection_obj.title | default: "CATEGORY"
               assign category_url = block.settings.link | default: collection_obj.url | default: "/collections/all"
+              assign button_label = block.settings.button_text | default: "Shop Now →"
               assign category_image = block.settings.image | default: collection_obj.featured_image
               assign custom_img_url = block.settings.image_url
               assign media_type = block.settings.media_type | default: "image"
