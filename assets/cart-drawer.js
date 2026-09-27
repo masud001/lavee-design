@@ -38,32 +38,15 @@ class CartDrawer extends HTMLElement {
       window.LaveeCartController.refreshCartAndOpen();
       return;
     }
-    if (this.classList.contains('active')) return;
+    if (this.classList.contains('active') || this.classList.contains('is-open')) return;
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
-    // here the animation doesn't seem to always get triggered. A timeout seem to help
-    setTimeout(() => {
-      this.classList.add('animate', 'active');
-    });
-
-    this.addEventListener(
-      'transitionend',
-      () => {
-        const containerToTrapFocusOn = this.classList.contains('is-empty')
-          ? this.querySelector('.drawer__inner-empty')
-          : document.getElementById('CartDrawer');
-        const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
-        trapFocus(containerToTrapFocusOn, focusElement);
-      },
-      { once: true },
-    );
-
+    
+    this.classList.add('animate', 'active', 'is-open');
+    this.setAttribute('aria-hidden', 'false');
     document.body.classList.add('overflow-hidden');
 
-    // cart-drawer-items is a CartItems subclass that extends createViewEventElement.
-    // Its `view-event-trigger="manual"` skips auto-dispatch on connect; we fire
-    // it here when the drawer opens, with `context: 'dialog'` from the payload attribute.
     this.querySelector('cart-drawer-items')?.dispatchViewEvent();
   }
 
@@ -72,7 +55,8 @@ class CartDrawer extends HTMLElement {
       window.LaveeCartController.closeDrawer();
       return;
     }
-    this.classList.remove('active');
+    this.classList.remove('active', 'is-open', 'animate');
+    this.setAttribute('aria-hidden', 'true');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');
   }
@@ -81,7 +65,7 @@ class CartDrawer extends HTMLElement {
     cartDrawerNote.setAttribute('role', 'button');
     cartDrawerNote.setAttribute('aria-expanded', 'false');
 
-    if (cartDrawerNote.nextElementSibling.getAttribute('id')) {
+    if (cartDrawerNote.nextElementSibling?.getAttribute('id')) {
       cartDrawerNote.setAttribute('aria-controls', cartDrawerNote.nextElementSibling.id);
     }
 
@@ -93,36 +77,48 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
-    this.productId = parsedState.id;
+    if (window.LaveeCartController) {
+      if (parsedState && parsedState.item_count !== undefined) {
+        window.LaveeCartController.updateUI(parsedState);
+        window.LaveeCartController.openDrawer();
+      } else {
+        window.LaveeCartController.refreshCartAndOpen();
+      }
+      return;
+    }
+    this.querySelector('.drawer__inner')?.classList.contains('is-empty') &&
+      this.querySelector('.drawer__inner')?.classList.remove('is-empty');
+    this.productId = parsedState?.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
         ? document.querySelector(section.selector)
         : document.getElementById(section.id);
 
-      if (!sectionElement) return;
+      if (!sectionElement || !parsedState?.sections) return;
       sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
     });
 
     setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+      (this.querySelector('#CartDrawer-Overlay') || this.querySelector('.lavee-cart-drawer-backdrop'))?.addEventListener('click', this.close.bind(this));
       this.open();
     });
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector)?.innerHTML || '';
   }
 
   getSectionsToRender() {
     return [
       {
         id: 'cart-drawer',
-        selector: '#CartDrawer',
+        section: 'cart-drawer',
+        selector: '#LaveeCartDrawerWrapper',
       },
       {
         id: 'cart-icon-bubble',
+        section: 'cart-icon-bubble',
+        selector: '#cart-icon-bubble',
       },
     ];
   }
@@ -156,7 +152,7 @@ if (!customElements.get('cart-drawer-items')) {
         {
           id: 'CartDrawer',
           section: 'cart-drawer',
-          selector: '.drawer__inner',
+          selector: '#LaveeCartItemsStack',
         },
         {
           id: 'cart-icon-bubble',
@@ -168,3 +164,4 @@ if (!customElements.get('cart-drawer-items')) {
   }
   customElements.define('cart-drawer-items', CartDrawerItems);
 }
+

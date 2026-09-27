@@ -200,6 +200,28 @@
         {%- endif -%}
 
         <div class="lavee-header__actions">
+          {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+            <localization-form class="lavee-header__localization-wrap">
+              {%- form 'localization', id: 'LaveeHeaderCountryForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="LaveeHeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                  {%- render 'country-localization', localPosition: 'LaveeHeaderCountry' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
+
+          {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+            <localization-form class="lavee-header__localization-wrap">
+              {%- form 'localization', id: 'LaveeHeaderLanguageForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="LaveeHeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                  {%- render 'language-localization', localPosition: 'LaveeHeaderLanguage' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
+
           <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="Search Products">SEARCH</a>
           <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="View Wishlist">WISHLIST</a>
           <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag" data-action="open-cart-drawer" id="cart-icon-bubble" aria-label="Shopping Bag containing {% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %} items">
@@ -517,6 +539,20 @@
     {
       "type": "header",
       "content": "Navigation & Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Enable Country / Currency Selector",
+      "info": "To add currencies (USD $, EUR €, INR ₹, GBP £, etc.), configure Shopify Markets in Admin > Settings > Markets."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "Enable Language Selector",
+      "info": "To add languages, configure Shopify Languages in Admin > Settings > Languages."
     },
     {
       "type": "link_list",

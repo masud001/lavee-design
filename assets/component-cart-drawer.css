@@ -570,19 +570,23 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   gap: 4px;
 }
 
-.lavee-cart-drawer-progress-bar-track {
+.lavee-cart-drawer-progress-bar-track,
+.lavee-cart-drawer-progress-bar-track:empty {
   width: 100%;
   height: 5px;
   background-color: #D9D2C7;
   border-radius: 3px;
   overflow: hidden;
+  display: block;
 }
 
-.lavee-cart-drawer-progress-bar-fill {
+.lavee-cart-drawer-progress-bar-fill,
+.lavee-cart-drawer-progress-bar-fill:empty {
   height: 100%;
   background: linear-gradient(90deg, #6E1F2A 0%, #A43343 100%);
   border-radius: 3px;
   transition: width 0.35s ease;
+  display: block;
 }
 
 .lavee-cart-drawer-milestones {

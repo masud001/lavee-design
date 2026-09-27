@@ -715,10 +715,7 @@
           discountInput.value = couponCode;
         }
 
-        // 3. Progress Bar & Milestones (Dynamically configured 2, 3, 4, or 5 thresholds)
-        const totalCents = cart.total_price;
-        const thresholds = (window.themeCartSettings && window.themeCartSettings.thresholds) || [];
-        
+        // 5. Progress Bar & Milestones (Dynamically configured 2, 3, 4, or 5 thresholds)
         const fill = document.getElementById('LaveeCartProgressFill');
         const progressText = document.getElementById('LaveeCartProgressText');
         const milestoneContainer = document.getElementById('LaveeCartMilestones');
@@ -894,7 +891,7 @@
               self.addItem(variantId, 1, cartBtn);
             } else if (variantId && variantId.startsWith('4000000000')) {
               // Onboarding placeholder demo feedback
-              btnElement = cartBtn;
+              const btnElement = cartBtn;
               btnElement.innerHTML = '<span>ADDED ✓</span>';
               setTimeout(() => { btnElement.innerHTML = '<span>ADD TO BAG</span>'; }, 1200);
               self.openDrawer();
@@ -1003,41 +1000,6 @@
         });
       }
     };
-
-    // Define CartDrawer custom element so product-form.js recognizes it
-    class CartDrawerElement extends HTMLElement {
-      constructor() {
-        super();
-      }
-      getSectionsToRender() {
-        return [
-          { id: 'cart-drawer', section: 'cart-drawer', selector: '#LaveeCartDrawerWrapper' },
-          { id: 'cart-icon-bubble', section: 'cart-icon-bubble', selector: '#cart-icon-bubble' }
-        ];
-      }
-      setActiveElement(element) {
-        this.activeElement = element;
-      }
-      renderContents(parsedState) {
-        if (window.LaveeCartController) {
-          window.LaveeCartController.refreshCartAndOpen();
-        }
-      }
-      open(triggeredBy) {
-        if (window.LaveeCartController) {
-          window.LaveeCartController.openDrawer();
-        }
-      }
-      close() {
-        if (window.LaveeCartController) {
-          window.LaveeCartController.closeDrawer();
-        }
-      }
-    }
-
-    if (!customElements.get('cart-drawer')) {
-      customElements.define('cart-drawer', CartDrawerElement);
-    }
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() { window.LaveeCartController.init(); });
