@@ -155,6 +155,10 @@
       data-lavee-slider-mobile="{{ section.settings.layout_mobile }}"
       data-autoplay="{{ section.settings.slider_autoplay }}"
       data-speed="{{ section.settings.slider_autoplay_speed | default: 5 }}"
+      data-initial-limit="{{ section.settings.grid_items_limit | default: 4 }}"
+      data-step-desktop="{{ section.settings.items_to_show_desktop | default: 4 }}"
+      data-step-tablet="{{ section.settings.items_to_show_tablet | default: 2 }}"
+      data-step-mobile="{{ section.settings.items_to_show_mobile | default: 2 }}"
     >
       {%- comment -%} Side Center Overlay Arrows {%- endcomment -%}
       <div class="lavee-category-side-arrows">
@@ -181,18 +185,33 @@
               assign button_label = block.settings.button_text
               
               assign piece_count = block.settings.subtitle
-              if piece_count == blank and section.settings.show_product_count != false and collection_obj != blank
-                assign count_val = collection_obj.all_products_count | default: collection_obj.products_count
-                if count_val != blank
+              if piece_count == blank and section.settings.show_product_count != false
+                if collection_obj != blank
+                  assign count_val = collection_obj.all_products_count | default: collection_obj.products_count
+                  if count_val != blank
+                    case section.settings.count_format
+                      when 'items'
+                        assign piece_count = count_val | append: " ITEMS"
+                      when 'products'
+                        assign piece_count = count_val | append: " PRODUCTS"
+                      when 'number_only'
+                        assign piece_count = count_val
+                      else
+                        assign piece_count = count_val | append: " PIECES"
+                    endcase
+                  endif
+                else
+                  {%- comment -%} Automatic Fallback Product Count for Placeholder / Custom items without collection {%- endcomment -%}
+                  assign default_num = forloop.index | times: 6 | plus: 10
                   case section.settings.count_format
                     when 'items'
-                      assign piece_count = count_val | append: " ITEMS"
+                      assign piece_count = default_num | append: " ITEMS"
                     when 'products'
-                      assign piece_count = count_val | append: " PRODUCTS"
+                      assign piece_count = default_num | append: " PRODUCTS"
                     when 'number_only'
-                      assign piece_count = count_val
+                      assign piece_count = default_num
                     else
-                      assign piece_count = count_val | append: " PIECES"
+                      assign piece_count = default_num | append: " PIECES"
                   endcase
                 endif
               endif
@@ -201,7 +220,7 @@
             <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}" {{ block.shopify_attributes }}>
               <a href="{{ category_url }}" class="lavee-category-card" aria-label="{{ category_title | escape }}">
                 <div class="lavee-category-image-wrap">
-                  {%- if media_type == 'video' -%}
+                  {%- if media_type == 'video' or video_shopify != blank or video_url != blank -%}
                     {%- if video_shopify != blank -%}
                       {{ video_shopify | video_tag: 
                         autoplay: true, 
@@ -217,6 +236,8 @@
                       </video>
                     {%- elsif category_image != blank -%}
                       {{ category_image | image_url: width: 800 | image_tag: loading: 'lazy', decoding: 'async', class: 'lavee-category-img', alt: category_title }}
+                    {%- elsif custom_img_url != blank -%}
+                      <img src="{{ custom_img_url }}" alt="{{ category_title | escape }}" class="lavee-category-img" loading="lazy" decoding="async">
                     {%- else -%}
                       <img src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="{{ category_title }}" class="lavee-category-img" loading="lazy">
                     {%- endif -%}
@@ -411,19 +432,61 @@
         const loadMoreBtn = section.querySelector('.lavee-grid-load-more-btn');
         if (loadMoreBtn) {
           loadMoreBtn.addEventListener('click', function() {
-            const isExpanded = track.classList.contains('is-expanded');
             const span = loadMoreBtn.querySelector('span');
             const textMore = loadMoreBtn.getAttribute('data-text-more') || 'EXPLORE ALL CATEGORIES';
             const textLess = loadMoreBtn.getAttribute('data-text-less') || 'SHOW LESS';
 
-            if (isExpanded) {
+            const initialLimit = parseInt(wrapper.getAttribute('data-initial-limit') || '4', 10);
+            const stepDesktop = parseInt(wrapper.getAttribute('data-step-desktop') || '4', 10);
+            const stepTablet = parseInt(wrapper.getAttribute('data-step-tablet') || '2', 10);
+            const stepMobileVal = parseFloat(wrapper.getAttribute('data-step-mobile') || '2');
+            const stepMobile = Math.max(1, Math.floor(stepMobileVal));
+
+            // Determine active breakpoint step for batch loading
+            const w = window.innerWidth;
+            let currentStep = stepDesktop;
+            if (w < 750) {
+              currentStep = stepMobile;
+            } else if (w < 990) {
+              currentStep = stepTablet;
+            }
+
+            const allCardWrappers = track.querySelectorAll('.lavee-category-card-wrapper');
+            const hiddenItems = Array.from(track.querySelectorAll('.lavee-grid-item-hidden'));
+
+            if (hiddenItems.length === 0 && loadMoreBtn.classList.contains('is-active')) {
+              // Collapse back to initial limit
+              allCardWrappers.forEach((item, idx) => {
+                if (idx >= initialLimit) {
+                  item.classList.add('lavee-grid-item-hidden');
+                  item.classList.remove('lavee-item-revealed');
+                }
+              });
               track.classList.remove('is-expanded');
               if (span) span.textContent = textMore;
               loadMoreBtn.classList.remove('is-active');
+
+              const header = section.querySelector('.lavee-category-header');
+              if (header) {
+                header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
             } else {
-              track.classList.add('is-expanded');
-              if (span) span.textContent = textLess;
-              loadMoreBtn.classList.add('is-active');
+              // Reveal next batch equal to active device step count
+              const itemsToReveal = hiddenItems.slice(0, currentStep);
+              itemsToReveal.forEach(item => {
+                item.classList.remove('lavee-grid-item-hidden');
+                item.classList.add('lavee-item-revealed');
+              });
+
+              const remainingHidden = track.querySelectorAll('.lavee-grid-item-hidden').length;
+              if (remainingHidden === 0) {
+                track.classList.add('is-expanded');
+                if (span) span.textContent = textLess;
+                loadMoreBtn.classList.add('is-active');
+              } else {
+                if (span) span.textContent = textMore;
+                loadMoreBtn.classList.remove('is-active');
+              }
             }
           });
         }

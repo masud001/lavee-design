@@ -815,6 +815,12 @@
   }
 }
 
+/* Revealed items smooth animation */
+.lavee-item-revealed {
+  display: flex !important;
+  animation: laveeFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* When expanded, show hidden grid items with smooth animation */
 .lavee-category-track.is-expanded .lavee-grid-item-hidden {
   display: flex !important;
@@ -838,16 +844,16 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 16px 36px;
-  font-family: 'Inter', sans-serif;
+  padding: 16px 38px;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }
 
@@ -859,61 +865,75 @@
   transform: rotate(180deg);
 }
 
-/* Outline Style */
+/* Luxury Champagne Gold Outline & Load More Button (No Solid Black) */
 .lavee-btn--outline {
-  background: transparent;
-  border: 1.5px solid #161616;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 255, 255, 0.6) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid #D4AF37;
   color: #161616;
+  box-shadow: 0 6px 24px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .lavee-btn--outline:hover {
-  background: #161616;
-  border-color: #161616;
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  border-color: #D4AF37;
   color: #FFFFFF;
-  box-shadow: 0 8px 24px rgba(22, 22, 22, 0.15);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.25);
+  transform: translateY(-2px);
 }
 
 .lavee-category-section--dark .lavee-btn--outline,
 .lavee-category-section--burgundy .lavee-btn--outline {
-  border-color: #FFFFFF;
-  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: #D4AF37;
+  color: #D4AF37;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .lavee-category-section--dark .lavee-btn--outline:hover,
 .lavee-category-section--burgundy .lavee-btn--outline:hover {
-  background: #D4AF37;
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
   color: #161616;
+  box-shadow: 0 12px 36px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
 }
 
 /* Dark Style */
 .lavee-btn--dark {
-  background: #161616;
-  border: 1.5px solid #161616;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #2a2a2a 0%, #161616 100%);
+  border: 1.5px solid #D4AF37;
+  color: #F7F4EF;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .lavee-btn--dark:hover {
-  background: #D4AF37;
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
   color: #161616;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Glass Style */
 .lavee-btn--glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
   color: #161616;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .lavee-btn--glass:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
-  color: #161616;
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+  color: #FFFFFF;
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.35);
+  transform: translateY(-2px);
 }
+
 
