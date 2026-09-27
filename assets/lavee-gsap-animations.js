@@ -290,6 +290,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  console.log('✨ La Vee GSAP ScrollTrigger & Frosted Glass Hover Engine Initialized Successfully.');
+  // 6. GSAP FOOTER LINKS UNDERLINE HOVER ANIMATION
+  function initFooterGSAPUnderlines() {
+    const footerLinks = document.querySelectorAll(
+      '.lavee-footer-wrapper a:not(.lavee-footer__accordion-btn), .lavee-footer__col-link, .lavee-footer__social-link, .lavee-footer__currency-btn'
+    );
+
+    footerLinks.forEach((link) => {
+      // Ensure element has relative position and doesn't duplicate underline span
+      let underline = link.querySelector('.lavee-footer-underline');
+      if (!underline) {
+        underline = document.createElement('span');
+        underline.className = 'lavee-footer-underline';
+        link.appendChild(underline);
+      }
+
+      // GSAP Hover Enter Animation (draw line left to right)
+      link.addEventListener('mouseenter', () => {
+        gsap.killTweensOf(underline);
+        gsap.set(underline, { transformOrigin: 'left center' });
+        gsap.to(underline, {
+          scaleX: 1,
+          duration: 0.38,
+          ease: 'power2.out'
+        });
+      });
+
+      // GSAP Hover Leave Animation (slide out left to right)
+      link.addEventListener('mouseleave', () => {
+        gsap.killTweensOf(underline);
+        gsap.set(underline, { transformOrigin: 'right center' });
+        gsap.to(underline, {
+          scaleX: 0,
+          duration: 0.35,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            gsap.set(underline, { transformOrigin: 'left center' });
+          }
+        });
+      });
+    });
+  }
+
+  initFooterGSAPUnderlines();
+
+  console.log('✨ La Vee GSAP ScrollTrigger & Footer Underline Engine Initialized Successfully.');
 });
 

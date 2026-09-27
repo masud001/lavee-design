@@ -811,9 +811,10 @@ body.lavee-mobile-menu-open {
   font-weight: 400;
   color: var(--lavee-muted);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
   white-space: nowrap;
   display: inline-block;
+  position: relative;
 }
 
 .lavee-footer__col-link:hover {
@@ -918,8 +919,10 @@ body.lavee-mobile-menu-open {
   letter-spacing: 0.04em;
   color: var(--lavee-dark);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
   white-space: nowrap;
+  position: relative;
+  display: inline-block;
 }
 
 .lavee-footer__social-link:hover {
@@ -971,6 +974,22 @@ body.lavee-mobile-menu-open {
   align-items: center;
   gap: 4px;
   white-space: nowrap;
+  position: relative;
+}
+
+/* GSAP Luxury Footer Link Underline Indicator */
+.lavee-footer-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--lavee-burgundy, #6E1F2A);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  display: block;
+  border-radius: 1px;
 }
 
 .lavee-footer__currency-arrow {
