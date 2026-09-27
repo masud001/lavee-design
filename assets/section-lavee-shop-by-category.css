@@ -715,17 +715,43 @@
   margin-bottom: 2px;
 }
 
-/* Category Card Title */
+/* Category Card Title - Stagger Letter Reveal & Normal Weight Capitalized Typography */
 .lavee-category-card-title {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.15;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.2;
   color: #FFFFFF;
   margin: 0;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lavee-category-card-title .lavee-title-word {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.lavee-category-card-title .lavee-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+@keyframes laveeStaggerChar {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Category Link / Button Text */

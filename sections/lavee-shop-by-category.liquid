@@ -401,7 +401,58 @@
 
 <script>
   (function() {
+    function initStaggerTitles() {
+      const titles = document.querySelectorAll('.lavee-category-card-title');
+      titles.forEach(titleEl => {
+        if (titleEl.getAttribute('data-split') === 'true') return;
+        const text = titleEl.textContent.trim();
+        if (!text) return;
+
+        titleEl.innerHTML = '';
+        titleEl.setAttribute('data-split', 'true');
+        let charIdx = 0;
+
+        const words = text.split(/\s+/);
+        words.forEach((word, wIdx) => {
+          const wordSpan = document.createElement('span');
+          wordSpan.className = 'lavee-title-word';
+
+          Array.from(word).forEach(ch => {
+            const charSpan = document.createElement('span');
+            charSpan.className = 'lavee-char';
+            charSpan.style.setProperty('--char-index', charIdx);
+            charSpan.textContent = ch;
+            wordSpan.appendChild(charSpan);
+            charIdx++;
+          });
+
+          titleEl.appendChild(wordSpan);
+          if (wIdx < words.length - 1) {
+            const space = document.createTextNode(' ');
+            titleEl.appendChild(space);
+          }
+        });
+      });
+
+      const cards = document.querySelectorAll('.lavee-category-card');
+      cards.forEach(card => {
+        if (card.getAttribute('data-hover-init') === 'true') return;
+        card.setAttribute('data-hover-init', 'true');
+
+        card.addEventListener('mouseenter', function() {
+          const chars = card.querySelectorAll('.lavee-char');
+          chars.forEach((c) => {
+            c.style.animation = 'none';
+            void c.offsetWidth;
+            const idx = parseFloat(c.style.getPropertyValue('--char-index')) || 0;
+            c.style.animation = `laveeStaggerChar 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${idx * 0.03}s forwards`;
+          });
+        });
+      });
+    }
+
     function initCategorySliders() {
+      initStaggerTitles();
       const sections = document.querySelectorAll('.lavee-category-section');
       sections.forEach(section => {
         const wrapper = section.querySelector('.lavee-category-wrapper');
@@ -477,6 +528,9 @@
                 item.classList.remove('lavee-grid-item-hidden');
                 item.classList.add('lavee-item-revealed');
               });
+
+              // Re-run stagger title split for newly revealed items
+              initStaggerTitles();
 
               const remainingHidden = track.querySelectorAll('.lavee-grid-item-hidden').length;
               if (remainingHidden === 0) {
