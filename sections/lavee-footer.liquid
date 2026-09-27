@@ -1,198 +1,309 @@
 {{ 'lavee-header-footer.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  La Vee Ultimate Luxury Footer - Node ID: twkN3 / Section 16
+  La Vee Ultimate Luxury Dynamic Footer - Node ID: twkN3 / Section 16
+  - Block-by-Block Admin Customizer Architecture (Reassurance items, Dynamic Link Lists, Newsletter Box)
   - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
-  - Elements: Top Brand Headline, Reassurance Bar, Main Navigation, Newsletter Card, Acknowledgement, Bottom Utility Bar
   - Mobile Accordions for Navigation Columns with smooth animation & centered alignment
 {% endcomment %}
 
 <footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color | default: '#F7F4EF' }};" role="contentinfo" aria-label="Site Footer">
-  <div class="lavee-{{ section.settings.container_type }}">
+  <div class="lavee-{{ section.settings.container_type | default: 'container-fluid' }}">
     <div class="lavee-footer">
       
       <!-- Element 1: Top Brand Headline -->
-      <div class="lavee-footer__headline">
-        <h2 class="lavee-footer__headline-text">
-          {{ section.settings.headline_text | default: "It's ALWAYS La Vee" }}
-        </h2>
-      </div>
+      {%- if section.settings.show_headline -%}
+        <div class="lavee-footer__headline">
+          <h2 class="lavee-footer__headline-text">
+            {{ section.settings.headline_text | default: "It's ALWAYS La Vee" }}
+          </h2>
+        </div>
+        <div class="lavee-footer__divider" role="separator"></div>
+      {%- endif -%}
 
-      <div class="lavee-footer__divider" role="separator"></div>
-
-      <!-- Element 2: Top Reassurance Bar (Desktop Row / Mobile Box Grid) -->
-      <div class="lavee-footer__reassurance" role="region" aria-label="Customer Reassurance Benefits">
-        <div class="lavee-footer__reassurance-item">
-          <span class="lavee-footer__reassurance-title">RETURNS &amp; REFUNDS</span>
-          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Easy 30-day exchange policy</span>
-          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Easy 30-day exchange</span>
+      <!-- Element 2: Top Reassurance Bar -->
+      {%- assign reassurance_blocks = section.blocks | where: "type", "reassurance_item" -%}
+      {%- if reassurance_blocks.size > 0 -%}
+        <div class="lavee-footer__reassurance" role="region" aria-label="Customer Reassurance Benefits">
+          {%- for block in reassurance_blocks -%}
+            <div class="lavee-footer__reassurance-item" {{ block.shopify_attributes }}>
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" style="text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:4px;">
+              {%- endif -%}
+              <span class="lavee-footer__reassurance-title">{{ block.settings.title }}</span>
+              {%- if block.settings.subtext_desktop != blank -%}
+                <span class="lavee-footer__reassurance-sub lavee-desktop-only">{{ block.settings.subtext_desktop }}</span>
+              {%- endif -%}
+              {%- if block.settings.subtext_mobile != blank or block.settings.subtext_desktop != blank -%}
+                <span class="lavee-footer__reassurance-sub lavee-mobile-only">{{ block.settings.subtext_mobile | default: block.settings.subtext_desktop }}</span>
+              {%- endif -%}
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
         </div>
-        <div class="lavee-footer__reassurance-item">
-          <span class="lavee-footer__reassurance-title">VIP LOYALTY BENEFITS</span>
-          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Earn points &amp; exclusive rewards</span>
-          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Earn points on orders</span>
+        <div class="lavee-footer__divider" role="separator"></div>
+      {%- else -%}
+        <!-- Default Reassurance Bar -->
+        <div class="lavee-footer__reassurance" role="region" aria-label="Customer Reassurance Benefits">
+          <div class="lavee-footer__reassurance-item">
+            <span class="lavee-footer__reassurance-title">RETURNS &amp; REFUNDS</span>
+            <span class="lavee-footer__reassurance-sub lavee-desktop-only">Easy 30-day exchange policy</span>
+            <span class="lavee-footer__reassurance-sub lavee-mobile-only">Easy 30-day exchange</span>
+          </div>
+          <div class="lavee-footer__reassurance-item">
+            <span class="lavee-footer__reassurance-title">VIP LOYALTY BENEFITS</span>
+            <span class="lavee-footer__reassurance-sub lavee-desktop-only">Earn points &amp; exclusive rewards</span>
+            <span class="lavee-footer__reassurance-sub lavee-mobile-only">Earn points on orders</span>
+          </div>
+          <div class="lavee-footer__reassurance-item">
+            <span class="lavee-footer__reassurance-title">BUY NOW PAY LATER</span>
+            <span class="lavee-footer__reassurance-sub lavee-desktop-only">Klarna &amp; Afterpay available</span>
+            <span class="lavee-footer__reassurance-sub lavee-mobile-only">Klarna &amp; Afterpay</span>
+          </div>
+          <div class="lavee-footer__reassurance-item">
+            <span class="lavee-footer__reassurance-title">EXPRESS FAST DELIVERY</span>
+            <span class="lavee-footer__reassurance-sub lavee-desktop-only">Tracked 2-4 day global shipping</span>
+            <span class="lavee-footer__reassurance-sub lavee-mobile-only">Tracked 2-4 day shipping</span>
+          </div>
         </div>
-        <div class="lavee-footer__reassurance-item">
-          <span class="lavee-footer__reassurance-title">BUY NOW PAY LATER</span>
-          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Klarna &amp; Afterpay available</span>
-          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Klarna &amp; Afterpay</span>
-        </div>
-        <div class="lavee-footer__reassurance-item">
-          <span class="lavee-footer__reassurance-title">EXPRESS FAST DELIVERY</span>
-          <span class="lavee-footer__reassurance-sub lavee-desktop-only">Tracked 2-4 day global shipping</span>
-          <span class="lavee-footer__reassurance-sub lavee-mobile-only">Tracked 2-4 day shipping</span>
-        </div>
-      </div>
-
-      <div class="lavee-footer__divider" role="separator"></div>
+        <div class="lavee-footer__divider" role="separator"></div>
+      {%- endif -%}
 
       <!-- Element 3 & 4: Main Footer Grid & Newsletter Box -->
+      {%- assign menu_blocks = section.blocks | where: "type", "link_list" -%}
+      {%- assign newsletter_blocks = section.blocks | where: "type", "newsletter" -%}
+
       <div class="lavee-footer__grid">
         
-        <!-- Left Navigation Columns (Desktop Grid / Mobile Accordions) -->
+        <!-- Left Navigation Columns -->
         <div class="lavee-footer__columns" role="navigation" aria-label="Footer Quick Links">
-          
-          <!-- Column 1: Need Help -->
-          <div class="lavee-footer__col">
-            <button 
-              type="button" 
-              id="FooterCol1Header"
-              class="lavee-footer__accordion-btn" 
-              aria-expanded="false" 
-              aria-controls="FooterCol1Content"
-            >
-              <span class="lavee-footer__col-title">NEED SOME HELP?</span>
-              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
-            </button>
-            <div id="FooterCol1Content" class="lavee-footer__col-content" aria-labelledby="FooterCol1Header">
-              <ul class="lavee-footer__col-list">
-                <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
-                <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs &amp; Help Center</a></li>
-                <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders &amp; Tracking</a></li>
-                <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries &amp; Shipping</a></li>
-                <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns &amp; Exchanges</a></li>
-                <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size &amp; Fit Guide</a></li>
-              </ul>
+          {%- if menu_blocks.size > 0 -%}
+            {%- for block in menu_blocks -%}
+              {%- assign footer_menu = block.settings.menu -%}
+              <div class="lavee-footer__col" {{ block.shopify_attributes }}>
+                <button 
+                  type="button" 
+                  id="FooterCol{{ forloop.index }}Header"
+                  class="lavee-footer__accordion-btn" 
+                  aria-expanded="false" 
+                  aria-controls="FooterCol{{ forloop.index }}Content"
+                >
+                  <span class="lavee-footer__col-title">{{ block.settings.title | default: footer_menu.title | default: "NAVIGATION" }}</span>
+                  <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
+                </button>
+                <div id="FooterCol{{ forloop.index }}Content" class="lavee-footer__col-content" aria-labelledby="FooterCol{{ forloop.index }}Header">
+                  <ul class="lavee-footer__col-list">
+                    {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
+                      {%- for link in footer_menu.links -%}
+                        <li><a href="{{ link.url }}" class="lavee-footer__col-link">{{ link.title }}</a></li>
+                      {%- endfor -%}
+                    {%- else -%}
+                      {%- if block.settings.title contains 'HELP' or forloop.index == 1 -%}
+                        <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
+                        <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs &amp; Help Center</a></li>
+                        <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders &amp; Tracking</a></li>
+                        <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries &amp; Shipping</a></li>
+                        <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns &amp; Exchanges</a></li>
+                        <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size &amp; Fit Guide</a></li>
+                      {%- elsif block.settings.title contains 'ABOUT' or forloop.index == 2 -%}
+                        <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">House Of La Vee</a></li>
+                        <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
+                        <li><a href="{{ routes.root_url }}pages/fabrics" class="lavee-footer__col-link">Our Fabrics &amp; Tailoring</a></li>
+                        <li><a href="{{ routes.root_url }}pages/design" class="lavee-footer__col-link">Designed in Sydney</a></li>
+                        <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
+                      {%- else -%}
+                        <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms &amp; Conditions</a></li>
+                        <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
+                        <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Preferences</a></li>
+                        <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
+                        <li><a href="{{ routes.account_url }}" class="lavee-footer__col-link">My Account &amp; Wishlist</a></li>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </ul>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Default 3 Navigation Columns -->
+            <div class="lavee-footer__col">
+              <button type="button" id="FooterCol1Header" class="lavee-footer__accordion-btn" aria-expanded="false" aria-controls="FooterCol1Content">
+                <span class="lavee-footer__col-title">NEED SOME HELP?</span>
+                <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
+              </button>
+              <div id="FooterCol1Content" class="lavee-footer__col-content" aria-labelledby="FooterCol1Header">
+                <ul class="lavee-footer__col-list">
+                  <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
+                  <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs &amp; Help Center</a></li>
+                  <li><a href="{{ routes.root_url }}pages/orders" class="lavee-footer__col-link">Orders &amp; Tracking</a></li>
+                  <li><a href="{{ routes.root_url }}pages/shipping" class="lavee-footer__col-link">Deliveries &amp; Shipping</a></li>
+                  <li><a href="{{ routes.root_url }}pages/returns" class="lavee-footer__col-link">Returns &amp; Exchanges</a></li>
+                  <li><a href="{{ routes.root_url }}pages/size-guide" class="lavee-footer__col-link">Size &amp; Fit Guide</a></li>
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <!-- Column 2: About La Vee -->
-          <div class="lavee-footer__col">
-            <button 
-              type="button" 
-              id="FooterCol2Header"
-              class="lavee-footer__accordion-btn" 
-              aria-expanded="false"
-              aria-controls="FooterCol2Content"
-            >
-              <span class="lavee-footer__col-title">ABOUT LA VEE</span>
-              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
-            </button>
-            <div id="FooterCol2Content" class="lavee-footer__col-content" aria-labelledby="FooterCol2Header">
-              <ul class="lavee-footer__col-list">
-                <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">House Of La Vee</a></li>
-                <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
-                <li><a href="{{ routes.root_url }}pages/fabrics" class="lavee-footer__col-link">Our Fabrics &amp; Tailoring</a></li>
-                <li><a href="{{ routes.root_url }}pages/design" class="lavee-footer__col-link">Designed in Sydney</a></li>
-                <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
-              </ul>
+            <div class="lavee-footer__col">
+              <button type="button" id="FooterCol2Header" class="lavee-footer__accordion-btn" aria-expanded="false" aria-controls="FooterCol2Content">
+                <span class="lavee-footer__col-title">ABOUT LA VEE</span>
+                <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
+              </button>
+              <div id="FooterCol2Content" class="lavee-footer__col-content" aria-labelledby="FooterCol2Header">
+                <ul class="lavee-footer__col-list">
+                  <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">House Of La Vee</a></li>
+                  <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
+                  <li><a href="{{ routes.root_url }}pages/fabrics" class="lavee-footer__col-link">Our Fabrics &amp; Tailoring</a></li>
+                  <li><a href="{{ routes.root_url }}pages/design" class="lavee-footer__col-link">Designed in Sydney</a></li>
+                  <li><a href="{{ routes.root_url }}pages/careers" class="lavee-footer__col-link">Careers</a></li>
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <!-- Column 3: Terms & Legals -->
-          <div class="lavee-footer__col">
-            <button 
-              type="button" 
-              id="FooterCol3Header"
-              class="lavee-footer__accordion-btn" 
-              aria-expanded="false"
-              aria-controls="FooterCol3Content"
-            >
-              <span class="lavee-footer__col-title">TERMS &amp; LEGALS</span>
-              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
-            </button>
-            <div id="FooterCol3Content" class="lavee-footer__col-content" aria-labelledby="FooterCol3Header">
-              <ul class="lavee-footer__col-list">
-                <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms &amp; Conditions</a></li>
-                <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
-                <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Preferences</a></li>
-                <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
-                <li><a href="{{ routes.account_url }}" class="lavee-footer__col-link">My Account &amp; Wishlist</a></li>
-              </ul>
+            <div class="lavee-footer__col">
+              <button type="button" id="FooterCol3Header" class="lavee-footer__accordion-btn" aria-expanded="false" aria-controls="FooterCol3Content">
+                <span class="lavee-footer__col-title">TERMS &amp; LEGALS</span>
+                <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
+              </button>
+              <div id="FooterCol3Content" class="lavee-footer__col-content" aria-labelledby="FooterCol3Header">
+                <ul class="lavee-footer__col-list">
+                  <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms &amp; Conditions</a></li>
+                  <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
+                  <li><a href="{{ routes.root_url }}pages/cookie-settings" class="lavee-footer__col-link">Cookie Preferences</a></li>
+                  <li><a href="{{ routes.root_url }}pages/accessibility" class="lavee-footer__col-link">Accessibility</a></li>
+                  <li><a href="{{ routes.account_url }}" class="lavee-footer__col-link">My Account &amp; Wishlist</a></li>
+                </ul>
+              </div>
             </div>
-          </div>
-
+          {%- endif -%}
         </div>
 
-        <!-- Right Newsletter & Social Box -->
-        <div class="lavee-footer__newsletter-card" role="region" aria-label="Newsletter Subscription">
-          <h3 class="lavee-footer__newsletter-title">StayCONNECTED</h3>
-          <p class="lavee-footer__newsletter-desc">
-            Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order.
-          </p>
-          
-          {% form 'customer', class: 'lavee-footer__form' %}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="lavee-footer__input-wrapper">
-              <label for="LaveeFooterEmailInput" class="visually-hidden">Email address for newsletter subscription</label>
-              <input 
-                id="LaveeFooterEmailInput"
-                type="email" 
-                name="contact[email]" 
-                class="lavee-footer__input" 
-                placeholder="Enter your email address..."
-                autocomplete="email"
-                required
-              >
-              <button type="submit" class="lavee-footer__submit" aria-label="Subscribe to newsletter">SUBSCRIBE</button>
-            </div>
-          {% endform %}
+        <!-- Right Newsletter & Social Box Block -->
+        {%- if newsletter_blocks.size > 0 -%}
+          {%- for block in newsletter_blocks -%}
+            <div class="lavee-footer__newsletter-card" role="region" aria-label="Newsletter Subscription" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="lavee-footer__newsletter-title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="lavee-footer__newsletter-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+              
+              {% form 'customer', class: 'lavee-footer__form' %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="lavee-footer__input-wrapper">
+                  <label for="LaveeFooterEmailInput-{{ block.id }}" class="visually-hidden">Email address for newsletter subscription</label>
+                  <input 
+                    id="LaveeFooterEmailInput-{{ block.id }}"
+                    type="email" 
+                    name="contact[email]" 
+                    class="lavee-footer__input" 
+                    placeholder="Enter your email address..."
+                    autocomplete="email"
+                    required
+                  >
+                  <button type="submit" class="lavee-footer__submit" aria-label="Subscribe to newsletter">
+                    {{ block.settings.button_label | default: "SUBSCRIBE" }}
+                  </button>
+                </div>
+              {% endform %}
 
-          <!-- Social Media Row -->
-          <div class="lavee-footer__social-row" role="navigation" aria-label="Social Media Links">
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on TikTok (opens in a new tab)" class="lavee-footer__social-link">TIKTOK</a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Facebook (opens in a new tab)" class="lavee-footer__social-link">FACEBOOK</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Instagram (opens in a new tab)" class="lavee-footer__social-link">INSTAGRAM</a>
-            <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Pinterest (opens in a new tab)" class="lavee-footer__social-link">PINTEREST</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to La Vee on YouTube (opens in a new tab)" class="lavee-footer__social-link">YOUTUBE</a>
+              <!-- Social Media Row -->
+              {%- if block.settings.show_social -%}
+                <div class="lavee-footer__social-row" role="navigation" aria-label="Social Media Links">
+                  {%- if block.settings.social_tiktok_link != blank -%}
+                    <a href="{{ block.settings.social_tiktok_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">TIKTOK</a>
+                  {%- endif -%}
+                  {%- if block.settings.social_facebook_link != blank -%}
+                    <a href="{{ block.settings.social_facebook_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">FACEBOOK</a>
+                  {%- endif -%}
+                  {%- if block.settings.social_instagram_link != blank -%}
+                    <a href="{{ block.settings.social_instagram_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">INSTAGRAM</a>
+                  {%- endif -%}
+                  {%- if block.settings.social_pinterest_link != blank -%}
+                    <a href="{{ block.settings.social_pinterest_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">PINTEREST</a>
+                  {%- endif -%}
+                  {%- if block.settings.social_youtube_link != blank -%}
+                    <a href="{{ block.settings.social_youtube_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">YOUTUBE</a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Newsletter Box -->
+          <div class="lavee-footer__newsletter-card" role="region" aria-label="Newsletter Subscription">
+            <h3 class="lavee-footer__newsletter-title">{{ section.settings.newsletter_title | default: "StayCONNECTED" }}</h3>
+            <p class="lavee-footer__newsletter-desc">
+              {{ section.settings.newsletter_desc | default: "Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order." }}
+            </p>
+            
+            {% form 'customer', class: 'lavee-footer__form' %}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="lavee-footer__input-wrapper">
+                <label for="LaveeFooterEmailInput" class="visually-hidden">Email address for newsletter subscription</label>
+                <input 
+                  id="LaveeFooterEmailInput"
+                  type="email" 
+                  name="contact[email]" 
+                  class="lavee-footer__input" 
+                  placeholder="Enter your email address..."
+                  autocomplete="email"
+                  required
+                >
+                <button type="submit" class="lavee-footer__submit" aria-label="Subscribe to newsletter">SUBSCRIBE</button>
+              </div>
+            {% endform %}
+
+            <!-- Default Social Media Row -->
+            <div class="lavee-footer__social-row" role="navigation" aria-label="Social Media Links">
+              <a href="{{ section.settings.social_tiktok_link | default: 'https://tiktok.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">TIKTOK</a>
+              <a href="{{ section.settings.social_facebook_link | default: 'https://facebook.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">FACEBOOK</a>
+              <a href="{{ section.settings.social_instagram_link | default: 'https://instagram.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">INSTAGRAM</a>
+              <a href="{{ section.settings.social_pinterest_link | default: 'https://pinterest.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">PINTEREST</a>
+              <a href="{{ section.settings.social_youtube_link | default: 'https://youtube.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">YOUTUBE</a>
+            </div>
           </div>
-        </div>
+        {%- endif -%}
 
       </div>
 
       <!-- Element 5: Brand Acknowledgement Statement -->
-      <div class="lavee-footer__acknowledgement">
-        <p class="lavee-footer__acknowledgement-text">
-          La Vee acknowledges the Traditional Custodians of the land on which we gather &amp; pay our respects to Elders past, present and emerging.
-        </p>
-      </div>
-
-      <div class="lavee-footer__divider" role="separator"></div>
+      {%- if section.settings.show_acknowledgement -%}
+        <div class="lavee-footer__acknowledgement">
+          <p class="lavee-footer__acknowledgement-text">
+            {{ section.settings.acknowledgement_text | default: "La Vee acknowledges the Traditional Custodians of the land on which we gather & pay our respects to Elders past, present and emerging." }}
+          </p>
+        </div>
+        <div class="lavee-footer__divider" role="separator"></div>
+      {%- endif -%}
 
       <!-- Element 6: Bottom Utility Bar -->
       <div class="lavee-footer__bottom">
         <!-- Currency & Country Selector -->
         <div class="lavee-footer__currency-selector">
-          <button type="button" class="lavee-footer__currency-btn" aria-label="Select Country and Currency (Currently set to United States USD)">
-            United States (USD $) <span class="lavee-footer__currency-arrow" aria-hidden="true">▼</span>
+          <button type="button" class="lavee-footer__currency-btn" aria-label="Select Country and Currency">
+            {{ section.settings.currency_text | default: "United States (USD $)" }} <span class="lavee-footer__currency-arrow" aria-hidden="true">▼</span>
           </button>
         </div>
 
         <!-- Payment Icons / Text List -->
         <div class="lavee-footer__payments">
           <span class="lavee-footer__payments-text">
-            PAYPAL • AFTERPAY • APPLE PAY • KLARNA • VISA • MASTERCARD
+            {{ section.settings.payment_text | default: "PAYPAL • AFTERPAY • APPLE PAY • KLARNA • VISA • MASTERCARD" }}
           </span>
         </div>
 
         <!-- Brand Stamp Seal -->
         <div class="lavee-footer__brand-seal">
-          <span class="lavee-footer__brand-seal-text">LAVEE DESIGN • EST. 2026</span>
+          <span class="lavee-footer__brand-seal-text">
+            {{ section.settings.brand_seal_text | default: "LAVEE DESIGN • EST. 2026" }}
+          </span>
         </div>
 
         <!-- Copyright Notice -->
         <div class="lavee-footer__copyright">
-          <span>© 2026 La Vee Design Limited. All Rights Reserved.</span>
+          <span>{{ section.settings.copyright_text | default: "© 2026 La Vee Design Limited. All Rights Reserved." }}</span>
         </div>
       </div>
 
@@ -251,7 +362,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Layout Width"
+      "content": "Layout Width Settings"
     },
     {
       "type": "select",
@@ -264,27 +375,289 @@
       "default": "container-fluid"
     },
     {
-      "type": "header",
-      "content": "Content & Branding"
-    },
-    {
-      "type": "text",
-      "id": "headline_text",
-      "label": "Top Brand Headline",
-      "default": "It's ALWAYS La Vee"
-    },
-    {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#F7F4EF"
+    },
+    {
+      "type": "header",
+      "content": "Top Brand Headline"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_headline",
+      "label": "Show Top Brand Headline",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "headline_text",
+      "label": "Headline Text",
+      "default": "It's ALWAYS La Vee"
+    },
+    {
+      "type": "header",
+      "content": "Default Newsletter Box"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Box Title",
+      "default": "StayCONNECTED"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_desc",
+      "label": "Newsletter Box Description",
+      "default": "Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order."
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok_link",
+      "label": "TikTok Link",
+      "default": "/#tiktok"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook_link",
+      "label": "Facebook Link",
+      "default": "/#facebook"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram_link",
+      "label": "Instagram Link",
+      "default": "/#instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest_link",
+      "label": "Pinterest Link",
+      "default": "/#pinterest"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube_link",
+      "label": "YouTube Link",
+      "default": "/#youtube"
+    },
+    {
+      "type": "header",
+      "content": "Brand Acknowledgement"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_acknowledgement",
+      "label": "Show Brand Acknowledgement",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "acknowledgement_text",
+      "label": "Acknowledgement Text",
+      "default": "La Vee acknowledges the Traditional Custodians of the land on which we gather & pay our respects to Elders past, present and emerging."
+    },
+    {
+      "type": "header",
+      "content": "Bottom Utility Bar Settings"
+    },
+    {
+      "type": "text",
+      "id": "currency_text",
+      "label": "Currency Selector Label",
+      "default": "United States (USD $)"
+    },
+    {
+      "type": "text",
+      "id": "payment_text",
+      "label": "Accepted Payment Methods Text",
+      "default": "PAYPAL • AFTERPAY • APPLE PAY • KLARNA • VISA • MASTERCARD"
+    },
+    {
+      "type": "text",
+      "id": "brand_seal_text",
+      "label": "Brand Stamp Seal Text",
+      "default": "LAVEE DESIGN • EST. 2026"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2026 La Vee Design Limited. All Rights Reserved."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Navigation Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Heading Title",
+          "default": "NEED SOME HELP?"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Shopify Navigation Menu"
+        }
+      ]
+    },
+    {
+      "type": "reassurance_item",
+      "name": "Reassurance Benefit Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Benefit Title",
+          "default": "RETURNS & REFUNDS"
+        },
+        {
+          "type": "text",
+          "id": "subtext_desktop",
+          "label": "Desktop Subtitle",
+          "default": "Easy 30-day exchange policy"
+        },
+        {
+          "type": "text",
+          "id": "subtext_mobile",
+          "label": "Mobile Subtitle",
+          "default": "Easy 30-day exchange"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Optional Benefit Link"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter & Social Box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Newsletter Box Title",
+          "default": "StayCONNECTED"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description Text",
+          "default": "Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Submit Button Label",
+          "default": "SUBSCRIBE"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show Social Media Links",
+          "default": true
+        },
+        {
+          "type": "url",
+          "id": "social_tiktok_link",
+          "label": "TikTok Link",
+          "default": "/#tiktok"
+        },
+        {
+          "type": "url",
+          "id": "social_facebook_link",
+          "label": "Facebook Link",
+          "default": "/#facebook"
+        },
+        {
+          "type": "url",
+          "id": "social_instagram_link",
+          "label": "Instagram Link",
+          "default": "/#instagram"
+        },
+        {
+          "type": "url",
+          "id": "social_pinterest_link",
+          "label": "Pinterest Link",
+          "default": "/#pinterest"
+        },
+        {
+          "type": "url",
+          "id": "social_youtube_link",
+          "label": "YouTube Link",
+          "default": "/#youtube"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "La Vee Luxury Footer"
+      "name": "La Vee Luxury Footer",
+      "blocks": [
+        {
+          "type": "reassurance_item",
+          "settings": {
+            "title": "RETURNS & REFUNDS",
+            "subtext_desktop": "Easy 30-day exchange policy",
+            "subtext_mobile": "Easy 30-day exchange"
+          }
+        },
+        {
+          "type": "reassurance_item",
+          "settings": {
+            "title": "VIP LOYALTY BENEFITS",
+            "subtext_desktop": "Earn points & exclusive rewards",
+            "subtext_mobile": "Earn points on orders"
+          }
+        },
+        {
+          "type": "reassurance_item",
+          "settings": {
+            "title": "BUY NOW PAY LATER",
+            "subtext_desktop": "Klarna & Afterpay available",
+            "subtext_mobile": "Klarna & Afterpay"
+          }
+        },
+        {
+          "type": "reassurance_item",
+          "settings": {
+            "title": "EXPRESS FAST DELIVERY",
+            "subtext_desktop": "Tracked 2-4 day global shipping",
+            "subtext_mobile": "Tracked 2-4 day shipping"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "NEED SOME HELP?"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "ABOUT LA VEE"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "TERMS & LEGALS"
+          }
+        },
+        {
+          "type": "newsletter",
+          "settings": {
+            "title": "StayCONNECTED",
+            "description": "Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order."
+          }
+        }
+      ]
     }
   ]
 }
 {% endschema %}
-
