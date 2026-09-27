@@ -201,7 +201,7 @@
                     endcase
                   endif
                 else
-                  {%- comment -%} Automatic Fallback Product Count for Placeholder / Custom items without collection {%- endcomment -%}
+                  # Automatic Fallback Product Count for Placeholder / Custom items without collection
                   assign default_num = forloop.index | times: 6 | plus: 10
                   case section.settings.count_format
                     when 'items'
@@ -252,18 +252,18 @@
                         alt: category_title
                       }}
                     {%- elsif custom_img_url != blank -%}
-                      <img src="{{ custom_img_url }}" alt="{{ category_title | escape }}" class="lavee-category-img" loading="lazy" decoding="async">
+                      <img src="{{ custom_img_url }}" alt="{{ category_title | escape }}" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                     {%- else -%}
                       {%- comment -%} Default Luxury Unsplash Fallbacks {%- endcomment -%}
                       {%- case forloop.index -%}
                         {%- when 1 -%}
-                          <img src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Dresses" class="lavee-category-img" loading="lazy">
+                          <img src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Dresses" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                         {%- when 2 -%}
-                          <img src="https://images.unsplash.com/photo-1773574488217-eb936b733cae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Sets" class="lavee-category-img" loading="lazy">
+                          <img src="https://images.unsplash.com/photo-1773574488217-eb936b733cae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Sets" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                         {%- when 3 -%}
-                          <img src="https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Tops & Corsets" class="lavee-category-img" loading="lazy">
+                          <img src="https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Tops & Corsets" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                         {%- when 4 -%}
-                          <img src="https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Occasionwear" class="lavee-category-img" loading="lazy">
+                          <img src="https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Occasionwear" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                         {%- else -%}
                           <div class="lavee-category-placeholder lavee-category-placeholder--bg-{{ forloop.index }}">
                             {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'lavee-category-placeholder-svg' }}
@@ -334,7 +334,7 @@
             <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}">
               <a href="/collections/all" class="lavee-category-card" aria-label="{{ cat_title }}">
                 <div class="lavee-category-image-wrap">
-                  <img src="{{ default_imgs[idx] }}" alt="{{ cat_title }}" class="lavee-category-img" loading="lazy">
+                  <img src="{{ default_imgs[idx] }}" alt="{{ cat_title }}" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                   <div class="lavee-category-overlay" aria-hidden="true"></div>
                 </div>
 
