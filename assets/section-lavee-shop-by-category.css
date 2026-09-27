@@ -913,8 +913,9 @@
   }
 }
 
-/* Luxury Grid Buttons */
+/* Luxury Grid Buttons (No Box Shadow & SVG Border Draw GSAP Animation) */
 .lavee-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -930,6 +931,42 @@
   cursor: pointer;
   transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+/* SVG Border Drawing Path Animation */
+.lavee-btn-border-draw {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.lavee-btn-border-draw rect {
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke: #D4AF37;
+  stroke-width: 2.5;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  transition: stroke-dashoffset 0.65s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+}
+
+.lavee-btn:hover .lavee-btn-border-draw rect,
+.lavee-btn:focus-visible .lavee-btn-border-draw rect {
+  stroke-dashoffset: 0;
+}
+
+.lavee-btn .lavee-btn-icon,
+.lavee-btn span {
+  position: relative;
+  z-index: 3;
 }
 
 .lavee-btn .lavee-btn-icon {
@@ -940,21 +977,21 @@
   transform: rotate(180deg);
 }
 
-/* Luxury Champagne Gold Outline & Load More Button (No Solid Black) */
+/* Luxury Champagne Gold Outline & Load More Button (No Box Shadows) */
 .lavee-btn--outline {
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 255, 255, 0.6) 100%);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1.5px solid #D4AF37;
   color: #161616;
-  box-shadow: 0 6px 24px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: none !important;
 }
 
 .lavee-btn--outline:hover {
   background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
   color: #FFFFFF;
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.25);
+  box-shadow: none !important;
   transform: translateY(-2px);
 }
 
@@ -965,7 +1002,7 @@
   -webkit-backdrop-filter: blur(14px);
   border-color: #D4AF37;
   color: #D4AF37;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: none !important;
 }
 
 .lavee-category-section--dark .lavee-btn--outline:hover,
@@ -973,41 +1010,41 @@
   background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
   color: #161616;
-  box-shadow: 0 12px 36px rgba(212, 175, 55, 0.5);
+  box-shadow: none !important;
   transform: translateY(-2px);
 }
 
-/* Luxury Deep Burgundy Button Style (No Solid Black) */
+/* Luxury Deep Burgundy Button Style (No Box Shadows) */
 .lavee-btn--dark {
   background: linear-gradient(135deg, #6E1F2A 0%, #50151E 100%);
   border: 1.5px solid #D4AF37;
   color: #F7F4EF;
-  box-shadow: 0 8px 24px rgba(110, 31, 42, 0.35);
+  box-shadow: none !important;
 }
 
 .lavee-btn--dark:hover {
   background: linear-gradient(135deg, #912634 0%, #6E1F2A 100%);
   border-color: #D4AF37;
   color: #FFFFFF;
-  box-shadow: 0 10px 30px rgba(145, 38, 52, 0.5);
+  box-shadow: none !important;
   transform: translateY(-2px);
 }
 
-/* Glass Style */
+/* Glass Style (No Box Shadows) */
 .lavee-btn--glass {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid rgba(212, 175, 55, 0.5);
   color: #161616;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: none !important;
 }
 
 .lavee-btn--glass:hover {
   background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
   border-color: #D4AF37;
   color: #FFFFFF;
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.35);
+  box-shadow: none !important;
   transform: translateY(-2px);
 }
 
