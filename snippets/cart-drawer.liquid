@@ -631,7 +631,8 @@
       },
 
       refreshCartAndOpen: function() {
-        this.refreshCart(true);
+        this.openDrawer();
+        this.refreshCart(false);
       },
 
       updateUI: function(cart) {
@@ -852,7 +853,12 @@
           }
 
           // 2. Open Drawer trigger (Header cart icon / BAG link)
-          if (e.target.closest('#cart-icon-bubble') || e.target.closest('[data-action="open-cart-drawer"]')) {
+          if (
+            e.target.closest('#cart-icon-bubble') || 
+            e.target.closest('[data-action="open-cart-drawer"]') || 
+            e.target.closest('.lavee-header__action-link--bag') || 
+            e.target.closest('.header__icon--cart')
+          ) {
             if (self.cartType === 'page') {
               return; // Allow standard navigation to /cart page if admin setting is explicitly set to 'page'
             }

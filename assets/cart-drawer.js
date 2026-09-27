@@ -3,29 +3,41 @@ class CartDrawer extends HTMLElement {
     super();
 
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+    (this.querySelector('#CartDrawer-Overlay') || this.querySelector('.lavee-cart-drawer-backdrop'))?.addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
   }
 
   setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
+    const attach = () => {
+      const cartLinks = document.querySelectorAll('#cart-icon-bubble, [data-action="open-cart-drawer"], .lavee-header__action-link--bag, .header__icon--cart');
+      cartLinks.forEach(cartLink => {
+        cartLink.setAttribute('role', 'button');
+        cartLink.setAttribute('aria-haspopup', 'dialog');
+        cartLink.addEventListener('click', (event) => {
+          event.preventDefault();
+          this.open(cartLink);
+        });
+        cartLink.addEventListener('keydown', (event) => {
+          if (event.code.toUpperCase() === 'SPACE' || event.code.toUpperCase() === 'ENTER') {
+            event.preventDefault();
+            this.open(cartLink);
+          }
+        });
+      });
+    };
 
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
-    });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
-        event.preventDefault();
-        this.open(cartLink);
-      }
-    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attach, { once: true });
+    } else {
+      attach();
+    }
   }
 
   open(triggeredBy) {
+    if (window.LaveeCartController) {
+      window.LaveeCartController.refreshCartAndOpen();
+      return;
+    }
     if (this.classList.contains('active')) return;
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
@@ -56,6 +68,10 @@ class CartDrawer extends HTMLElement {
   }
 
   close() {
+    if (window.LaveeCartController) {
+      window.LaveeCartController.closeDrawer();
+      return;
+    }
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');
