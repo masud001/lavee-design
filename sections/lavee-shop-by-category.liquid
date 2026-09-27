@@ -82,18 +82,31 @@
 <div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding">
   <div class="lavee-{{ section.settings.container_type | default: 'container' }}">
     
-    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank -%}
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank or section.settings.show_slider_arrows -%}
       <header class="lavee-category-header lavee-category-header--{{ section.settings.heading_alignment | default: 'left' }}">
-        {%- if section.settings.eyebrow != blank -%}
-          <span class="lavee-category-eyebrow">{{ section.settings.eyebrow | escape }}</span>
-        {%- endif -%}
+        <div class="lavee-category-header-content">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="lavee-category-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          {%- endif -%}
 
-        {%- if section.settings.heading != blank -%}
-          <h2 class="lavee-category-title">{{ section.settings.heading | escape }}</h2>
-        {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="lavee-category-title">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
 
-        {%- if section.settings.subtext != blank -%}
-          <p class="lavee-category-subtext">{{ section.settings.subtext | escape }}</p>
+          {%- if section.settings.subtext != blank -%}
+            <p class="lavee-category-subtext">{{ section.settings.subtext | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_slider_arrows -%}
+          <div class="lavee-category-top-arrows">
+            <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
+              ‹
+            </button>
+            <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
+              ›
+            </button>
+          </div>
         {%- endif -%}
       </header>
     {%- endif -%}
@@ -111,12 +124,6 @@
       data-autoplay="{{ section.settings.slider_autoplay }}"
       data-speed="{{ section.settings.slider_autoplay_speed | default: 5 }}"
     >
-      {%- if section.settings.show_slider_arrows -%}
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
-          ‹
-        </button>
-      {%- endif -%}
-
       <div class="lavee-category-track" data-pencil-name="Category Grid">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
@@ -247,14 +254,6 @@
             </div>
           {%- endfor -%}
         {%- endif -%}
-      </div>
-
-      {%- if section.settings.show_slider_arrows -%}
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
-          ›
-        </button>
-      {%- endif -%}
-
       {%- if section.settings.show_slider_dots -%}
         <div class="lavee-slider-pagination" aria-hidden="true"></div>
       {%- endif -%}
