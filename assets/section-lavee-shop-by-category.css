@@ -936,19 +936,19 @@
   transform: translateY(-2px);
 }
 
-/* Dark Style */
+/* Luxury Deep Burgundy Button Style (No Solid Black) */
 .lavee-btn--dark {
-  background: linear-gradient(135deg, #2a2a2a 0%, #161616 100%);
+  background: linear-gradient(135deg, #6E1F2A 0%, #50151E 100%);
   border: 1.5px solid #D4AF37;
   color: #F7F4EF;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(110, 31, 42, 0.35);
 }
 
 .lavee-btn--dark:hover {
-  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  background: linear-gradient(135deg, #912634 0%, #6E1F2A 100%);
   border-color: #D4AF37;
-  color: #161616;
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+  color: #FFFFFF;
+  box-shadow: 0 10px 30px rgba(145, 38, 52, 0.5);
   transform: translateY(-2px);
 }
 
