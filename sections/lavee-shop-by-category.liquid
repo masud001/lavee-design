@@ -65,7 +65,21 @@
     {% if section.settings.subtext_color != blank %}color: {{ section.settings.subtext_color }};{% endif %}
   }
 
-  @media screen and (min-width: 750px) {
+  /* Tablet Responsive Typography Optimization */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .lavee-category-eyebrow {
+      font-size: clamp({{ section.settings.eyebrow_font_size_mobile }}px, 1.5vw, {{ section.settings.eyebrow_font_size_desktop }}px);
+    }
+    #shopify-section-{{ section.id }} .lavee-category-title {
+      font-size: clamp({{ section.settings.title_font_size_mobile }}px, 3.8vw, {{ section.settings.title_font_size_desktop }}px);
+    }
+    #shopify-section-{{ section.id }} .lavee-category-subtext {
+      font-size: clamp({{ section.settings.subtext_font_size_mobile }}px, 2vw, {{ section.settings.subtext_font_size_desktop }}px);
+    }
+  }
+
+  /* Desktop Typography */
+  @media screen and (min-width: 990px) {
     #shopify-section-{{ section.id }} .lavee-category-eyebrow {
       font-size: {{ section.settings.eyebrow_font_size_desktop }}px;
     }
@@ -81,8 +95,8 @@
 <div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding
   lavee-arrows-desktop-{{ section.settings.show_arrows_desktop }}
   lavee-arrows-mobile-{{ section.settings.show_arrows_mobile }}
-  lavee-arrows-pos-desktop-{{ section.settings.arrows_position_desktop | default: 'top_right' }}
-  lavee-arrows-pos-mobile-{{ section.settings.arrows_position_mobile | default: 'top_right' }}"
+  lavee-arrows-pos-desktop-{{ section.settings.arrows_position_desktop | default: 'center_sides' }}
+  lavee-arrows-pos-mobile-{{ section.settings.arrows_position_mobile | default: 'center_sides' }}"
   id="LaveeCategorySection-{{ section.id }}"
 >
   
@@ -444,26 +458,26 @@
       "id": "arrows_position_desktop",
       "label": "Arrow Position (Desktop & Tablet)",
       "options": [
+        { "value": "center_sides", "label": "Center Sides (Card Overlay Left/Right)" },
         { "value": "top_right", "label": "Top Right (In Header)" },
         { "value": "bottom_right", "label": "Bottom Right" },
         { "value": "bottom_left", "label": "Bottom Left" },
-        { "value": "bottom_center", "label": "Bottom Center" },
-        { "value": "center_sides", "label": "Center Sides (Card Overlay)" }
+        { "value": "bottom_center", "label": "Bottom Center" }
       ],
-      "default": "top_right"
+      "default": "center_sides"
     },
     {
       "type": "select",
       "id": "arrows_position_mobile",
       "label": "Arrow Position (Mobile)",
       "options": [
+        { "value": "center_sides", "label": "Center Sides (Card Overlay Left/Right)" },
         { "value": "top_right", "label": "Top Right (In Header)" },
         { "value": "bottom_right", "label": "Bottom Right" },
         { "value": "bottom_left", "label": "Bottom Left" },
-        { "value": "bottom_center", "label": "Bottom Center" },
-        { "value": "center_sides", "label": "Center Sides (Card Overlay)" }
+        { "value": "bottom_center", "label": "Bottom Center" }
       ],
-      "default": "top_right"
+      "default": "center_sides"
     },
     {
       "type": "checkbox",
