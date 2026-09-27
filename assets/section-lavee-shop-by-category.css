@@ -1,0 +1,332 @@
+/* ==========================================================================
+   La Vee - Shop by Category Section Styles
+   ========================================================================== */
+
+.lavee-category-section {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Color Schemes */
+.lavee-category-section--ivory {
+  background-color: #F7F4EF;
+  color: #161616;
+}
+
+.lavee-category-section--dark {
+  background-color: #161616;
+  color: #F7F4EF;
+}
+
+.lavee-category-section--burgundy {
+  background-color: #6E1F2A;
+  color: #F7F4EF;
+}
+
+/* Section Header */
+.lavee-category-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.lavee-category-header--left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.lavee-category-header--center {
+  align-items: center;
+  text-align: center;
+}
+
+.lavee-category-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.lavee-category-section--ivory .lavee-category-eyebrow {
+  color: #6E1F2A;
+}
+
+.lavee-category-section--dark .lavee-category-eyebrow,
+.lavee-category-section--burgundy .lavee-category-eyebrow {
+  color: #D4AF37;
+}
+
+.lavee-category-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.lavee-category-section--ivory .lavee-category-title {
+  color: #161616;
+}
+
+.lavee-category-section--dark .lavee-category-title,
+.lavee-category-section--burgundy .lavee-category-title {
+  color: #F7F4EF;
+}
+
+.lavee-category-subtext {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 4px 0 0 0;
+  opacity: 0.8;
+}
+
+/* Category Grid */
+.lavee-category-grid {
+  display: grid;
+  width: 100%;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+/* Grid Column Variations Desktop */
+.lavee-category-grid--desktop-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.lavee-category-grid--desktop-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.lavee-category-grid--desktop-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.lavee-category-grid--desktop-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* Mobile Column Variations */
+@media screen and (max-width: 749px) {
+  .lavee-category-grid {
+    gap: 16px;
+  }
+
+  .lavee-category-grid--mobile-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .lavee-category-grid--mobile-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lavee-category-header {
+    margin-bottom: 28px;
+  }
+
+  .lavee-category-title {
+    font-size: 30px;
+  }
+}
+
+/* Card Wrapper & Card */
+.lavee-category-card-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.lavee-category-card {
+  display: block;
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  background-color: #161616;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+  outline: none;
+}
+
+.lavee-category-card:hover,
+.lavee-category-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+}
+
+.lavee-category-card:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 4px;
+}
+
+/* Image Container & Scaling */
+.lavee-category-image-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.lavee-category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.lavee-category-card:hover .lavee-category-img {
+  transform: scale(1.08);
+}
+
+/* Fallback Placeholders */
+.lavee-category-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a 0%, #161616 100%);
+}
+
+.lavee-category-placeholder--bg-1 { background: linear-gradient(135deg, #3d2229 0%, #161616 100%); }
+.lavee-category-placeholder--bg-2 { background: linear-gradient(135deg, #232d38 0%, #161616 100%); }
+.lavee-category-placeholder--bg-3 { background: linear-gradient(135deg, #2b3327 0%, #161616 100%); }
+.lavee-category-placeholder--bg-4 { background: linear-gradient(135deg, #382c1f 0%, #161616 100%); }
+
+.lavee-category-placeholder-svg {
+  width: 60%;
+  height: 60%;
+  opacity: 0.25;
+}
+
+/* Dark Gradient Overlay for Contrast */
+.lavee-category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.82) 100%);
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+
+.lavee-category-card:hover .lavee-category-overlay {
+  opacity: 0.9;
+}
+
+/* Card Content Area */
+.lavee-category-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 24px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  transform: translateY(0);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lavee-category-badge {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #F7F4EF;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 5px 14px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  margin-bottom: 12px;
+  display: inline-block;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.lavee-category-card:hover .lavee-category-badge {
+  background: rgba(212, 175, 55, 0.35);
+  border-color: rgba(212, 175, 55, 0.6);
+  color: #FFFFFF;
+}
+
+.lavee-category-card-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.lavee-category-btn {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #F7F4EF;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.9;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.lavee-category-btn-arrow {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lavee-category-card:hover .lavee-category-btn {
+  color: #D4AF37;
+  opacity: 1;
+}
+
+.lavee-category-card:hover .lavee-category-btn-arrow {
+  transform: translateX(6px);
+}
+
+/* Mobile Adjustments */
+@media screen and (max-width: 749px) {
+  .lavee-category-content {
+    padding: 18px 16px;
+  }
+
+  .lavee-category-card-title {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .lavee-category-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+
+  .lavee-category-btn {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}

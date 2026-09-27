@@ -1,0 +1,363 @@
+{{ 'section-lavee-shop-by-category.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  La Vee Shop by Category Section
+  - Responsive Width: Container Fluid vs Container
+  - Color Schemes: Ivory (#F7F4EF), Dark (#161616), Burgundy (#6E1F2A)
+  - Grid Layout: Customizable columns for desktop & mobile
+  - Hover Animations: Luxury image zoom & content elevate
+  - Full WCAG 2.1 AAA accessibility & SEO support
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .lavee-category-card {
+    height: {{ section.settings.card_height_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .lavee-category-card {
+      height: {{ section.settings.card_height_desktop }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding">
+  <div class="lavee-{{ section.settings.container_type | default: 'container' }}">
+    
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank -%}
+      <header class="lavee-category-header lavee-category-header--{{ section.settings.heading_alignment | default: 'left' }}">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="lavee-category-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="lavee-category-title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtext != blank -%}
+          <p class="lavee-category-subtext">{{ section.settings.subtext | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <div 
+      class="lavee-category-grid lavee-category-grid--desktop-{{ section.settings.columns_desktop | default: 4 }} lavee-category-grid--mobile-{{ section.settings.columns_mobile | default: 2 }}"
+      data-pencil-name="Category Grid"
+    >
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign collection_obj = block.settings.collection
+            assign category_title = block.settings.title | default: collection_obj.title | default: "CATEGORY"
+            assign category_url = block.settings.link | default: collection_obj.url | default: "/collections/all"
+            assign category_image = block.settings.image | default: collection_obj.featured_image
+            assign piece_count = block.settings.subtitle
+          -%}
+
+          <div class="lavee-category-card-wrapper" {{ block.shopify_attributes }}>
+            <a href="{{ category_url }}" class="lavee-category-card" aria-label="{{ category_title | escape }}">
+              <div class="lavee-category-image-wrap">
+                {%- if category_image != blank -%}
+                  {{ category_image | image_url: width: 800 | image_tag: 
+                    loading: 'lazy',
+                    decoding: 'async',
+                    class: 'lavee-category-img',
+                    alt: category_title
+                  }}
+                {%- else -%}
+                  {%- comment -%} Placeholder SVG / Fallback Gradient {%- endcomment -%}
+                  <div class="lavee-category-placeholder">
+                    {{ 'collection-1' | placeholder_svg_tag: 'lavee-category-placeholder-svg' }}
+                  </div>
+                {%- endif -%}
+                <div class="lavee-category-overlay" aria-hidden="true"></div>
+              </div>
+
+              <div class="lavee-category-content">
+                {%- if piece_count != blank -%}
+                  <span class="lavee-category-badge">{{ piece_count | escape }}</span>
+                {%- elsif collection_obj != blank and collection_obj.all_products_count > 0 -%}
+                  <span class="lavee-category-badge">{{ collection_obj.all_products_count }} {{ 'sections.collection_list.items' | t | default: 'PIECES' }}</span>
+                {%- endif -%}
+
+                <h3 class="lavee-category-card-title">{{ category_title | escape }}</h3>
+
+                {%- if block.settings.button_text != blank -%}
+                  <span class="lavee-category-btn">
+                    {{ block.settings.button_text | escape }}
+                    <span class="lavee-category-btn-arrow" aria-hidden="true">→</span>
+                  </span>
+                {%- endif -%}
+              </div>
+            </a>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Default 4 Luxury Categories for immediate preview {%- endcomment -%}
+        {%- assign default_categories = "DRESSES,SETS,TOPS,OCCASION" | split: "," -%}
+        {%- assign default_counts = "42 PIECES,28 PIECES,34 PIECES,19 PIECES" | split: "," -%}
+        
+        {%- for cat_name in default_categories -%}
+          {%- assign idx = forloop.index0 -%}
+          <div class="lavee-category-card-wrapper">
+            <a href="/collections/all" class="lavee-category-card" aria-label="{{ cat_name }}">
+              <div class="lavee-category-image-wrap">
+                <div class="lavee-category-placeholder lavee-category-placeholder--bg-{{ forloop.index }}">
+                  {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'lavee-category-placeholder-svg' }}
+                </div>
+                <div class="lavee-category-overlay" aria-hidden="true"></div>
+              </div>
+
+              <div class="lavee-category-content">
+                <span class="lavee-category-badge">{{ default_counts[idx] }}</span>
+                <h3 class="lavee-category-card-title">{{ cat_name }}</h3>
+                <span class="lavee-category-btn">
+                  EXPLORE CATEGORY
+                  <span class="lavee-category-btn-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "La Vee Shop by Category",
+  "tag": "section",
+  "class": "lavee-shop-by-category-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header & Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Subtitle",
+      "default": "CURATED ATELIER EDITS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "SHOP BY CATEGORY"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Section Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Centered" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Width",
+      "options": [
+        { "value": "container-fluid", "label": "Full Width (100% Fluid)" },
+        { "value": "container", "label": "Centered Container (Max 1440px)" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Background Color Scheme",
+      "options": [
+        { "value": "ivory", "label": "Ivory (#F7F4EF)" },
+        { "value": "dark", "label": "Dark Luxe (#161616)" },
+        { "value": "burgundy", "label": "Burgundy (#6E1F2A)" }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop Columns",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile Columns",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "card_height_desktop",
+      "min": 350,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Card Height",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "min": 280,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Card Height",
+      "default": 420
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Top Padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Bottom Padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_item",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Category Image (Overrides Collection Image)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "DRESSES"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Piece Count / Subtitle",
+          "default": "42 PIECES"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "EXPLORE CATEGORY"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom URL (Overrides Collection URL)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "La Vee Shop by Category",
+      "blocks": [
+        {
+          "type": "category_item",
+          "settings": {
+            "title": "DRESSES",
+            "subtitle": "42 PIECES"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "title": "SETS",
+            "subtitle": "28 PIECES"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "title": "TOPS",
+            "subtitle": "34 PIECES"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "title": "OCCASION",
+            "subtitle": "19 PIECES"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
