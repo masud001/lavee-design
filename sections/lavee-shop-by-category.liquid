@@ -246,6 +246,8 @@
                       {{ category_image | image_url: width: 800 | image_tag: 
                         loading: 'lazy',
                         decoding: 'async',
+                        widths: '300, 450, 600, 800',
+                        sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 80vw',
                         class: 'lavee-category-img',
                         alt: category_title
                       }}
