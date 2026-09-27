@@ -196,33 +196,41 @@
               assign media_type = block.settings.media_type | default: "image"
               assign video_shopify = block.settings.video_shopify
               assign raw_video_url = block.settings.video_url
-              assign button_label = block.settings.button_text
+
+              # Smart Fallback: If user pasted a URL into video_shopify field instead of video_url
+              if raw_video_url == blank and video_shopify != blank
+                if video_shopify.sources == blank
+                  assign raw_video_url = video_shopify | append: ''
+                endif
+              endif
+
+              assign video_url_str = raw_video_url | append: ''
               
               assign is_youtube = false
               assign youtube_id = ''
-              if raw_video_url contains 'youtube.com' or raw_video_url contains 'youtu.be'
+              if video_url_str contains 'youtube.com' or video_url_str contains 'youtu.be'
                 assign is_youtube = true
-                if raw_video_url contains 'shorts/'
-                  assign youtube_id = raw_video_url | split: 'shorts/' | last | split: '?' | first | split: '&' | first | split: '/' | first
-                elsif raw_video_url contains 'v='
-                  assign youtube_id = raw_video_url | split: 'v=' | last | split: '&' | first | split: '?' | first | split: '/' | first
-                elsif raw_video_url contains 'youtu.be/'
-                  assign youtube_id = raw_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first | split: '/' | first
-                elsif raw_video_url contains 'embed/'
-                  assign youtube_id = raw_video_url | split: 'embed/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                if video_url_str contains 'shorts/'
+                  assign youtube_id = video_url_str | split: 'shorts/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                elsif video_url_str contains 'v='
+                  assign youtube_id = video_url_str | split: 'v=' | last | split: '&' | first | split: '?' | first | split: '/' | first
+                elsif video_url_str contains 'youtu.be/'
+                  assign youtube_id = video_url_str | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                elsif video_url_str contains 'embed/'
+                  assign youtube_id = video_url_str | split: 'embed/' | last | split: '?' | first | split: '&' | first | split: '/' | first
                 endif
               endif
 
               assign is_instagram = false
               assign instagram_id = ''
-              if raw_video_url contains 'instagram.com'
+              if video_url_str contains 'instagram.com'
                 assign is_instagram = true
-                if raw_video_url contains '/reel/'
-                  assign instagram_id = raw_video_url | split: '/reel/' | last | split: '/' | first | split: '?' | first
-                elsif raw_video_url contains '/reels/'
-                  assign instagram_id = raw_video_url | split: '/reels/' | last | split: '/' | first | split: '?' | first
-                elsif raw_video_url contains '/p/'
-                  assign instagram_id = raw_video_url | split: '/p/' | last | split: '/' | first | split: '?' | first
+                if video_url_str contains '/reel/'
+                  assign instagram_id = video_url_str | split: '/reel/' | last | split: '/' | first | split: '?' | first
+                elsif video_url_str contains '/reels/'
+                  assign instagram_id = video_url_str | split: '/reels/' | last | split: '/' | first | split: '?' | first
+                elsif video_url_str contains '/p/'
+                  assign instagram_id = video_url_str | split: '/p/' | last | split: '/' | first | split: '?' | first
                 endif
               endif
 
