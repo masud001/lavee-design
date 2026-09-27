@@ -687,6 +687,16 @@
   pointer-events: auto;
 }
 
+.lavee-category-label-pill.lavee-label-pill--transparent {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* Category Label Backdrop Pill - True Ultra-Luxury Frosted Glass */
 .lavee-category-label-pill {
   width: 100%;

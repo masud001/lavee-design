@@ -95,6 +95,20 @@
       font-size: {{ section.settings.subtext_font_size_desktop }}px;
     }
   }
+
+  /* Card Title Dynamic Typography & Transform */
+  #shopify-section-{{ section.id }} .lavee-category-card-title {
+    font-size: {{ section.settings.card_title_font_size_mobile | default: 18 }}px;
+    font-weight: {{ section.settings.card_title_font_weight | default: '400' }};
+    text-transform: {{ section.settings.card_title_text_transform | default: 'capitalize' }};
+    {% if section.settings.card_title_color != blank %}color: {{ section.settings.card_title_color }};{% endif %}
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .lavee-category-card-title {
+      font-size: {{ section.settings.card_title_font_size_desktop | default: 26 }}px;
+    }
+  }
 {%- endstyle -%}
 
 <div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding
@@ -328,7 +342,7 @@
                 {%- endif -%}
 
                 <div class="lavee-category-content">
-                  <div class="lavee-category-label-pill" style="{% if block.settings.button_bg_override != blank %}background: {{ block.settings.button_bg_override }};{% endif %}">
+                  <div class="lavee-category-label-pill{% if section.settings.show_label_pill == false %} lavee-label-pill--transparent{% endif %}" style="{% if block.settings.button_bg_override != blank %}background: {{ block.settings.button_bg_override }};{% endif %}">
                     {%- if piece_count != blank and section.settings.show_product_count != false -%}
                       <span class="lavee-category-count-badge">{{ piece_count | escape }}</span>
                     {%- endif -%}
@@ -348,7 +362,7 @@
                       {%- endfor -%}
                     </h3>
 
-                    {%- if button_label != blank and block.settings.show_button != false -%}
+                    {%- if button_label != blank and block.settings.show_button != false and section.settings.show_card_button != false -%}
                       <span class="lavee-category-btn" style="{% if block.settings.button_color_override != blank %}color: {{ block.settings.button_color_override }};{% endif %}">
                         {{ button_label | escape }}
                       </span>
@@ -392,7 +406,7 @@
                 {%- endif -%}
 
                 <div class="lavee-category-content">
-                  <div class="lavee-category-label-pill">
+                  <div class="lavee-category-label-pill{% if section.settings.show_label_pill == false %} lavee-label-pill--transparent{% endif %}">
                     {%- if section.settings.show_product_count != false -%}
                       <span class="lavee-category-count-badge">{{ default_count_num }}</span>
                     {%- endif -%}
@@ -410,7 +424,9 @@
                         {%- unless forloop.last -%}&nbsp;{%- endunless -%}
                       {%- endfor -%}
                     </h3>
-                    <span class="lavee-category-btn">{{ default_buttons[idx] }}</span>
+                    {%- if section.settings.show_card_button != false -%}
+                      <span class="lavee-category-btn">{{ default_buttons[idx] }}</span>
+                    {%- endif -%}
                   </div>
                 </div>
 
@@ -1089,7 +1105,73 @@
     },
     {
       "type": "header",
-      "content": "Glass Label Pill Settings"
+      "content": "Card Title Typography & Style"
+    },
+    {
+      "type": "range",
+      "id": "card_title_font_size_desktop",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Title Font Size (Desktop)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "card_title_font_size_mobile",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Title Font Size (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "card_title_font_weight",
+      "label": "Card Title Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "card_title_text_transform",
+      "label": "Card Title Text Case / Transform",
+      "options": [
+        { "value": "capitalize", "label": "Capitalize (Title Case)" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "none", "label": "None / As Typed" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Text Color Override"
+    },
+    {
+      "type": "header",
+      "content": "Glass Label Pill & Button Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label_pill",
+      "label": "Show Frosted Glass Label Pill Backdrop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_button",
+      "label": "Show Card Button Links",
+      "default": true
     },
     {
       "type": "range",
