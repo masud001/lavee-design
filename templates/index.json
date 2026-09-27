@@ -118,13 +118,49 @@
             "button_text": "Shop Occasion →",
             "image_url": "https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
           }
+        },
+        "cat_gowns": {
+          "type": "category_item",
+          "settings": {
+            "title": "GOWNS & ATELIER",
+            "button_text": "Shop Gowns →",
+            "image_url": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+          }
+        },
+        "cat_suits": {
+          "type": "category_item",
+          "settings": {
+            "title": "TAILORED SUITS",
+            "button_text": "Shop Suits →",
+            "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+          }
+        },
+        "cat_skirts": {
+          "type": "category_item",
+          "settings": {
+            "title": "SKIRTS & BOTTOMS",
+            "button_text": "Shop Skirts →",
+            "image_url": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+          }
+        },
+        "cat_accessories": {
+          "type": "category_item",
+          "settings": {
+            "title": "COUTURE ACCESSORIES",
+            "button_text": "Shop Accessories →",
+            "image_url": "https://images.unsplash.com/photo-1509631179647-0177331693ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+          }
         }
       },
       "block_order": [
         "cat_dresses",
         "cat_sets",
         "cat_tops",
-        "cat_occasion"
+        "cat_occasion",
+        "cat_gowns",
+        "cat_suits",
+        "cat_skirts",
+        "cat_accessories"
       ],
       "settings": {
         "container_type": "container-fluid",
