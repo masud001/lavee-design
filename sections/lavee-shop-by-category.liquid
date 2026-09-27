@@ -97,7 +97,10 @@
   lavee-arrows-desktop-{{ section.settings.show_arrows_desktop }}
   lavee-arrows-mobile-{{ section.settings.show_arrows_mobile }}
   lavee-arrows-pos-desktop-{{ section.settings.arrows_position_desktop | default: 'center_sides' }}
-  lavee-arrows-pos-mobile-{{ section.settings.arrows_position_mobile | default: 'center_sides' }}"
+  lavee-arrows-pos-mobile-{{ section.settings.arrows_position_mobile | default: 'center_sides' }}
+  lavee-layout-desktop-{{ section.settings.layout_desktop | default: 'grid' }}
+  lavee-layout-tablet-{{ section.settings.layout_tablet | default: 'grid' }}
+  lavee-layout-mobile-{{ section.settings.layout_mobile | default: 'slider' }}"
   id="LaveeCategorySection-{{ section.id }}"
 >
   
@@ -123,8 +126,12 @@
 
         {%- comment -%} Top Right Header Aligned Arrows {%- endcomment -%}
         <div class="lavee-category-top-arrows">
-          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
-          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
       </header>
     {%- endif -%}
@@ -147,8 +154,12 @@
     >
       {%- comment -%} Side Center Overlay Arrows {%- endcomment -%}
       <div class="lavee-category-side-arrows">
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
 
       <div class="lavee-category-track" data-pencil-name="Category Grid">
@@ -167,7 +178,7 @@
               assign piece_count = block.settings.subtitle
             -%}
 
-            <div class="lavee-category-card-wrapper" {{ block.shopify_attributes }}>
+            <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}" {{ block.shopify_attributes }}>
               <a href="{{ category_url }}" class="lavee-category-card" aria-label="{{ category_title | escape }}">
                 <div class="lavee-category-image-wrap">
                   {%- if media_type == 'video' -%}
@@ -256,7 +267,7 @@
           
           {%- for cat_title in default_titles -%}
             {%- assign idx = forloop.index0 -%}
-            <div class="lavee-category-card-wrapper">
+            <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}">
               <a href="/collections/all" class="lavee-category-card" aria-label="{{ cat_title }}">
                 <div class="lavee-category-image-wrap">
                   <img src="{{ default_imgs[idx] }}" alt="{{ cat_title }}" class="lavee-category-img" loading="lazy">
@@ -285,8 +296,12 @@
 
       {%- comment -%} Bottom Arrows Container {%- endcomment -%}
       <div class="lavee-category-bottom-arrows">
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
-        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
 
       {%- if section.settings.show_slider_dots -%}
@@ -294,6 +309,39 @@
       {%- endif -%}
     </div>
   </div>
+
+  {%- comment -%}
+    3. Grid Footer Action Button (Load More or View All Link) inside Container
+  {%- endcomment -%}
+  {%- if section.settings.grid_button_action != 'none' -%}
+    <div class="lavee-container">
+      <div class="lavee-category-grid-footer 
+        lavee-grid-footer-desktop-{{ section.settings.layout_desktop | default: 'grid' }}
+        lavee-grid-footer-tablet-{{ section.settings.layout_tablet | default: 'grid' }}
+        lavee-grid-footer-mobile-{{ section.settings.layout_mobile | default: 'slider' }}"
+      >
+        {%- if section.settings.grid_button_action == 'load_more' -%}
+          <button 
+            type="button" 
+            class="lavee-btn lavee-grid-load-more-btn lavee-btn--{{ section.settings.grid_button_style | default: 'outline' }}"
+            data-text-more="{{ section.settings.grid_button_text | default: 'EXPLORE ALL CATEGORIES' | escape }}"
+            data-text-less="SHOW LESS"
+          >
+            <span>{{ section.settings.grid_button_text | default: 'EXPLORE ALL CATEGORIES' | escape }}</span>
+            <svg class="lavee-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        {%- elsif section.settings.grid_button_action == 'link' -%}
+          <a 
+            href="{{ section.settings.grid_button_link | default: '/collections' }}" 
+            class="lavee-btn lavee-grid-link-btn lavee-btn--{{ section.settings.grid_button_style | default: 'outline' }}"
+          >
+            <span>{{ section.settings.grid_button_text | default: 'VIEW ALL COLLECTIONS' | escape }}</span>
+            <svg class="lavee-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
 
 </div>
 
@@ -326,6 +374,26 @@
         section.querySelectorAll('.lavee-slider-arrow--next').forEach(btn => {
           btn.addEventListener('click', scrollNext);
         });
+
+        const loadMoreBtn = section.querySelector('.lavee-grid-load-more-btn');
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', function() {
+            const isExpanded = track.classList.contains('is-expanded');
+            const span = loadMoreBtn.querySelector('span');
+            const textMore = loadMoreBtn.getAttribute('data-text-more') || 'EXPLORE ALL CATEGORIES';
+            const textLess = loadMoreBtn.getAttribute('data-text-less') || 'SHOW LESS';
+
+            if (isExpanded) {
+              track.classList.remove('is-expanded');
+              if (span) span.textContent = textMore;
+              loadMoreBtn.classList.remove('is-active');
+            } else {
+              track.classList.add('is-expanded');
+              if (span) span.textContent = textLess;
+              loadMoreBtn.classList.add('is-active');
+            }
+          });
+        }
 
         let autoplayTimer = null;
         if (isAutoplay) {
@@ -437,6 +505,53 @@
         { "value": "slider", "label": "Carousel / Slider" }
       ],
       "default": "slider"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout Load More & View All Button"
+    },
+    {
+      "type": "select",
+      "id": "grid_button_action",
+      "label": "Grid Bottom Button Action",
+      "options": [
+        { "value": "load_more", "label": "Load More Categories (Expand Grid)" },
+        { "value": "link", "label": "View All Collections Link Button" },
+        { "value": "none", "label": "None (Hide Button)" }
+      ],
+      "default": "load_more"
+    },
+    {
+      "type": "range",
+      "id": "grid_items_limit",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "pcs",
+      "label": "Initial Grid Items to Show (before Load More)",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "grid_button_text",
+      "label": "Grid Button Label",
+      "default": "EXPLORE ALL CATEGORIES"
+    },
+    {
+      "type": "url",
+      "id": "grid_button_link",
+      "label": "View All Collections Link URL"
+    },
+    {
+      "type": "select",
+      "id": "grid_button_style",
+      "label": "Grid Button Style",
+      "options": [
+        { "value": "outline", "label": "Luxury Gold Outline" },
+        { "value": "dark", "label": "Solid Dark / Ivory" },
+        { "value": "glass", "label": "Frosted Glass" }
+      ],
+      "default": "outline"
     },
     {
       "type": "header",
