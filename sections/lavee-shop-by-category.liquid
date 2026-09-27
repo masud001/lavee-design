@@ -309,9 +309,9 @@
                     {%- elsif category_image != blank -%}
                       {{ category_image | image_url: width: 800 | image_tag: loading: 'lazy', decoding: 'async', class: 'lavee-category-img', alt: category_title }}
                     {%- elsif custom_img_url != blank -%}
-                      <img src="{{ custom_img_url }}" alt="{{ category_title | escape }}" class="lavee-category-img" loading="lazy" decoding="async">
+                      <img src="{{ custom_img_url }}" alt="{{ category_title | escape }}" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                     {%- else -%}
-                      <img src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="{{ category_title }}" class="lavee-category-img" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="{{ category_title | escape }}" width="800" height="1000" class="lavee-category-img" loading="lazy" decoding="async">
                     {%- endif -%}
                   {%- else -%}
                     {%- if category_image != blank -%}

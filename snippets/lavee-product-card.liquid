@@ -1,0 +1,291 @@
+{% comment %}
+  La Vee Atelier Reusable Luxury Product Card Snippet
+  Usage:
+    {% render 'lavee-product-card', product: product, size_guide_url: size_guide_url, show_secondary_image: section.settings.show_secondary_image %}
+    OR for custom block:
+    {% render 'lavee-product-card', block: block, size_guide_url: size_guide_url %}
+{% endcomment %}
+
+{{ 'section-lavee-new-arrivals.css' | asset_url | stylesheet_tag }}
+
+{%- if product != blank -%}
+  <!-- Render Shopify Product Object -->
+  {%- assign current_time_ts = 'now' | date: '%s' | minus: 2592000 | plus: 0 -%}
+  {%- assign product_created_ts = product.created_at | date: '%s' | plus: 0 -%}
+
+  <div class="lavee-card" data-pencil-name="Component/ProductCard" data-product-id="{{ product.id }}" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+    
+    <!-- Product Image Container -->
+    <div class="lavee-card__media" data-pencil-name="Product Image Container">
+      <div class="lavee-card__image-wrap">
+        <a href="{{ product.url }}" class="lavee-card__media-link" aria-label="{{ product.title | escape }}">
+          {%- if product.featured_media != blank -%}
+            <img 
+              src="{{ product.featured_media | image_url: width: 800 }}" 
+              alt="{{ product.featured_media.alt | default: product.title | escape }}" 
+              width="400" 
+              height="567" 
+              loading="lazy" 
+              class="lavee-card__image"
+            >
+            {%- if product.media[1] != blank and show_secondary_image != false -%}
+              <img 
+                src="{{ product.media[1] | image_url: width: 800 }}" 
+                alt="{{ product.title | escape }}" 
+                width="400" 
+                height="567" 
+                loading="lazy" 
+                class="lavee-card__image lavee-card__image--secondary"
+              >
+            {%- endif -%}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'lavee-card__image' }}
+          {%- endif -%}
+        </a>
+      </div>
+
+      <!-- Atelier Inner Frame Overlay -->
+      <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+        <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+          <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+            {%- if product.compare_at_price > product.price -%}
+              <span class="lavee-card__badge-pill lavee-card__badge-pill--sale" data-pencil-name="Badge Text">SALE</span>
+            {%- elsif product.tags contains 'new' or product.tags contains 'NEW' or product_created_ts > current_time_ts -%}
+              <span class="lavee-card__badge-pill" data-pencil-name="Badge Text">NEW ARRIVAL</span>
+            {%- else -%}
+              <span class="lavee-card__badge-pill" data-pencil-name="Badge Text">ATELIER</span>
+            {%- endif -%}
+          </div>
+
+          <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+            <span data-pencil-name="Heart Icon">♥</span>
+          </button>
+        </div>
+
+        <!-- Quick Size Select Bar -->
+        <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+          <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+            <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+              <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+              <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+            </span>
+            <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+          </div>
+          
+          <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+            {%- assign size_option_index = nil -%}
+            {%- for option in product.options_with_values -%}
+              {%- assign opt_name_down = option.name | downcase -%}
+              {%- if opt_name_down contains 'size' -%}
+                {%- assign size_option_index = forloop.index0 -%}
+                {%- for value in option.values -%}
+                  {%- assign matching_variant = nil -%}
+                  {%- for variant in product.variants -%}
+                    {%- if variant.options[size_option_index] == value -%}
+                      {%- assign matching_variant = variant -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <button type="button" class="lavee-card__size-pill {% if forloop.first %}is-selected{% endif %}" data-variant-id="{{ matching_variant.id | default: product.selected_or_first_available_variant.id }}" data-pencil-name="Size - {{ value | escape }}">{{ value | escape }}</button>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if size_option_index == nil -%}
+              {%- if product.variants.size > 1 -%}
+                {%- for variant in product.variants -%}
+                  <button type="button" class="lavee-card__size-pill {% if forloop.first %}is-selected{% endif %}" data-variant-id="{{ variant.id }}" data-pencil-name="Size - {{ variant.title | escape }}">{{ variant.title | escape }}</button>
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign default_var_id = product.selected_or_first_available_variant.id -%}
+                <button type="button" class="lavee-card__size-pill" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - XXS">XXS</button>
+                <button type="button" class="lavee-card__size-pill" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - XS">XS</button>
+                <button type="button" class="lavee-card__size-pill is-selected" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - S">S</button>
+                <button type="button" class="lavee-card__size-pill" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - M">M</button>
+                <button type="button" class="lavee-card__size-pill" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - L">L</button>
+                <button type="button" class="lavee-card__size-pill" data-variant-id="{{ default_var_id }}" data-pencil-name="Size - XL">XL</button>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Details Stack -->
+    <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+      
+      <!-- Color Swatches & Star Rating Row -->
+      <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+        {%- assign color_option = nil -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign opt_name_down = option.name | downcase -%}
+          {%- if opt_name_down contains 'color' or opt_name_down contains 'colour' -%}
+            {%- assign color_option = option -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if color_option != nil -%}
+          <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row" title="Hover to view all colors">
+            {%- assign total_colors = color_option.values.size -%}
+            {%- assign extra_colors_count = total_colors | minus: 3 -%}
+            {%- for value in color_option.values -%}
+              {%- assign color_downcase = value | downcase | strip -%}
+              {%- assign bg_color = color_downcase -%}
+              {%- case color_downcase -%}
+                {%- when 'black', 'noir black', 'noir' -%}{%- assign bg_color = '#161616' -%}
+                {%- when 'burgundy', 'deep burgundy', 'wine' -%}{%- assign bg_color = '#6E1F2A' -%}
+                {%- when 'olive', 'olive bronze' -%}{%- assign bg_color = '#4A452C' -%}
+                {%- when 'pink', 'blush rose', 'blush' -%}{%- assign bg_color = '#EBBBB9' -%}
+                {%- when 'ivory', 'cream' -%}{%- assign bg_color = '#F7F4EF' -%}
+                {%- when 'gold', 'champagne' -%}{%- assign bg_color = '#E6D8C3' -%}
+                {%- when 'white', 'pure white' -%}{%- assign bg_color = '#FFFFFF' -%}
+                {%- when 'navy', 'navy blue' -%}{%- assign bg_color = '#1A2E40' -%}
+              {%- endcase -%}
+              <span 
+                class="lavee-card__swatch-dot {% if forloop.first %}is-selected{% endif %} {% if forloop.index > 3 %}lavee-card__swatch-dot--extra{% endif %}" 
+                style="background-color: {{ bg_color }};" 
+                data-pencil-name="Swatch Dot {{ forloop.index }}" 
+                title="{{ value | escape }}"
+              ></span>
+            {%- endfor -%}
+            {%- if extra_colors_count > 0 -%}
+              <span class="lavee-card__swatch-more" data-count="+{{ extra_colors_count }}">+{{ extra_colors_count }}</span>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row">
+            <span class="lavee-card__swatch-dot is-selected" style="background-color: #4A452C;" title="Olive Bronze"></span>
+            <span class="lavee-card__swatch-dot" style="background-color: #161616;" title="Noir Black"></span>
+            <span class="lavee-card__swatch-dot" style="background-color: #EBBBB9;" title="Blush Rose"></span>
+            <span class="lavee-card__swatch-dot" style="background-color: #6E1F2A;" title="Deep Burgundy"></span>
+          </div>
+        {%- endif -%}
+
+        <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 4.9 (48)</span>
+      </div>
+
+      <!-- Title Row -->
+      <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+        <a href="{{ product.url }}" class="lavee-card__title" data-pencil-name="Product Title">{{ product.title | escape }}</a>
+      </div>
+
+      <!-- Price -->
+      <div class="lavee-card__price" data-pencil-name="Product Price">
+        {{ product.price | money_with_currency | default: "$189.00 USD" }}
+      </div>
+
+      <!-- Dual CTA Buttons -->
+      <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+        <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+          <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+        </button>
+        <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-pencil-name="Add to Cart Button">
+          <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+{%- elsif block != blank -%}
+  <!-- Render Custom Block Product Card -->
+  <div class="lavee-card" data-pencil-name="Component/ProductCard" {{ block.shopify_attributes }}>
+    <div class="lavee-card__media" data-pencil-name="Product Image Container">
+      <div class="lavee-card__image-wrap">
+        <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="lavee-card__media-link" aria-label="{{ block.settings.title | escape }}">
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}" width="400" height="567" loading="lazy" class="lavee-card__image">
+          {%- elsif block.settings.image_url != blank -%}
+            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title | escape }}" width="400" height="567" loading="lazy" class="lavee-card__image">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'lavee-card__image' }}
+          {%- endif -%}
+        </a>
+      </div>
+
+      <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+        <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+          <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+            <span class="lavee-card__badge-pill {% if block.settings.badge contains 'SALE' %}lavee-card__badge-pill--sale{% endif %}" data-pencil-name="Badge Text">
+              {{ block.settings.badge | default: "NEW ARRIVAL" | escape }}
+            </span>
+          </div>
+          <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+            <span data-pencil-name="Heart Icon">♥</span>
+          </button>
+        </div>
+
+        <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+          <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+            <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+              <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+              <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+            </span>
+            <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+          </div>
+          <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+            {%- if block.settings.sizes != blank -%}
+              {%- assign sizes_array = block.settings.sizes | split: ',' -%}
+              {%- for size_item in sizes_array -%}
+                {%- assign clean_size = size_item | strip -%}
+                <button type="button" class="lavee-card__size-pill {% if forloop.first %}is-selected{% endif %}" data-pencil-name="Size - {{ clean_size | escape }}">{{ clean_size | escape }}</button>
+              {%- endfor -%}
+            {%- else -%}
+              <button type="button" class="lavee-card__size-pill" data-pencil-name="Size - XXS">XXS</button>
+              <button type="button" class="lavee-card__size-pill" data-pencil-name="Size - XS">XS</button>
+              <button type="button" class="lavee-card__size-pill is-selected" data-pencil-name="Size - S">S</button>
+              <button type="button" class="lavee-card__size-pill" data-pencil-name="Size - M">M</button>
+              <button type="button" class="lavee-card__size-pill" data-pencil-name="Size - L">L</button>
+              <button type="button" class="lavee-card__size-pill" data-pencil-name="Size - XL">XL</button>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+      <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+        <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row" title="Hover to view all colors">
+          {%- assign colors_list = block.settings.colors | default: "Olive, Black, Pink, Burgundy" | split: ',' -%}
+          {%- assign total_block_colors = colors_list.size -%}
+          {%- assign extra_block_colors = total_block_colors | minus: 3 -%}
+          {%- for color_raw in colors_list -%}
+            {%- assign color_clean = color_raw | strip -%}
+            {%- assign color_down = color_clean | downcase -%}
+            {%- assign bg_color = color_down -%}
+            {%- case color_down -%}
+              {%- when 'black', 'noir black', 'noir' -%}{%- assign bg_color = '#161616' -%}
+              {%- when 'burgundy', 'deep burgundy', 'wine' -%}{%- assign bg_color = '#6E1F2A' -%}
+              {%- when 'olive', 'olive bronze' -%}{%- assign bg_color = '#4A452C' -%}
+              {%- when 'pink', 'blush rose', 'blush' -%}{%- assign bg_color = '#EBBBB9' -%}
+              {%- when 'ivory', 'cream' -%}{%- assign bg_color = '#F7F4EF' -%}
+              {%- when 'gold', 'champagne' -%}{%- assign bg_color = '#E6D8C3' -%}
+              {%- when 'white', 'pure white' -%}{%- assign bg_color = '#FFFFFF' -%}
+              {%- when 'navy', 'navy blue' -%}{%- assign bg_color = '#1A2E40' -%}
+            {%- endcase -%}
+            <span class="lavee-card__swatch-dot {% if forloop.first %}is-selected{% endif %} {% if forloop.index > 3 %}lavee-card__swatch-dot--extra{% endif %}" style="background-color: {{ bg_color }};" title="{{ color_clean | escape }}"></span>
+          {%- endfor -%}
+          {%- if extra_block_colors > 0 -%}
+            <span class="lavee-card__swatch-more" data-count="+{{ extra_block_colors }}">+{{ extra_block_colors }}</span>
+          {%- endif -%}
+        </div>
+        <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 4.9 (48)</span>
+      </div>
+
+      <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+        <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="lavee-card__title" data-pencil-name="Product Title">{{ block.settings.title | default: "Aura Corset Satin Midi" }}</a>
+      </div>
+
+      <div class="lavee-card__price" data-pencil-name="Product Price">{{ block.settings.price | default: "$189.00 USD" }}</div>
+
+      <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+        <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+          <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+        </button>
+        <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-pencil-name="Add to Cart Button">
+          <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+        </button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

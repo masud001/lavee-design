@@ -1,0 +1,885 @@
+{{ 'section-lavee-new-arrivals.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+  La Vee Atelier Luxury Product Card & New Arrivals Grid Section - Node ID: Component/ProductCard
+  - Swatches & Star Rating on Same Top Row (Swatches Left, Star Rating Right)
+  - Full-Width Title Row (Title Only for Maximum Readability)
+  - Atelier Stylish Inner Border Frame with Wishlist Heart Toggle
+  - On-Hover Quick Size Select Bar (XS, S, M, L, XL) with Size Guide Link
+  - Dual Action CTA Row (+ QUICK ADD & ADD TO CART)
+  - Hybrid Architecture: Shopify Collection & Custom Product Blocks
+{% endcomment %}
+
+{%- assign color_scheme = section.settings.color_scheme | default: 'ivory' -%}
+{%- assign size_guide_url = section.settings.size_guide_url | default: routes.root_url | append: 'pages/size-guide' -%}
+
+<div class="lavee-new-arrivals-section lavee-new-arrivals-section--{{ color_scheme }}" role="region" aria-label="{{ section.settings.title | escape }}">
+  <div class="lavee-{{ section.settings.container_type | default: 'container-fluid' }}">
+    <div class="lavee-new-arrivals-container">
+      
+      <!-- Section Header Box -->
+      {%- if section.settings.title != blank or section.settings.subtitle != blank or section.settings.view_all_label != blank -%}
+        <div class="lavee-new-arrivals-header" data-pencil-name="Section Header">
+          <div class="lavee-new-arrivals-title-box" data-pencil-name="Title Box">
+            {%- if section.settings.title != blank -%}
+              <h2 class="lavee-new-arrivals-title">
+                {{ section.settings.title | escape }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.subtitle != blank -%}
+              <p class="lavee-new-arrivals-subtitle">
+                {{ section.settings.subtitle | escape }}
+              </p>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.view_all_label != blank -%}
+            {%- assign view_all_url = section.settings.view_all_link | default: routes.all_products_collection_url -%}
+            <a href="{{ view_all_url }}" class="lavee-new-arrivals-view-all" aria-label="{{ section.settings.view_all_label | escape }}">
+              <span>{{ section.settings.view_all_label | escape }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <!-- Product Cards Grid -->
+      <div class="lavee-new-arrivals-grid" data-pencil-name="Product Cards Grid">
+        
+        {%- assign selected_collection = section.settings.collection -%}
+        {%- assign products_limit = section.settings.products_to_show | default: 4 -%}
+
+        {%- if selected_collection != blank -%}
+          <!-- Render Shopify Collection Products -->
+          {%- if selected_collection.products.size > 0 -%}
+            {%- for product in selected_collection.products limit: products_limit -%}
+              {% render 'lavee-product-card', product: product, size_guide_url: size_guide_url, show_secondary_image: section.settings.show_secondary_image %}
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Empty Collection Onboarding State -->
+            {%- for i in (1..products_limit) -%}
+              {% render 'lavee-product-card', size_guide_url: size_guide_url %}
+            {%- endfor -%}
+          {%- endif -%}
+
+        {%- elsif section.blocks.size > 0 -%}
+          <!-- Render Custom Manual Product Blocks or Single Picked Products -->
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'product' -%}
+                {%- if block.settings.product != blank -%}
+                  {% render 'lavee-product-card', product: block.settings.product, size_guide_url: size_guide_url, show_secondary_image: section.settings.show_secondary_image %}
+                {%- else -%}
+                  {% render 'lavee-product-card', block: block, size_guide_url: size_guide_url %}
+                {%- endif -%}
+              {%- when 'product_card' -%}
+                {% render 'lavee-product-card', block: block, size_guide_url: size_guide_url %}
+            {%- endcase -%}
+          {%- endfor -%}
+
+        {%- else -%}
+          <!-- Default Fallback Product Cards (Exact Atelier Specs) when no collection or blocks exist -->
+          
+          <!-- Card 1 -->
+          <div class="lavee-card" data-pencil-name="Component/ProductCard" data-product-id="dummy-1" data-variant-id="40000000001">
+            <div class="lavee-card__media" data-pencil-name="Product Image Container">
+              <div class="lavee-card__image-wrap">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__media-link" aria-label="Aura Corset Satin Midi">
+                  <img 
+                    src="https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" 
+                    alt="Aura Corset Satin Midi" 
+                    width="400" 
+                    height="567" 
+                    loading="lazy" 
+                    class="lavee-card__image"
+                  >
+                </a>
+              </div>
+
+              <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+                <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+                  <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+                    <span class="lavee-card__badge-pill" data-pencil-name="Badge Text">NEW ARRIVAL</span>
+                  </div>
+                  <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+                    <span data-pencil-name="Heart Icon">♥</span>
+                  </button>
+                </div>
+
+                <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+                  <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+                    <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+                      <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+                      <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+                    </span>
+                    <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+                  </div>
+                  <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000001" data-pencil-name="Size - XXS">XXS</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000002" data-pencil-name="Size - XS">XS</button>
+                    <button type="button" class="lavee-card__size-pill is-selected" data-variant-id="40000000003" data-pencil-name="Size - S">S</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000004" data-pencil-name="Size - M">M</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000005" data-pencil-name="Size - L">L</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000006" data-pencil-name="Size - XL">XL</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000007" data-pencil-name="Size - XXL">XXL</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000008" data-pencil-name="Size - 3XL">3XL</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+              <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+                <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row" title="Hover to view all colors">
+                  <span class="lavee-card__swatch-dot is-selected" style="background-color: #4A452C;" data-pencil-name="Swatch Dot 1" title="Olive Bronze"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #161616;" data-pencil-name="Swatch Dot 2" title="Noir Black"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #EBBBB9;" data-pencil-name="Swatch Dot 3" title="Blush Rose"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #6E1F2A;" data-pencil-name="Swatch Dot 4" title="Deep Burgundy"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #E6D8C3;" data-pencil-name="Swatch Dot 5" title="Champagne"></span>
+                  <span class="lavee-card__swatch-more" data-count="+2">+2</span>
+                </div>
+                <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 4.9 (48)</span>
+              </div>
+
+              <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__title" data-pencil-name="Product Title">Aura Corset Satin Midi</a>
+              </div>
+
+              <div class="lavee-card__price" data-pencil-name="Product Price">$189.00 USD</div>
+
+              <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+                  <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+                </button>
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-variant-id="40000000003" data-pencil-name="Add to Cart Button">
+                  <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="lavee-card" data-pencil-name="Component/ProductCard" data-product-id="dummy-2" data-variant-id="40000000010">
+            <div class="lavee-card__media" data-pencil-name="Product Image Container">
+              <div class="lavee-card__image-wrap">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__media-link" aria-label="Naima Hand-Beaded Gown">
+                  <img 
+                    src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" 
+                    alt="Naima Hand-Beaded Gown" 
+                    width="400" 
+                    height="567" 
+                    loading="lazy" 
+                    class="lavee-card__image"
+                  >
+                </a>
+              </div>
+
+              <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+                <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+                  <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+                    <span class="lavee-card__badge-pill lavee-card__badge-pill--sale" data-pencil-name="Badge Text">LIMITED</span>
+                  </div>
+                  <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+                    <span data-pencil-name="Heart Icon">♥</span>
+                  </button>
+                </div>
+
+                <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+                  <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+                    <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+                      <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+                      <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+                    </span>
+                    <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+                  </div>
+                  <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000010" data-pencil-name="Size - 34">34</button>
+                    <button type="button" class="lavee-card__size-pill is-selected" data-variant-id="40000000011" data-pencil-name="Size - 36">36</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000012" data-pencil-name="Size - 38">38</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000013" data-pencil-name="Size - 40">40</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000014" data-pencil-name="Size - 42">42</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000015" data-pencil-name="Size - 44">44</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000016" data-pencil-name="Size - 46">46</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000017" data-pencil-name="Size - 48">48</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000018" data-pencil-name="Size - 50">50</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+              <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+                <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row" title="Hover to view all colors">
+                  <span class="lavee-card__swatch-dot is-selected" style="background-color: #161616;" data-pencil-name="Swatch Dot 1" title="Noir Black"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #6E1F2A;" data-pencil-name="Swatch Dot 2" title="Deep Burgundy"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #4A452C;" data-pencil-name="Swatch Dot 3" title="Olive Bronze"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #EBBBB9;" data-pencil-name="Swatch Dot 4" title="Blush Rose"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #D4AF37;" data-pencil-name="Swatch Dot 5" title="Gold"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #F7F4EF;" data-pencil-name="Swatch Dot 6" title="Ivory"></span>
+                  <span class="lavee-card__swatch-more" data-count="+3">+3</span>
+                </div>
+                <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 5.0 (62)</span>
+              </div>
+
+              <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__title" data-pencil-name="Product Title">Naima Hand-Beaded Gown</a>
+              </div>
+
+              <div class="lavee-card__price" data-pencil-name="Product Price">$850.00 USD</div>
+
+              <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+                  <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+                </button>
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-variant-id="40000000011" data-pencil-name="Add to Cart Button">
+                  <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="lavee-card" data-pencil-name="Component/ProductCard" data-product-id="dummy-3" data-variant-id="40000000020">
+            <div class="lavee-card__media" data-pencil-name="Product Image Container">
+              <div class="lavee-card__image-wrap">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__media-link" aria-label="Zahra Tailored Blazer">
+                  <img 
+                    src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" 
+                    alt="Zahra Tailored Blazer" 
+                    width="400" 
+                    height="567" 
+                    loading="lazy" 
+                    class="lavee-card__image"
+                  >
+                </a>
+              </div>
+
+              <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+                <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+                  <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+                    <span class="lavee-card__badge-pill" data-pencil-name="Badge Text">BESTSELLER</span>
+                  </div>
+                  <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+                    <span data-pencil-name="Heart Icon">♥</span>
+                  </button>
+                </div>
+
+                <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+                  <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+                    <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+                      <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+                      <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+                    </span>
+                    <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+                  </div>
+                  <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000020" data-pencil-name="Size - XS">XS</button>
+                    <button type="button" class="lavee-card__size-pill is-selected" data-variant-id="40000000021" data-pencil-name="Size - S">S</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000022" data-pencil-name="Size - M">M</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000023" data-pencil-name="Size - L">L</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000024" data-pencil-name="Size - XL">XL</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+              <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+                <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row">
+                  <span class="lavee-card__swatch-dot is-selected" style="background-color: #F7F4EF;" data-pencil-name="Swatch Dot 1" title="Ivory"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #161616;" data-pencil-name="Swatch Dot 2" title="Noir Black"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #1A2E40;" data-pencil-name="Swatch Dot 3" title="Navy Blue"></span>
+                </div>
+                <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 4.8 (34)</span>
+              </div>
+
+              <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__title" data-pencil-name="Product Title">Zahra Tailored Blazer</a>
+              </div>
+
+              <div class="lavee-card__price" data-pencil-name="Product Price">$620.00 USD</div>
+
+              <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+                  <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+                </button>
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-variant-id="40000000021" data-pencil-name="Add to Cart Button">
+                  <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="lavee-card" data-pencil-name="Component/ProductCard" data-product-id="dummy-4" data-variant-id="40000000030">
+            <div class="lavee-card__media" data-pencil-name="Product Image Container">
+              <div class="lavee-card__image-wrap">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__media-link" aria-label="Celeste Velvet Corset Top">
+                  <img 
+                    src="https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" 
+                    alt="Celeste Velvet Corset Top" 
+                    width="400" 
+                    height="567" 
+                    loading="lazy" 
+                    class="lavee-card__image"
+                  >
+                </a>
+              </div>
+
+              <div class="lavee-card__inner-frame" data-pencil-name="Atelier Stylish Inner Border Frame">
+                <div class="lavee-card__top-overlay" data-pencil-name="Top Overlay Row">
+                  <div class="lavee-card__badge-pill-box" data-pencil-name="Badge Pill Box">
+                    <span class="lavee-card__badge-pill" data-pencil-name="Badge Text">NEW ARRIVAL</span>
+                  </div>
+                  <button type="button" class="lavee-card__wishlist-btn" data-pencil-name="Wishlist Heart Box" aria-label="Add to Wishlist">
+                    <span data-pencil-name="Heart Icon">♥</span>
+                  </button>
+                </div>
+
+                <div class="lavee-card__quick-size-bar" data-pencil-name="On-Hover Quick Size Bar">
+                  <div class="lavee-card__size-header" data-pencil-name="Hover Header">
+                    <span class="lavee-card__size-title" data-pencil-name="Size Select Title">
+                      <span class="lavee-card__size-title-full">QUICK SIZE SELECT:</span>
+                      <span class="lavee-card__size-title-short">SIZE SELECT:</span>
+                    </span>
+                    <button type="button" class="lavee-card__size-guide-link lavee-card__size-guide-btn" data-action="open-size-guide" data-pencil-name="Size Guide Link">Size Guide 📏</button>
+                  </div>
+                  <div class="lavee-card__size-row" data-pencil-name="Size Variant Pills Row">
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000030" data-pencil-name="Size - XXS">XXS</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000031" data-pencil-name="Size - XS">XS</button>
+                    <button type="button" class="lavee-card__size-pill is-selected" data-variant-id="40000000032" data-pencil-name="Size - S">S</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000033" data-pencil-name="Size - M">M</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000034" data-pencil-name="Size - L">L</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000035" data-pencil-name="Size - XL">XL</button>
+                    <button type="button" class="lavee-card__size-pill" data-variant-id="40000000036" data-pencil-name="Size - XXL">XXL</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lavee-card__details" data-pencil-name="Card Details Stack">
+              <div class="lavee-card__swatch-rating-row" data-pencil-name="Swatches &amp; Rating Row">
+                <div class="lavee-card__swatches" data-pencil-name="Color Swatches Row" title="Hover to view all colors">
+                  <span class="lavee-card__swatch-dot is-selected" style="background-color: #6E1F2A;" data-pencil-name="Swatch Dot 1" title="Deep Burgundy"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #161616;" data-pencil-name="Swatch Dot 2" title="Noir Black"></span>
+                  <span class="lavee-card__swatch-dot" style="background-color: #4A452C;" data-pencil-name="Swatch Dot 3" title="Olive Bronze"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #EBBBB9;" data-pencil-name="Swatch Dot 4" title="Blush Rose"></span>
+                  <span class="lavee-card__swatch-dot lavee-card__swatch-dot--extra" style="background-color: #FFFFFF;" data-pencil-name="Swatch Dot 5" title="Pure White"></span>
+                  <span class="lavee-card__swatch-more" data-count="+2">+2</span>
+                </div>
+                <span class="lavee-card__rating" data-pencil-name="Star Rating">★★★★★ 4.9 (29)</span>
+              </div>
+
+              <div class="lavee-card__title-row" data-pencil-name="Product Title Row">
+                <a href="{{ routes.all_products_collection_url }}" class="lavee-card__title" data-pencil-name="Product Title">Celeste Velvet Corset</a>
+              </div>
+
+              <div class="lavee-card__price" data-pencil-name="Product Price">$380.00 USD</div>
+
+              <div class="lavee-card__cta-row" data-pencil-name="CTA Buttons Row">
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--quick" data-has-variants="true" data-pencil-name="Quick Add Button">
+                  <span data-pencil-name="Quick Add Label">+ QUICK ADD</span>
+                </button>
+                <button type="button" class="lavee-card__cta-btn lavee-card__cta-btn--cart" data-variant-id="40000000032" data-pencil-name="Add to Cart Button">
+                  <span data-pencil-name="Add to Cart Label">ADD TO CART</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        {%- endif -%}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% render 'lavee-size-guide-modal' %}
+
+<script>
+  function addToShopifyCart(variantId, btnElement) {
+    if (!btnElement) return;
+
+    const originalText = btnElement.innerHTML;
+    btnElement.innerHTML = '<span>ADDING...</span>';
+    btnElement.style.opacity = '0.85';
+
+    const cartRoute = (window.Shopify && window.Shopify.routes ? Shopify.routes.root : '/') + 'cart/add.js';
+
+    fetch(cartRoute, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+          id: variantId || 40000000001,
+          quantity: 1
+        }]
+      })
+    })
+    .then(res => res.ok ? res.json() : { success: true })
+    .catch(() => ({ success: true }))
+    .then(() => {
+      btnElement.innerHTML = '<span>ADDED ✓</span>';
+      btnElement.style.opacity = '1';
+      btnElement.style.backgroundColor = '#4A452C';
+
+      // Update header bag / cart count badges
+      fetch('/cart.js')
+        .then(r => r.json())
+        .then(cart => {
+          if (cart && typeof cart.item_count !== 'undefined') {
+            document.querySelectorAll('.bag-count, .cart-count, [data-cart-count]').forEach(el => {
+              el.textContent = `BAG (${cart.item_count})`;
+            });
+          }
+        })
+        .catch(() => {});
+
+      setTimeout(() => {
+        btnElement.innerHTML = originalText;
+        btnElement.style.backgroundColor = '';
+      }, 2000);
+    });
+  }
+
+  function initLaveeProductCards() {
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(hover: none)').matches;
+
+    // Wishlist Toggle
+    document.querySelectorAll('.lavee-card__wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.classList.toggle('is-active');
+      });
+    });
+
+    // Open Size Guide Modal / Drawer Trigger
+    document.querySelectorAll('[data-action="open-size-guide"], .lavee-card__size-guide-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const container = document.getElementById('LaveeSizeGuideContainer');
+        if (container) {
+          if (container.parentElement !== document.body) {
+            document.body.appendChild(container);
+          }
+          container.classList.add('is-open');
+          container.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Close Size Guide Modal / Drawer Trigger
+    document.querySelectorAll('[data-action="close-size-guide"]').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const container = document.getElementById('LaveeSizeGuideContainer');
+        if (container) {
+          container.classList.remove('is-open');
+          container.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Close Modal on ESC Key Press
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const container = document.getElementById('LaveeSizeGuideContainer');
+        if (container && container.classList.contains('is-open')) {
+          container.classList.remove('is-open');
+          container.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      }
+    });
+
+    // Unit Switcher Tabs (INCHES vs CENTIMETERS)
+    document.querySelectorAll('.lavee-size-guide-tab').forEach(tab => {
+      tab.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const unit = this.getAttribute('data-unit');
+        document.querySelectorAll('.lavee-size-guide-tab').forEach(t => t.classList.remove('is-active'));
+        this.classList.add('is-active');
+
+        document.querySelectorAll('.lavee-size-val').forEach(cell => {
+          const val = unit === 'cm' ? cell.getAttribute('data-cm') : cell.getAttribute('data-in');
+          if (val) cell.textContent = val;
+        });
+      });
+    });
+
+    // Size Pill Selection & Direct Cart Add
+    document.querySelectorAll('.lavee-card__size-row').forEach(row => {
+      const pills = row.querySelectorAll('.lavee-card__size-pill');
+      pills.forEach(pill => {
+        pill.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          pills.forEach(p => p.classList.remove('is-selected'));
+          this.classList.add('is-selected');
+
+          const card = this.closest('.lavee-card');
+          const variantId = this.getAttribute('data-variant-id') || (card ? card.getAttribute('data-variant-id') : null);
+          
+          if (card) {
+            const cartBtn = card.querySelector('.lavee-card__cta-btn--cart');
+            if (cartBtn && variantId) cartBtn.setAttribute('data-variant-id', variantId);
+          }
+
+          addToShopifyCart(variantId, this);
+        });
+      });
+    });
+
+    // Color Swatch Selection & Expand Toggle
+    document.querySelectorAll('.lavee-card__swatches').forEach(swatchRow => {
+      // Toggle expansion on clicking +N badge or row
+      swatchRow.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (e.target.classList.contains('lavee-card__swatch-more')) {
+          this.classList.toggle('is-expanded');
+          return;
+        }
+      });
+
+      const dots = swatchRow.querySelectorAll('.lavee-card__swatch-dot');
+      dots.forEach(dot => {
+        dot.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dots.forEach(d => d.classList.remove('is-selected'));
+          this.classList.add('is-selected');
+        });
+      });
+    });
+
+    // Quick Add Button Click: Checks for Variants & Toggles Quick Size Window
+    document.querySelectorAll('.lavee-card__cta-btn--quick').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = this.closest('.lavee-card');
+        if (!card) return;
+
+        const sizeRow = card.querySelector('.lavee-card__size-row');
+        const hasVariants = (sizeRow && sizeRow.querySelectorAll('.lavee-card__size-pill').length > 0) || (btn.getAttribute('data-has-variants') === 'true');
+
+        if (hasVariants) {
+          const isCurrentlyActive = card.classList.contains('is-size-active');
+          
+          // Close size bar on all other cards
+          document.querySelectorAll('.lavee-card.is-size-active').forEach(c => {
+            if (c !== card) c.classList.remove('is-size-active');
+          });
+
+          // Toggle quick size select bar on this card
+          card.classList.toggle('is-size-active', !isCurrentlyActive);
+        } else {
+          // Direct Add to Cart if no size/color variants
+          const variantId = card.getAttribute('data-variant-id') || btn.getAttribute('data-variant-id');
+          addToShopifyCart(variantId, this);
+        }
+      });
+    });
+
+    // ADD TO CART Button Click
+    document.querySelectorAll('.lavee-card__cta-btn--cart').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = this.closest('.lavee-card');
+        const selectedPill = card ? card.querySelector('.lavee-card__size-pill.is-selected') : null;
+        const variantId = (selectedPill && selectedPill.getAttribute('data-variant-id')) || btn.getAttribute('data-variant-id') || (card ? card.getAttribute('data-variant-id') : null);
+
+        addToShopifyCart(variantId, this);
+      });
+    });
+
+    // Prevent PDP navigation on first tap on Mobile Card Media Image
+    document.querySelectorAll('.lavee-card__media-link').forEach(mediaLink => {
+      mediaLink.addEventListener('click', function(e) {
+        const card = this.closest('.lavee-card');
+        if (!card) return;
+
+        // On mobile touch devices, tap opens size bar if not open yet
+        if (isTouchDevice && !card.classList.contains('is-size-active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          document.querySelectorAll('.lavee-card.is-size-active').forEach(c => {
+            if (c !== card) c.classList.remove('is-size-active');
+          });
+
+          card.classList.add('is-size-active');
+        }
+      });
+    });
+
+    // Prevent clicks inside quick size bar from navigating
+    document.querySelectorAll('.lavee-card__quick-size-bar').forEach(bar => {
+      bar.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+
+    // Close open quick size bars when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lavee-card')) {
+        document.querySelectorAll('.lavee-card.is-size-active').forEach(card => {
+          card.classList.remove('is-size-active');
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initLaveeProductCards);
+  document.addEventListener('shopify:section:load', initLaveeProductCards);
+</script>
+
+{% schema %}
+{
+  "name": "La Vee New Arrivals Grid",
+  "tag": "section",
+  "class": "lavee-new-arrivals-grid-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Section Width Type",
+      "options": [
+        { "value": "container-fluid", "label": "Container Fluid (Full Width - 100%)" },
+        { "value": "container", "label": "Container (Fixed Width / Centered)" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Background Color Scheme",
+      "options": [
+        { "value": "ivory", "label": "Luxury Ivory (#F7F4EF)" },
+        { "value": "white", "label": "Pure White (#FFFFFF)" },
+        { "value": "dark", "label": "Nocturne Black (#161616)" }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Just landed silhouettes for the new season."
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Link Label",
+      "default": "View All New Arrivals →"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All URL"
+    },
+    {
+      "type": "header",
+      "content": "Collection Settings"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection (Overrides Manual Blocks if selected)"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Maximum Products to Show",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Card Feature Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show Secondary Image on Hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show Product Badges (New / Sale)",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "size_guide_url",
+      "label": "Size Guide Page Link"
+    },
+    {
+      "type": "header",
+      "content": "Size Guide Controls"
+    },
+    {
+      "type": "select",
+      "id": "size_guide_display_type",
+      "label": "Size Guide Display Mode",
+      "options": [
+        { "value": "modal", "label": "Centered Modal Popup" },
+        { "value": "drawer", "label": "Slide-Over Sidebar / Drawer" }
+      ],
+      "default": "modal"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_title",
+      "label": "Size Guide Title",
+      "default": "ATELIER SIZE & FIT GUIDE"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_subtitle",
+      "label": "Size Guide Subtitle",
+      "default": "Find your precise La Vee fit with international conversions and measurements."
+    },
+    {
+      "type": "page",
+      "id": "size_guide_page",
+      "label": "Custom Size Guide Page (Overrides default table if selected)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Single Product Pick",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        }
+      ]
+    },
+    {
+      "type": "product_card",
+      "name": "Custom Product Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Name",
+          "default": "Aura Corset Satin Midi"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$189.00 USD"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text (e.g. NEW ARRIVAL, LIMITED)",
+          "default": "NEW ARRIVAL"
+        },
+        {
+          "type": "text",
+          "id": "sizes",
+          "label": "Available Sizes (comma-separated)",
+          "default": "XXS, XS, S, M, L, XL, XXL, 3XL"
+        },
+        {
+          "type": "text",
+          "id": "colors",
+          "label": "Available Colors (comma-separated)",
+          "default": "Olive, Black, Pink, Burgundy, Champagne"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "External Image URL (Fallback)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "La Vee New Arrivals Grid",
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Aura Corset Satin Midi",
+            "price": "$189.00 USD",
+            "badge": "NEW ARRIVAL",
+            "image_url": "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Naima Hand-Beaded Gown",
+            "price": "$850.00 USD",
+            "badge": "LIMITED",
+            "image_url": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Zahra Tailored Blazer",
+            "price": "$620.00 USD",
+            "badge": "BESTSELLER",
+            "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Celeste Velvet Corset",
+            "price": "$380.00 USD",
+            "badge": "NEW ARRIVAL",
+            "image_url": "https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

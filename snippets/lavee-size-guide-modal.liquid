@@ -1,0 +1,268 @@
+{{ 'section-lavee-new-arrivals.css' | asset_url | stylesheet_tag }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
+{%- assign display_type = display_mode | default: section.settings.size_guide_display_type | default: 'modal' -%}
+{%- assign modal_title = section.settings.size_guide_title | default: 'ATELIER SIZE & FIT GUIDE' -%}
+{%- assign modal_subtitle = section.settings.size_guide_subtitle | default: 'Find your precise La Vee fit with international conversions and measurements.' -%}
+{%- assign custom_size_page = section.settings.size_guide_page | default: pages['size-guide'] -%}
+
+<!-- Size Guide Modal / Drawer Overlay Container -->
+<div id="LaveeSizeGuideContainer" class="lavee-size-guide-wrapper lavee-size-guide-wrapper--{{ display_type }}" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="LaveeSizeGuideTitle">
+  <div class="lavee-size-guide-backdrop" data-action="close-size-guide" aria-label="Close modal overlay"></div>
+
+  <div class="lavee-size-guide-dialog" data-pencil-name="Component/SizeGuideModal">
+    
+    <!-- Modal Header -->
+    <div class="lavee-size-guide-header" data-pencil-name="Modal Header">
+      <div class="lavee-size-guide-header-text" data-pencil-name="Header Text Box">
+        <h2 id="LaveeSizeGuideTitle" class="lavee-size-guide-title" data-pencil-name="Modal Title">{{ modal_title | escape }}</h2>
+        <p class="lavee-size-guide-subtitle" data-pencil-name="Modal Subtitle">{{ modal_subtitle | escape }}</p>
+      </div>
+
+      <button type="button" class="lavee-size-guide-close-btn" data-action="close-size-guide" data-pencil-name="Close Button" aria-label="Close Size Guide">
+        <span data-pencil-name="Close Icon">✕</span>
+      </button>
+    </div>
+
+    {%- if product.metafields.custom.size_guide != blank -%}
+      <!-- Product Metafield Custom Size Guide Content -->
+      <div class="lavee-size-guide-dynamic-content" data-pencil-name="Product Metafield Content">
+        {{ product.metafields.custom.size_guide.value }}
+      </div>
+    {%- elsif custom_size_page != blank and custom_size_page.content != blank -%}
+      <!-- Shopify Admin Size Guide Page Content -->
+      <div class="lavee-size-guide-dynamic-content" data-pencil-name="Shopify Page Content">
+        {{ custom_size_page.content }}
+      </div>
+    {%- else -%}
+
+    <!-- Unit Switcher & Fit Note Bar -->
+    <div class="lavee-size-guide-unit-bar" data-pencil-name="Unit Switcher Bar">
+      <div class="lavee-size-guide-tabs-row" data-pencil-name="Tabs Row">
+        <button type="button" class="lavee-size-guide-tab is-active" data-unit="inches" data-pencil-name="Tab - Inches (Active)">INCHES (IN)</button>
+        <button type="button" class="lavee-size-guide-tab" data-unit="cm" data-pencil-name="Tab - CM">CENTIMETERS (CM)</button>
+      </div>
+
+      <div class="lavee-size-guide-fit-note" data-pencil-name="Fit Note">
+        Fits true to size. Model wears size S.
+      </div>
+    </div>
+
+    <!-- Size Measurements Table Container -->
+    <div class="lavee-size-guide-table-wrap" data-pencil-name="Size Table Container">
+      <table class="lavee-size-guide-table">
+        <thead>
+          <tr class="lavee-size-guide-th-row" data-pencil-name="Table Header Row">
+            <th>SIZE</th>
+            <th>BUST</th>
+            <th>WAIST</th>
+            <th>HIPS</th>
+            <th>US / CA</th>
+            <th>UK / AU</th>
+            <th>EU</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row XS -->
+          <tr data-pencil-name="Row XS">
+            <td class="lavee-size-guide-cell-size">XS (0)</td>
+            <td class="lavee-size-val" data-in="31.5″ – 32.5″" data-cm="80 – 83 cm">31.5″ – 32.5″</td>
+            <td class="lavee-size-val" data-in="24.0″ – 25.0″" data-cm="61 – 64 cm">24.0″ – 25.0″</td>
+            <td class="lavee-size-val" data-in="34.5″ – 35.5″" data-cm="88 – 90 cm">34.5″ – 35.5″</td>
+            <td class="lavee-size-guide-cell-muted">0 – 2</td>
+            <td class="lavee-size-guide-cell-muted">4 – 6</td>
+            <td class="lavee-size-guide-cell-muted">32 – 34</td>
+          </tr>
+
+          <!-- Row S (Highlighted) -->
+          <tr class="is-highlighted" data-pencil-name="Row S (Highlighted)">
+            <td class="lavee-size-guide-cell-size lavee-size-guide-cell-size--highlight">S (1) ★</td>
+            <td class="lavee-size-val" data-in="33.5″ – 34.5″" data-cm="85 – 88 cm">33.5″ – 34.5″</td>
+            <td class="lavee-size-val" data-in="26.0″ – 27.0″" data-cm="66 – 69 cm">26.0″ – 27.0″</td>
+            <td class="lavee-size-val" data-in="36.5″ – 37.5″" data-cm="93 – 95 cm">36.5″ – 37.5″</td>
+            <td>4 – 6</td>
+            <td>8 – 10</td>
+            <td>36 – 38</td>
+          </tr>
+
+          <!-- Row M -->
+          <tr data-pencil-name="Row M">
+            <td class="lavee-size-guide-cell-size">M (2)</td>
+            <td class="lavee-size-val" data-in="35.5″ – 36.5″" data-cm="90 – 93 cm">35.5″ – 36.5″</td>
+            <td class="lavee-size-val" data-in="28.0″ – 29.0″" data-cm="71 – 74 cm">28.0″ – 29.0″</td>
+            <td class="lavee-size-val" data-in="38.5″ – 39.5″" data-cm="98 – 100 cm">38.5″ – 39.5″</td>
+            <td class="lavee-size-guide-cell-muted">8 – 10</td>
+            <td class="lavee-size-guide-cell-muted">12 – 14</td>
+            <td class="lavee-size-guide-cell-muted">40 – 42</td>
+          </tr>
+
+          <!-- Row L -->
+          <tr data-pencil-name="Row L">
+            <td class="lavee-size-guide-cell-size">L (3)</td>
+            <td class="lavee-size-val" data-in="37.5″ – 39.0″" data-cm="95 – 99 cm">37.5″ – 39.0″</td>
+            <td class="lavee-size-val" data-in="30.0″ – 31.5″" data-cm="76 – 80 cm">30.0″ – 31.5″</td>
+            <td class="lavee-size-val" data-in="40.5″ – 42.0″" data-cm="103 – 107 cm">40.5″ – 42.0″</td>
+            <td class="lavee-size-guide-cell-muted">12 – 14</td>
+            <td class="lavee-size-guide-cell-muted">16 – 18</td>
+            <td class="lavee-size-guide-cell-muted">44 – 46</td>
+          </tr>
+
+          <!-- Row XL -->
+          <tr data-pencil-name="Row XL">
+            <td class="lavee-size-guide-cell-size">XL (4)</td>
+            <td class="lavee-size-val" data-in="39.5″ – 41.0″" data-cm="100 – 104 cm">39.5″ – 41.0″</td>
+            <td class="lavee-size-val" data-in="32.0″ – 33.5″" data-cm="81 – 85 cm">32.0″ – 33.5″</td>
+            <td class="lavee-size-val" data-in="42.5″ – 44.0″" data-cm="108 – 112 cm">42.5″ – 44.0″</td>
+            <td class="lavee-size-guide-cell-muted">16</td>
+            <td class="lavee-size-guide-cell-muted">20</td>
+            <td class="lavee-size-guide-cell-muted">48</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- How To Measure Advice Box -->
+    <div class="lavee-size-guide-advice-box" data-pencil-name="How To Measure Advice Box">
+      <div class="lavee-size-guide-advice-title" data-pencil-name="Advice Title">
+        📏 HOW TO MEASURE YOUR BODY
+      </div>
+      
+      <div class="lavee-size-guide-advice-tips" data-pencil-name="Tips Grid">
+        <div class="lavee-size-guide-tip-item">
+          <span class="lavee-size-guide-tip-label">1. BUST</span>
+          <span class="lavee-size-guide-tip-desc">Measure across fullest part of bust with tape horizontal.</span>
+        </div>
+        <div class="lavee-size-guide-tip-item">
+          <span class="lavee-size-guide-tip-label">2. WAIST</span>
+          <span class="lavee-size-guide-tip-desc">Measure around your narrowest natural waistline.</span>
+        </div>
+        <div class="lavee-size-guide-tip-item">
+          <span class="lavee-size-guide-tip-label">3. HIPS</span>
+          <span class="lavee-size-guide-tip-desc">Measure around the widest point of hips with feet together.</span>
+        </div>
+      </div>
+    </div>
+    {%- endif -%}
+
+    <!-- Bottom CTA Bar -->
+    <div class="lavee-size-guide-cta-bar" data-pencil-name="Bottom CTA Bar">
+      <button type="button" class="lavee-size-guide-cta-btn" data-action="close-size-guide" data-pencil-name="Close Modal CTA Button">
+        <span>GOT IT, CLOSE GUIDE</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    if (typeof window.laveeSizeGuideInit === 'undefined') {
+      window.laveeSizeGuideInit = true;
+
+      window.openLaveeSizeGuide = function() {
+        const container = document.getElementById('LaveeSizeGuideContainer');
+        if (!container) return;
+
+        if (container.parentElement !== document.body) {
+          document.body.appendChild(container);
+        }
+
+        const backdrop = container.querySelector('.lavee-size-guide-backdrop');
+        const dialog = container.querySelector('.lavee-size-guide-dialog');
+        const isDrawer = container.classList.contains('lavee-size-guide-wrapper--drawer');
+
+        container.classList.add('is-open');
+        container.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        if (backdrop) {
+          backdrop.style.opacity = '1';
+        }
+
+        if (window.gsap) {
+          gsap.killTweensOf([container, backdrop, dialog]);
+          gsap.set(container, { display: 'flex', opacity: 1, visibility: 'visible', pointerEvents: 'auto' });
+          gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });
+
+          if (isDrawer) {
+            gsap.fromTo(dialog, { xPercent: 100, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.4, ease: 'power3.out' });
+          } else {
+            gsap.fromTo(dialog, { scale: 0.88, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.2)' });
+          }
+        }
+      };
+
+      window.closeLaveeSizeGuide = function() {
+        const container = document.getElementById('LaveeSizeGuideContainer');
+        if (!container || !container.classList.contains('is-open')) return;
+
+        const backdrop = container.querySelector('.lavee-size-guide-backdrop');
+        const dialog = container.querySelector('.lavee-size-guide-dialog');
+        const isDrawer = container.classList.contains('lavee-size-guide-wrapper--drawer');
+
+        const finishClose = function() {
+          container.classList.remove('is-open');
+          container.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          if (backdrop) backdrop.style.opacity = '';
+          if (window.gsap) {
+            gsap.set([container, backdrop, dialog], { clearProps: 'all' });
+          }
+        };
+
+        if (window.gsap) {
+          gsap.killTweensOf([container, backdrop, dialog]);
+          gsap.to(backdrop, { opacity: 0, duration: 0.25, ease: 'power2.in' });
+
+          if (isDrawer) {
+            gsap.to(dialog, { xPercent: 100, opacity: 0, duration: 0.3, ease: 'power3.in', onComplete: finishClose });
+          } else {
+            gsap.to(dialog, { scale: 0.9, opacity: 0, y: 16, duration: 0.25, ease: 'power2.in', onComplete: finishClose });
+          }
+        } else {
+          finishClose();
+        }
+      };
+
+      // Global Event Delegation Listener
+      document.addEventListener('click', function(e) {
+        const openTrigger = e.target.closest('[data-action="open-size-guide"], [data-lavee-size-guide-trigger], .lavee-card__size-guide-btn, .lavee-card__size-guide-link');
+        if (openTrigger) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.openLaveeSizeGuide();
+          return;
+        }
+
+        const closeTrigger = e.target.closest('[data-action="close-size-guide"], .lavee-size-guide-backdrop');
+        if (closeTrigger) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.closeLaveeSizeGuide();
+          return;
+        }
+
+        const unitTab = e.target.closest('.lavee-size-guide-tab');
+        if (unitTab) {
+          e.preventDefault();
+          e.stopPropagation();
+          const unit = unitTab.getAttribute('data-unit');
+          document.querySelectorAll('.lavee-size-guide-tab').forEach(t => t.classList.remove('is-active'));
+          unitTab.classList.add('is-active');
+
+          document.querySelectorAll('.lavee-size-val').forEach(cell => {
+            const val = unit === 'cm' ? cell.getAttribute('data-cm') : cell.getAttribute('data-in');
+            if (val) cell.textContent = val;
+          });
+        }
+      });
+
+      // Global ESC key listener
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          window.closeLaveeSizeGuide();
+        }
+      });
+    }
+  })();
+</script>

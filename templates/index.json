@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero_media_slider": {
@@ -6,21 +15,31 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "video_url": "",
+            "tab_title": "01. Campaign Film",
+            "content_alignment": "left",
             "eyebrow": "AUTUMN/WINTER COUTURE 2026",
             "heading": "Timeless Elegance & Sculpted Luxury",
             "subtext": "Discover bespoke corsetry, hand-beaded gowns, and tailored couture silhouettes.",
             "button_primary_label": "EXPLORE THE COLLECTION",
-            "button_secondary_label": "VIEW LOOKBOOK"
+            "button_primary_link": "",
+            "button_secondary_label": "VIEW LOOKBOOK",
+            "button_secondary_link": ""
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
+            "video_url": "",
+            "tab_title": "01. Campaign Film",
+            "content_alignment": "left",
             "eyebrow": "THE NAIMA DRESS",
             "heading": "Hand-Beaded Corset Mini",
             "subtext": "Crafted with hand-embroidered crystal embellishments and signature internal boning.",
             "button_primary_label": "SHOP NAIMA NOW",
-            "button_secondary_label": "EXPLORE ATELIER"
+            "button_primary_link": "",
+            "button_secondary_label": "EXPLORE ATELIER",
+            "button_secondary_link": ""
           }
         }
       },
@@ -31,9 +50,13 @@
       "settings": {
         "container_type": "container-fluid",
         "section_height": "fullscreen",
+        "section_height_mobile": "medium",
+        "section_height_mobile_custom": 520,
         "overlay_opacity": 40,
-        "show_live_badge": true,
-        "live_badge_text": "LIVE CAMPAIGN LOOKBOOK",
+        "background_preset": "burgundy_noir",
+        "show_audio_control": true,
+        "show_nav_controls": true,
+        "show_slide_tabs": true,
         "show_mobile_pagination": true,
         "autoplay": true,
         "autoplay_speed": 5
@@ -46,28 +69,32 @@
           "type": "press_item",
           "settings": {
             "publication_name": "VOGUE",
-            "quote": "Pinnacle of Modern Couture & Corsetry"
+            "quote": "Pinnacle of Modern Couture & Corsetry",
+            "link": ""
           }
         },
         "press_2": {
           "type": "press_item",
           "settings": {
             "publication_name": "HARPER'S BAZAAR",
-            "quote": "Unrivaled Craftsmanship & Tailoring"
+            "quote": "Unrivaled Craftsmanship & Tailoring",
+            "link": ""
           }
         },
         "press_3": {
           "type": "press_item",
           "settings": {
             "publication_name": "ELLE",
-            "quote": "Sculpted Silhouettes for the Modern Era"
+            "quote": "Sculpted Silhouettes for the Modern Era",
+            "link": ""
           }
         },
         "press_4": {
           "type": "press_item",
           "settings": {
             "publication_name": "L'OFFICIEL",
-            "quote": "Timeless Luxury & Eveningwear Excellence"
+            "quote": "Timeless Luxury & Eveningwear Excellence",
+            "link": ""
           }
         }
       },
@@ -90,65 +117,137 @@
         "cat_dresses": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "DRESSES",
+            "subtitle": "",
             "button_text": "Shop Dresses →",
-            "image_url": "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_sets": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1773574488217-eb936b733cae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "MATCHING SETS",
+            "subtitle": "",
             "button_text": "Shop Sets →",
-            "image_url": "https://images.unsplash.com/photo-1773574488217-eb936b733cae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_tops": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "TOPS & CORSETS",
+            "subtitle": "",
             "button_text": "Shop Tops →",
-            "image_url": "https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_occasion": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "OCCASIONWEAR",
+            "subtitle": "",
             "button_text": "Shop Occasion →",
-            "image_url": "https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_gowns": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "GOWNS & ATELIER",
+            "subtitle": "",
             "button_text": "Shop Gowns →",
-            "image_url": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_suits": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "TAILORED SUITS",
+            "subtitle": "",
             "button_text": "Shop Suits →",
-            "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_skirts": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "SKIRTS & BOTTOMS",
+            "subtitle": "",
             "button_text": "Shop Skirts →",
-            "image_url": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         },
         "cat_accessories": {
           "type": "category_item",
           "settings": {
+            "media_type": "image",
+            "image_url": "https://images.unsplash.com/photo-1509631179647-0177331693ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+            "video_url": "",
+            "collection": "",
             "title": "COUTURE ACCESSORIES",
+            "subtitle": "",
             "button_text": "Shop Accessories →",
-            "image_url": "https://images.unsplash.com/photo-1509631179647-0177331693ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+            "link": "",
+            "show_button": true,
+            "title_color_override": "",
+            "button_color_override": "",
+            "button_bg_override": ""
           }
         }
       },
@@ -170,6 +269,12 @@
         "layout_desktop": "grid",
         "layout_tablet": "grid",
         "layout_mobile": "slider",
+        "grid_button_action": "load_more",
+        "grid_items_limit": 4,
+        "grid_button_text": "EXPLORE ALL CATEGORIES",
+        "grid_button_link": "",
+        "grid_button_style": "outline",
+        "enable_button_ring_animation": true,
         "show_arrows_desktop": true,
         "show_arrows_mobile": true,
         "arrows_position_desktop": "center_sides",
@@ -183,71 +288,127 @@
         "grid_gap_desktop": 0,
         "grid_gap_tablet": 0,
         "grid_gap_mobile": 0,
-        "grid_button_action": "load_more",
-        "grid_items_limit": 4,
-        "grid_button_text": "EXPLORE ALL CATEGORIES",
-        "grid_button_style": "outline",
         "heading_alignment": "left",
         "eyebrow": "CURATED ATELIER EDITS",
         "eyebrow_font_size_desktop": 12,
         "eyebrow_font_size_mobile": 11,
+        "eyebrow_color": "",
         "heading": "SHOP BY CATEGORY",
         "title_font_size_desktop": 40,
         "title_font_size_mobile": 28,
         "title_font_weight": "500",
+        "title_color": "",
+        "subtext": "",
+        "subtext_font_size_desktop": 15,
+        "subtext_font_size_mobile": 14,
+        "subtext_color": "",
         "header_gap": 10,
         "header_margin_bottom": 40,
-        "card_border_color": "#D8D2CA",
+        "card_border_color": "#d8d2ca",
         "card_border_width": 0,
         "show_inner_border": true,
-        "inner_border_color": "#FFFFFF",
+        "inner_border_color": "#ffffff",
         "inner_border_width": 1,
+        "card_title_font_size_desktop": 18,
+        "card_title_font_size_mobile": 16,
+        "card_title_font_weight": "400",
+        "card_title_text_transform": "capitalize",
+        "card_title_color": "",
+        "show_label_pill": true,
+        "show_card_button": true,
         "pill_border_width": 1,
-        "pill_border_color": "rgba(255, 255, 255, 0.45)",
+        "pill_border_color": "#ffffff73",
         "pill_padding_v": 14,
         "pill_padding_h": 20,
-        "pill_shadow_style": "soft",
         "show_product_count": true,
         "count_format": "pieces",
         "card_corner_radius": 0,
         "inner_corner_radius": 4,
         "pill_corner_radius": 4,
-        "card_outer_padding": 0,
-        "card_inner_padding": 20,
         "card_height_desktop": 540,
         "card_height_mobile": 420,
+        "card_outer_padding": 0,
+        "card_inner_padding": 20,
         "padding_top": 80,
         "padding_bottom": 80,
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "new_arrivals": {
+      "type": "lavee-new-arrivals",
+      "blocks": {
+        "card_1": {
+          "type": "product_card",
+          "settings": {
+            "title": "Aura Corset Satin Midi",
+            "price": "$490.00",
+            "badge": "NEW IN",
+            "sizes": "XXS, XS, S, M, L, XL, XXL, 3XL",
+            "colors": "Olive, Black, Pink, Burgundy, Champagne",
+            "image_url": "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
+            "link": ""
+          }
+        },
+        "card_2": {
+          "type": "product_card",
+          "settings": {
+            "title": "Naima Hand-Beaded Gown",
+            "price": "$850.00",
+            "badge": "LIMITED",
+            "sizes": "XXS, XS, S, M, L, XL, XXL, 3XL",
+            "colors": "Olive, Black, Pink, Burgundy, Champagne",
+            "image_url": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
+            "link": ""
+          }
+        },
+        "card_3": {
+          "type": "product_card",
+          "settings": {
+            "title": "Zahra Tailored Blazer",
+            "price": "$620.00",
+            "badge": "BESTSELLER",
+            "sizes": "XXS, XS, S, M, L, XL, XXL, 3XL",
+            "colors": "Olive, Black, Pink, Burgundy, Champagne",
+            "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
+            "link": ""
+          }
+        },
+        "card_4": {
+          "type": "product_card",
+          "settings": {
+            "title": "Celeste Velvet Corset",
+            "price": "$380.00",
+            "badge": "NEW IN",
+            "sizes": "XXS, XS, S, M, L, XL, XXL, 3XL",
+            "colors": "Olive, Black, Pink, Burgundy, Champagne",
+            "image_url": "https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
+        "container_type": "container-fluid",
+        "color_scheme": "ivory",
+        "title": "NEW ARRIVALS",
+        "subtitle": "Just landed silhouettes for the new season.",
+        "view_all_label": "View All New Arrivals →",
+        "view_all_link": "",
+        "collection": "frontpage",
+        "products_to_show": 4,
         "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "show_badges": true,
+        "size_guide_url": "",
+        "size_guide_display_type": "modal",
+        "size_guide_title": "ATELIER SIZE & FIT GUIDE",
+        "size_guide_subtitle": "Find your precise La Vee fit with international conversions and measurements.",
+        "size_guide_page": ""
       }
     }
   },
@@ -255,6 +416,6 @@
     "hero_media_slider",
     "press_marquee",
     "shop_by_category",
-    "featured_collection"
+    "new_arrivals"
   ]
 }
