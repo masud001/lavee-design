@@ -237,12 +237,13 @@
     moneyFormat: {{ shop.money_format | json }},
     currency: {{ shop.currency | json }},
     thresholds: [
-      {% if t1 > 0 %}{ amount: {{ t1 }}, cents: {{ t1 | times: 100 }}, title: {{ r1 | json }} },{% endif %}
-      {% if t2 > 0 %}{ amount: {{ t2 }}, cents: {{ t2 | times: 100 }}, title: {{ r2 | json }} },{% endif %}
-      {% if t3 > 0 %}{ amount: {{ t3 }}, cents: {{ t3 | times: 100 }}, title: {{ r3 | json }} },{% endif %}
-      {% if t4 > 0 %}{ amount: {{ t4 }}, cents: {{ t4 | times: 100 }}, title: {{ r4 | json }} },{% endif %}
-      {% if t5 > 0 %}{ amount: {{ t5 }}, cents: {{ t5 | times: 100 }}, title: {{ r5 | json }} }{% endif %}
-    ].filter(function(t) { return t && t.amount > 0; })
+      {%- assign first_t = true -%}
+      {%- if t1 > 0 -%}{%- unless first_t -%},{%- endunless -%}{ amount: {{ t1 }}, cents: {{ t1 | times: 100 }}, title: {{ r1 | json }} }{%- assign first_t = false -%}{%- endif -%}
+      {%- if t2 > 0 -%}{%- unless first_t -%},{%- endunless -%}{ amount: {{ t2 }}, cents: {{ t2 | times: 100 }}, title: {{ r2 | json }} }{%- assign first_t = false -%}{%- endif -%}
+      {%- if t3 > 0 -%}{%- unless first_t -%},{%- endunless -%}{ amount: {{ t3 }}, cents: {{ t3 | times: 100 }}, title: {{ r3 | json }} }{%- assign first_t = false -%}{%- endif -%}
+      {%- if t4 > 0 -%}{%- unless first_t -%},{%- endunless -%}{ amount: {{ t4 }}, cents: {{ t4 | times: 100 }}, title: {{ r4 | json }} }{%- assign first_t = false -%}{%- endif -%}
+      {%- if t5 > 0 -%}{%- unless first_t -%},{%- endunless -%}{ amount: {{ t5 }}, cents: {{ t5 | times: 100 }}, title: {{ r5 | json }} }{%- assign first_t = false -%}{%- endif -%}
+    ]
   };
 
   (function() {
