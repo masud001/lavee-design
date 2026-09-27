@@ -284,8 +284,19 @@
                       <span class="lavee-category-count-badge">{{ piece_count | escape }}</span>
                     {%- endif -%}
 
-                    <h3 class="lavee-category-card-title" style="{% if block.settings.title_color_override != blank %}color: {{ block.settings.title_color_override }};{% endif %}">
-                      {{ category_title | escape }}
+                    <h3 class="lavee-category-card-title" style="{% if block.settings.title_color_override != blank %}color: {{ block.settings.title_color_override }};{% endif %}" data-split="true">
+                      {%- assign char_index = 0 -%}
+                      {%- assign title_words = category_title | split: ' ' -%}
+                      {%- for word in title_words -%}
+                        <span class="lavee-title-word">
+                          {%- assign word_chars = word | split: '' -%}
+                          {%- for char in word_chars -%}
+                            <span class="lavee-char" style="--char-index: {{ char_index }}">{{ char }}</span>
+                            {%- assign char_index = char_index | plus: 1 -%}
+                          {%- endfor -%}
+                        </span>
+                        {%- unless forloop.last -%}&nbsp;{%- endunless -%}
+                      {%- endfor -%}
                     </h3>
 
                     {%- if button_label != blank and block.settings.show_button != false -%}
@@ -304,7 +315,7 @@
           {%- endfor -%}
         {%- else -%}
           {%- comment -%} Default 8 Luxury Categories for Slider Preview {%- endcomment -%}
-          {%- assign default_titles = "DRESSES,MATCHING SETS,TOPS & CORSETS,OCCASIONWEAR,GOWNS & ATELIER,TAILORED SUITS,SKIRTS & BOTTOMS,COUTURE ACCESSORIES" | split: "," -%}
+          {%- assign default_titles = "Dresses,Matching Sets,Tops & Corsets,Occasionwear,Gowns & Atelier,Tailored Suits,Skirts & Bottoms,Couture Accessories" | split: "," -%}
           {%- assign default_buttons = "Shop Dresses →,Shop Sets →,Shop Tops →,Shop Occasion →,Shop Gowns →,Shop Suits →,Shop Skirts →,Shop Accessories →" | split: "," -%}
           {%- assign default_imgs = "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?w=1080,https://images.unsplash.com/photo-1773574488217-eb936b733cae?w=1080,https://images.unsplash.com/photo-1710090411838-5f846e289b2e?w=1080,https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?w=1080,https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1080,https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1080,https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=1080,https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1080" | split: "," -%}
           {%- assign default_counts = "24 PIECES,18 PIECES,14 PIECES,32 PIECES,20 PIECES,16 PIECES,22 PIECES,15 PIECES" | split: "," -%}
@@ -336,7 +347,20 @@
                     {%- if section.settings.show_product_count != false -%}
                       <span class="lavee-category-count-badge">{{ default_count_num }}</span>
                     {%- endif -%}
-                    <h3 class="lavee-category-card-title">{{ cat_title }}</h3>
+                    <h3 class="lavee-category-card-title" data-split="true">
+                      {%- assign char_index = 0 -%}
+                      {%- assign title_words = cat_title | split: ' ' -%}
+                      {%- for word in title_words -%}
+                        <span class="lavee-title-word">
+                          {%- assign word_chars = word | split: '' -%}
+                          {%- for char in word_chars -%}
+                            <span class="lavee-char" style="--char-index: {{ char_index }}">{{ char }}</span>
+                            {%- assign char_index = char_index | plus: 1 -%}
+                          {%- endfor -%}
+                        </span>
+                        {%- unless forloop.last -%}&nbsp;{%- endunless -%}
+                      {%- endfor -%}
+                    </h3>
                     <span class="lavee-category-btn">{{ default_buttons[idx] }}</span>
                   </div>
                 </div>
