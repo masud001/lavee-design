@@ -707,6 +707,41 @@ body.lavee-mobile-menu-open {
 
 .lavee-footer__reassurance-item {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.lavee-footer__reassurance-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: var(--lavee-burgundy, #6E1F2A);
+  flex-shrink: 0;
+}
+
+.lavee-footer__reassurance-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+.lavee-footer__reassurance-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+.lavee-footer__reassurance-content {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
@@ -1064,8 +1099,14 @@ body.lavee-mobile-menu-open {
 
   .lavee-footer__reassurance-item {
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 2px;
+    gap: 8px;
+  }
+
+  .lavee-footer__reassurance-content {
+    align-items: center;
+    text-align: center;
   }
 
   .lavee-footer__reassurance-title {
