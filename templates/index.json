@@ -201,7 +201,7 @@
         "card_border_width": 0,
         "show_inner_border": true,
         "inner_border_color": "#FFFFFF",
-        "inner_border_width": 0.5,
+        "inner_border_width": 1,
         "pill_border_width": 1,
         "pill_border_color": "rgba(255, 255, 255, 0.45)",
         "pill_padding_v": 14,
