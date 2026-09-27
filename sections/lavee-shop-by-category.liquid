@@ -261,11 +261,12 @@
                     {%- elsif is_youtube and youtube_id != blank -%}
                       <iframe 
                         class="lavee-category-video-iframe" 
-                        src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&enablejsapi=1" 
+                        src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&enablejsapi=1&disablekb=1&iv_load_policy=3&autohide=1&fs=0" 
                         title="{{ category_title | escape }}"
                         frameborder="0" 
                         allow="autoplay; encrypted-media" 
-                        allowfullscreen
+                        tabindex="-1"
+                        aria-hidden="true"
                       ></iframe>
                     {%- elsif is_instagram and instagram_id != blank -%}
                       <iframe 
@@ -275,9 +276,11 @@
                         frameborder="0" 
                         scrolling="no" 
                         allowtransparency="true"
+                        tabindex="-1"
+                        aria-hidden="true"
                       ></iframe>
                     {%- elsif raw_video_url != blank -%}
-                      <video class="lavee-category-video" autoplay loop muted playsinline>
+                      <video class="lavee-category-video" autoplay loop muted playsinline disablePictureInPicture controlsList="nodownload noremoteplayback">
                         <source src="{{ raw_video_url }}" type="video/mp4">
                       </video>
                     {%- elsif category_image != blank -%}
