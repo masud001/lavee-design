@@ -29,9 +29,9 @@
     --lavee-cat-card-height-mobile: {{ section.settings.card_height_mobile }}px;
     --lavee-cat-card-height-desktop: {{ section.settings.card_height_desktop }}px;
     --lavee-cat-border-color: {{ section.settings.card_border_color | default: '#D8D2CA' }};
-    --lavee-cat-border-width: {{ section.settings.card_border_width | default: 1 }}px;
+    --lavee-cat-border-width: {{ section.settings.card_border_width | default: 0 }}px;
     --lavee-cat-inner-border-color: {{ section.settings.inner_border_color | default: 'rgba(255, 255, 255, 0.7)' }};
-    --lavee-cat-card-radius: {{ section.settings.card_corner_radius | default: 8 }}px;
+    --lavee-cat-card-radius: {{ section.settings.card_corner_radius | default: 0 }}px;
     --lavee-cat-inner-radius: {{ section.settings.inner_corner_radius | default: 4 }}px;
     --lavee-cat-pill-radius: {{ section.settings.pill_corner_radius | default: 4 }}px;
     
@@ -43,7 +43,7 @@
     --lavee-cat-cols-tablet: {{ section.settings.items_to_show_tablet | default: 2 }};
     --lavee-cat-cols-mobile: {{ section.settings.items_to_show_mobile | default: '1.5' }};
 
-    --lavee-cat-card-outer-padding: {{ section.settings.card_outer_padding | default: 8 }}px;
+    --lavee-cat-card-outer-padding: {{ section.settings.card_outer_padding | default: 0 }}px;
     --lavee-cat-card-inner-padding: {{ section.settings.card_inner_padding | default: 20 }}px;
 
     --lavee-cat-header-gap: {{ section.settings.header_gap | default: 10 }}px;
@@ -708,7 +708,7 @@
       "step": 1,
       "unit": "px",
       "label": "Card Outer Border Width",
-      "default": 1
+      "default": 0
     },
     {
       "type": "checkbox",
@@ -734,7 +734,7 @@
       "step": 2,
       "unit": "px",
       "label": "Card Outer Corner Radius",
-      "default": 8
+      "default": 0
     },
     {
       "type": "range",
@@ -784,7 +784,7 @@
       "step": 2,
       "unit": "px",
       "label": "Card Outer Frame Padding",
-      "default": 8
+      "default": 0
     },
     {
       "type": "range",
