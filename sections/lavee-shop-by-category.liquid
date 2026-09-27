@@ -33,8 +33,8 @@
     --lavee-cat-inner-border-color: {{ section.settings.inner_border_color | default: 'rgba(255, 255, 255, 0.7)' }};
     --lavee-cat-inner-border-width: {{ section.settings.inner_border_width | default: 0.5 }}px;
     --lavee-cat-card-radius: {{ section.settings.card_corner_radius | default: 0 }}px;
-    --lavee-cat-inner-radius: {{ section.settings.inner_corner_radius | default: 4 }}px;
-    --lavee-cat-pill-radius: {{ section.settings.pill_corner_radius | default: 4 }}px;
+    --lavee-cat-inner-radius: {{ section.settings.inner_corner_radius | default: 0 }}px;
+    --lavee-cat-pill-radius: {{ section.settings.pill_corner_radius | default: 0 }}px;
     --lavee-cat-pill-border-width: {{ section.settings.pill_border_width | default: 1 }}px;
     --lavee-cat-pill-border-color: {{ section.settings.pill_border_color | default: 'rgba(255, 255, 255, 0.45)' }};
     --lavee-cat-pill-padding-v: {{ section.settings.pill_padding_v | default: 14 }}px;
@@ -1054,7 +1054,7 @@
       "step": 2,
       "unit": "px",
       "label": "Inner Frame Corner Radius",
-      "default": 4
+      "default": 0
     },
     {
       "type": "range",
@@ -1064,7 +1064,7 @@
       "step": 2,
       "unit": "px",
       "label": "Category Label Pill Radius",
-      "default": 4
+      "default": 0
     },
     {
       "type": "range",

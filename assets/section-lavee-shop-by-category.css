@@ -567,7 +567,7 @@
   left: 4px;
   right: 4px;
   bottom: 4px;
-  border-radius: var(--lavee-cat-inner-radius, 4px);
+  border-radius: var(--lavee-cat-inner-radius, 0px);
   border: var(--lavee-cat-inner-border-width, 0.5px) solid var(--lavee-cat-inner-border-color, rgba(255, 255, 255, 0.7));
   padding: var(--lavee-cat-card-inner-padding, 16px);
   z-index: 3;
@@ -662,7 +662,7 @@
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.12) 100%);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-radius: var(--lavee-cat-pill-radius, 4px);
+  border-radius: var(--lavee-cat-pill-radius, 0px);
   border-width: var(--lavee-cat-pill-border-width, 1px);
   border-style: solid;
   border-color: var(--lavee-cat-pill-border-color, rgba(255, 255, 255, 0.45));
