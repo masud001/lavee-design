@@ -181,9 +181,37 @@
               assign custom_img_url = block.settings.image_url
               assign media_type = block.settings.media_type | default: "image"
               assign video_shopify = block.settings.video_shopify
-              assign video_url = block.settings.video_url
+              assign raw_video_url = block.settings.video_url
               assign button_label = block.settings.button_text
               
+              assign is_youtube = false
+              assign youtube_id = ''
+              if raw_video_url contains 'youtube.com' or raw_video_url contains 'youtu.be'
+                assign is_youtube = true
+                if raw_video_url contains 'shorts/'
+                  assign youtube_id = raw_video_url | split: 'shorts/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                elsif raw_video_url contains 'v='
+                  assign youtube_id = raw_video_url | split: 'v=' | last | split: '&' | first | split: '?' | first | split: '/' | first
+                elsif raw_video_url contains 'youtu.be/'
+                  assign youtube_id = raw_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                elsif raw_video_url contains 'embed/'
+                  assign youtube_id = raw_video_url | split: 'embed/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                endif
+              endif
+
+              assign is_instagram = false
+              assign instagram_id = ''
+              if raw_video_url contains 'instagram.com'
+                assign is_instagram = true
+                if raw_video_url contains '/reel/'
+                  assign instagram_id = raw_video_url | split: '/reel/' | last | split: '/' | first | split: '?' | first
+                elsif raw_video_url contains '/reels/'
+                  assign instagram_id = raw_video_url | split: '/reels/' | last | split: '/' | first | split: '?' | first
+                elsif raw_video_url contains '/p/'
+                  assign instagram_id = raw_video_url | split: '/p/' | last | split: '/' | first | split: '?' | first
+                endif
+              endif
+
               assign piece_count = block.settings.subtitle
               if piece_count == blank and section.settings.show_product_count != false
                 if collection_obj != blank
@@ -220,7 +248,7 @@
             <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}" {{ block.shopify_attributes }}>
               <a href="{{ category_url }}" class="lavee-category-card" aria-label="{{ category_title | escape }}">
                 <div class="lavee-category-image-wrap">
-                  {%- if media_type == 'video' or video_shopify != blank or video_url != blank -%}
+                  {%- if media_type == 'video' or video_shopify != blank or raw_video_url != blank -%}
                     {%- if video_shopify != blank -%}
                       {{ video_shopify | video_tag: 
                         autoplay: true, 
@@ -230,9 +258,27 @@
                         playsinline: true,
                         class: 'lavee-category-video'
                       }}
-                    {%- elsif video_url != blank -%}
+                    {%- elsif is_youtube and youtube_id != blank -%}
+                      <iframe 
+                        class="lavee-category-video-iframe" 
+                        src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&enablejsapi=1" 
+                        title="{{ category_title | escape }}"
+                        frameborder="0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen
+                      ></iframe>
+                    {%- elsif is_instagram and instagram_id != blank -%}
+                      <iframe 
+                        class="lavee-category-video-iframe lavee-category-video-iframe--instagram" 
+                        src="https://www.instagram.com/reel/{{ instagram_id }}/embed/" 
+                        title="{{ category_title | escape }}"
+                        frameborder="0" 
+                        scrolling="no" 
+                        allowtransparency="true"
+                      ></iframe>
+                    {%- elsif raw_video_url != blank -%}
                       <video class="lavee-category-video" autoplay loop muted playsinline>
-                        <source src="{{ video_url }}" type="video/mp4">
+                        <source src="{{ raw_video_url }}" type="video/mp4">
                       </video>
                     {%- elsif category_image != blank -%}
                       {{ category_image | image_url: width: 800 | image_tag: loading: 'lazy', decoding: 'async', class: 'lavee-category-img', alt: category_title }}
