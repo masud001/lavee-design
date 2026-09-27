@@ -35,6 +35,10 @@
     --lavee-cat-card-radius: {{ section.settings.card_corner_radius | default: 0 }}px;
     --lavee-cat-inner-radius: {{ section.settings.inner_corner_radius | default: 4 }}px;
     --lavee-cat-pill-radius: {{ section.settings.pill_corner_radius | default: 4 }}px;
+    --lavee-cat-pill-border-width: {{ section.settings.pill_border_width | default: 1 }}px;
+    --lavee-cat-pill-border-color: {{ section.settings.pill_border_color | default: 'rgba(255, 255, 255, 0.45)' }};
+    --lavee-cat-pill-padding-v: {{ section.settings.pill_padding_v | default: 14 }}px;
+    --lavee-cat-pill-padding-h: {{ section.settings.pill_padding_h | default: 20 }}px;
     
     --lavee-cat-grid-gap-desktop: {{ section.settings.grid_gap_desktop | default: 0 }}px;
     --lavee-cat-grid-gap-tablet: {{ section.settings.grid_gap_tablet | default: 0 }}px;
@@ -175,7 +179,23 @@
               assign video_shopify = block.settings.video_shopify
               assign video_url = block.settings.video_url
               assign button_label = block.settings.button_text
+              
               assign piece_count = block.settings.subtitle
+              if piece_count == blank and section.settings.show_product_count != false and collection_obj != blank
+                assign count_val = collection_obj.all_products_count | default: collection_obj.products_count
+                if count_val != blank
+                  case section.settings.count_format
+                    when 'items'
+                      assign piece_count = count_val | append: " ITEMS"
+                    when 'products'
+                      assign piece_count = count_val | append: " PRODUCTS"
+                    when 'number_only'
+                      assign piece_count = count_val
+                    else
+                      assign piece_count = count_val | append: " PIECES"
+                  endcase
+                endif
+              endif
             -%}
 
             <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}" {{ block.shopify_attributes }}>
@@ -237,7 +257,7 @@
 
                 <div class="lavee-category-content">
                   <div class="lavee-category-label-pill" style="{% if block.settings.button_bg_override != blank %}background: {{ block.settings.button_bg_override }};{% endif %}">
-                    {%- if piece_count != blank -%}
+                    {%- if piece_count != blank and section.settings.show_product_count != false -%}
                       <span class="lavee-category-count-badge">{{ piece_count | escape }}</span>
                     {%- endif -%}
 
@@ -264,9 +284,19 @@
           {%- assign default_titles = "DRESSES,MATCHING SETS,TOPS & CORSETS,OCCASIONWEAR,GOWNS & ATELIER,TAILORED SUITS,SKIRTS & BOTTOMS,COUTURE ACCESSORIES" | split: "," -%}
           {%- assign default_buttons = "Shop Dresses →,Shop Sets →,Shop Tops →,Shop Occasion →,Shop Gowns →,Shop Suits →,Shop Skirts →,Shop Accessories →" | split: "," -%}
           {%- assign default_imgs = "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?w=1080,https://images.unsplash.com/photo-1773574488217-eb936b733cae?w=1080,https://images.unsplash.com/photo-1710090411838-5f846e289b2e?w=1080,https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?w=1080,https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1080,https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1080,https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=1080,https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1080" | split: "," -%}
+          {%- assign default_counts = "24 PIECES,18 PIECES,14 PIECES,32 PIECES,20 PIECES,16 PIECES,22 PIECES,15 PIECES" | split: "," -%}
           
           {%- for cat_title in default_titles -%}
             {%- assign idx = forloop.index0 -%}
+            {%- assign default_count_num = default_counts[idx] -%}
+            {%- if section.settings.count_format == 'items' -%}
+              {%- assign default_count_num = default_count_num | replace: 'PIECES', 'ITEMS' -%}
+            {%- elsif section.settings.count_format == 'products' -%}
+              {%- assign default_count_num = default_count_num | replace: 'PIECES', 'PRODUCTS' -%}
+            {%- elsif section.settings.count_format == 'number_only' -%}
+              {%- assign default_count_num = default_count_num | replace: ' PIECES', '' -%}
+            {%- endif -%}
+
             <div class="lavee-category-card-wrapper{% if section.settings.grid_button_action == 'load_more' and forloop.index > section.settings.grid_items_limit %} lavee-grid-item-hidden{% endif %}">
               <a href="/collections/all" class="lavee-category-card" aria-label="{{ cat_title }}">
                 <div class="lavee-category-image-wrap">
@@ -280,6 +310,9 @@
 
                 <div class="lavee-category-content">
                   <div class="lavee-category-label-pill">
+                    {%- if section.settings.show_product_count != false -%}
+                      <span class="lavee-category-count-badge">{{ default_count_num }}</span>
+                    {%- endif -%}
                     <h3 class="lavee-category-card-title">{{ cat_title }}</h3>
                     <span class="lavee-category-btn">{{ default_buttons[idx] }}</span>
                   </div>
@@ -861,6 +894,80 @@
       "unit": "px",
       "label": "Inner Frame Border Width",
       "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Glass Label Pill Customization (Border, Padding, Shadow)"
+    },
+    {
+      "type": "range",
+      "id": "pill_border_width",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Glass Pill Border Width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "pill_border_color",
+      "label": "Glass Pill Border Color",
+      "default": "rgba(255, 255, 255, 0.45)"
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_v",
+      "min": 8,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Glass Pill Vertical Padding (Top/Bottom)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_h",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Glass Pill Horizontal Padding (Left/Right)",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "pill_shadow_style",
+      "label": "Glass Pill Shadow Intensity",
+      "options": [
+        { "value": "soft", "label": "Soft Ambient Glass Shadow" },
+        { "value": "medium", "label": "Medium Depth Shadow" },
+        { "value": "heavy", "label": "Deep Luxury Shadow" },
+        { "value": "none", "label": "No Shadow" }
+      ],
+      "default": "soft"
+    },
+    {
+      "type": "header",
+      "content": "Collection Product Count Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show Collection Product Count Badge",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "count_format",
+      "label": "Product Count Format",
+      "options": [
+        { "value": "pieces", "label": "Count + PIECES (e.g. 24 PIECES)" },
+        { "value": "items", "label": "Count + ITEMS (e.g. 24 ITEMS)" },
+        { "value": "products", "label": "Count + PRODUCTS (e.g. 24 PRODUCTS)" },
+        { "value": "number_only", "label": "Number Only (e.g. 24)" }
+      ],
+      "default": "pieces"
     },
     {
       "type": "header",

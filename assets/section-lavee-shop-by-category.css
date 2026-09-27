@@ -663,17 +663,34 @@
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-radius: var(--lavee-cat-pill-radius, 4px);
-  padding: 14px 20px;
+  border-width: var(--lavee-cat-pill-border-width, 1px);
+  border-style: solid;
+  border-color: var(--lavee-cat-pill-border-color, rgba(255, 255, 255, 0.45));
+  padding-top: var(--lavee-cat-pill-padding-v, 14px);
+  padding-bottom: var(--lavee-cat-pill-padding-v, 14px);
+  padding-left: var(--lavee-cat-pill-padding-h, 20px);
+  padding-right: var(--lavee-cat-pill-padding-h, 20px);
   display: flex;
   flex-direction: column;
   gap: 4px;
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: 
     0 10px 32px 0 rgba(0, 0, 0, 0.18),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
     inset 0 -1px 0 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lavee-pill-shadow-none .lavee-category-label-pill {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+.lavee-pill-shadow-medium .lavee-category-label-pill {
+  box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+.lavee-pill-shadow-heavy .lavee-category-label-pill {
+  box-shadow: 0 24px 60px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.7) !important;
 }
 
 .lavee-category-card:hover .lavee-category-label-pill {
