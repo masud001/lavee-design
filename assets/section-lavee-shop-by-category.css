@@ -1,9 +1,9 @@
 /* ==========================================================================
    La Vee - Shop by Category Section Styles (Advanced Edition)
-   - Dynamic Grid vs Slider Mode
-   - Custom Left/Right Section Padding
-   - Header Typography & Element Gap Controls
-   - Full Video & Image Media Support
+   - Header Always Inside Centered Container
+   - Fluid 100% or Centered Track Container
+   - Arrow Position Modes: top_right, bottom_right, bottom_left, bottom_center, center_sides
+   - Independent Arrow Show/Hide for Desktop/Tablet & Mobile
    ========================================================================== */
 
 .lavee-category-section {
@@ -29,7 +29,7 @@
   color: #F7F4EF;
 }
 
-/* Container Width Override */
+/* Containers */
 .lavee-container-fluid {
   width: 100%;
   max-width: 100%;
@@ -44,7 +44,7 @@
   box-sizing: border-box;
 }
 
-/* Section Header & Top Right Arrows Layout */
+/* Section Header */
 .lavee-category-header {
   display: flex;
   flex-direction: row;
@@ -127,7 +127,7 @@
 }
 
 /* ==========================================================================
-   CSS GRID MODES (Desktop, Tablet, Mobile)
+   CSS GRID MODES
    ========================================================================== */
 
 .lavee-category-track {
@@ -140,7 +140,7 @@
   .lavee-category-layout-desktop-grid .lavee-category-track {
     display: grid;
     grid-template-columns: repeat(var(--lavee-cat-cols-desktop, 4), 1fr);
-    gap: var(--lavee-cat-grid-gap-desktop, 24px);
+    gap: var(--lavee-cat-grid-gap-desktop, 0px);
   }
 }
 
@@ -149,7 +149,7 @@
   .lavee-category-layout-tablet-grid .lavee-category-track {
     display: grid;
     grid-template-columns: repeat(var(--lavee-cat-cols-tablet, 2), 1fr);
-    gap: var(--lavee-cat-grid-gap-tablet, 20px);
+    gap: var(--lavee-cat-grid-gap-tablet, 0px);
   }
 }
 
@@ -157,13 +157,13 @@
 @media screen and (max-width: 749px) {
   .lavee-category-layout-mobile-grid .lavee-category-track {
     display: grid;
-    grid-template-columns: repeat(var(--lavee-cat-cols-mobile, 2), 1fr);
-    gap: var(--lavee-cat-grid-gap-mobile, 16px);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--lavee-cat-grid-gap-mobile, 0px);
   }
 }
 
 /* ==========================================================================
-   SLIDER / CAROUSEL MODES (Desktop, Tablet, Mobile)
+   SLIDER CAROUSEL MODES
    ========================================================================== */
 
 /* Desktop Slider Track */
@@ -171,7 +171,7 @@
   .lavee-category-layout-desktop-slider .lavee-category-track {
     display: flex;
     flex-direction: row;
-    gap: var(--lavee-cat-grid-gap-desktop, 24px);
+    gap: var(--lavee-cat-grid-gap-desktop, 0px);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -181,7 +181,7 @@
   }
 
   .lavee-category-layout-desktop-slider .lavee-category-card-wrapper {
-    flex: 0 0 calc((100% - (var(--lavee-cat-grid-gap-desktop, 24px) * (var(--lavee-cat-cols-desktop, 4) - 1))) / var(--lavee-cat-cols-desktop, 4));
+    flex: 0 0 calc((100% - (var(--lavee-cat-grid-gap-desktop, 0px) * (var(--lavee-cat-cols-desktop, 4) - 1))) / var(--lavee-cat-cols-desktop, 4));
     scroll-snap-align: start;
   }
 }
@@ -191,7 +191,7 @@
   .lavee-category-layout-tablet-slider .lavee-category-track {
     display: flex;
     flex-direction: row;
-    gap: var(--lavee-cat-grid-gap-tablet, 20px);
+    gap: var(--lavee-cat-grid-gap-tablet, 0px);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -201,7 +201,7 @@
   }
 
   .lavee-category-layout-tablet-slider .lavee-category-card-wrapper {
-    flex: 0 0 calc((100% - (var(--lavee-cat-grid-gap-tablet, 20px) * (var(--lavee-cat-cols-tablet, 2) - 1))) / var(--lavee-cat-cols-tablet, 2));
+    flex: 0 0 calc((100% - (var(--lavee-cat-grid-gap-tablet, 0px) * (var(--lavee-cat-cols-tablet, 2) - 1))) / var(--lavee-cat-cols-tablet, 2));
     scroll-snap-align: start;
   }
 }
@@ -236,27 +236,17 @@
   }
 }
 
-/* Hide scrollbar for Chrome/Safari/Opera */
+/* Hide scrollbar */
 .lavee-category-track::-webkit-scrollbar {
   display: none;
 }
 
-/* Top Right Arrows Container */
-.lavee-category-top-arrows {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
+/* ==========================================================================
+   ARROW BUTTONS STYLING & POSITIONING
+   ========================================================================== */
 
-/* Slider Arrows (Top Right relative buttons) */
+/* Base Arrow Button */
 .lavee-slider-arrow {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  transform: none;
-  z-index: 5;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -267,11 +257,12 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   outline: none;
+  box-sizing: border-box;
 }
 
-/* Ivory Color Scheme Arrow Buttons */
+/* Ivory Color Scheme Arrows */
 .lavee-category-section--ivory .lavee-slider-arrow {
   background: #FFFFFF;
   border: 1px solid #D8D2CA;
@@ -282,14 +273,14 @@
 .lavee-category-section--ivory .lavee-slider-arrow:focus-visible {
   background: #161616;
   border-color: #161616;
-  color: #F7F4EF;
-  transform: translateY(-2px);
+  color: #FFFFFF;
+  transform: scale(1.06);
 }
 
-/* Dark & Burgundy Color Scheme Arrow Buttons */
+/* Dark & Burgundy Color Scheme Arrows */
 .lavee-category-section--dark .lavee-slider-arrow,
 .lavee-category-section--burgundy .lavee-slider-arrow {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FFFFFF;
 }
@@ -301,10 +292,158 @@
   background: #D4AF37;
   border-color: #D4AF37;
   color: #161616;
-  transform: translateY(-2px);
+  transform: scale(1.06);
 }
 
+/* Default Arrow Containers Hide */
+.lavee-category-top-arrows,
+.lavee-category-bottom-arrows,
+.lavee-category-side-arrows {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   DESKTOP & TABLET ARROW POSITIONING & SHOW/HIDE
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 750px) {
+  /* Show / Hide Desktop */
+  .lavee-arrows-desktop-false .lavee-category-top-arrows,
+  .lavee-arrows-desktop-false .lavee-category-bottom-arrows,
+  .lavee-arrows-desktop-false .lavee-category-side-arrows {
+    display: none !important;
+  }
+
+  /* Top Right */
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-top_right .lavee-category-top-arrows {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Bottom Right */
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-bottom_right .lavee-category-bottom-arrows {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  /* Bottom Left */
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-bottom_left .lavee-category-bottom-arrows {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  /* Bottom Center */
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-bottom_center .lavee-category-bottom-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  /* Center Sides Overlay */
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-center_sides .lavee-category-side-arrows {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-center_sides .lavee-category-side-arrows .lavee-slider-arrow--prev {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
+  .lavee-arrows-desktop-true.lavee-arrows-pos-desktop-center_sides .lavee-category-side-arrows .lavee-slider-arrow--next {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE ARROW POSITIONING & SHOW/HIDE
+   -------------------------------------------------------------------------- */
 @media screen and (max-width: 749px) {
+  /* Hide Desktop Containers on Mobile first */
+  .lavee-category-top-arrows,
+  .lavee-category-bottom-arrows,
+  .lavee-category-side-arrows {
+    display: none !important;
+  }
+
+  /* Show / Hide Mobile */
+  .lavee-arrows-mobile-false .lavee-category-top-arrows,
+  .lavee-arrows-mobile-false .lavee-category-bottom-arrows,
+  .lavee-arrows-mobile-false .lavee-category-side-arrows {
+    display: none !important;
+  }
+
+  /* Top Right */
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-top_right .lavee-category-top-arrows {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Bottom Right */
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-bottom_right .lavee-category-bottom-arrows {
+    display: flex !important;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* Bottom Left */
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-bottom_left .lavee-category-bottom-arrows {
+    display: flex !important;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* Bottom Center */
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-bottom_center .lavee-category-bottom-arrows {
+    display: flex !important;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* Center Sides Overlay */
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-center_sides .lavee-category-side-arrows {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-center_sides .lavee-category-side-arrows .lavee-slider-arrow--prev {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
+  .lavee-arrows-mobile-true.lavee-arrows-pos-mobile-center_sides .lavee-category-side-arrows .lavee-slider-arrow--next {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
   .lavee-slider-arrow {
     width: 36px;
     height: 36px;

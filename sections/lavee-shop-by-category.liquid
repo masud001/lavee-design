@@ -2,11 +2,10 @@
 
 {%- comment -%}
   La Vee Shop by Category Section - Advanced Edition
-  - Responsive Layouts: Grid or Slider independently per breakpoint (Desktop, Tablet, Mobile)
-  - Full Media Support: Image (Picker / URL) and Video (Shopify Video / MP4 URL)
-  - Custom Container Width & Padding: Full Width (Fluid) vs Centered (Container), Left/Right Padding controls
-  - Complete Header Typography & Alignment: Title, Subtitle, Description with sizes, colors, and gap settings
-  - Full WCAG 2.1 AAA accessibility & SEO support
+  - Header Content: ALWAYS inside centered container
+  - Track Container: Fluid 100% or Centered Container
+  - Independent Arrow Positioning per Breakpoint: top_right, bottom_right, bottom_left, bottom_center, center_sides
+  - Independent Arrow Show/Hide per Breakpoint: Desktop/Tablet vs Mobile
 {%- endcomment -%}
 
 {%- style -%}
@@ -36,13 +35,13 @@
     --lavee-cat-inner-radius: {{ section.settings.inner_corner_radius | default: 4 }}px;
     --lavee-cat-pill-radius: {{ section.settings.pill_corner_radius | default: 4 }}px;
     
-    --lavee-cat-grid-gap-desktop: {{ section.settings.grid_gap_desktop | default: 24 }}px;
-    --lavee-cat-grid-gap-tablet: {{ section.settings.grid_gap_tablet | default: 20 }}px;
-    --lavee-cat-grid-gap-mobile: {{ section.settings.grid_gap_mobile | default: 16 }}px;
+    --lavee-cat-grid-gap-desktop: {{ section.settings.grid_gap_desktop | default: 0 }}px;
+    --lavee-cat-grid-gap-tablet: {{ section.settings.grid_gap_tablet | default: 0 }}px;
+    --lavee-cat-grid-gap-mobile: {{ section.settings.grid_gap_mobile | default: 0 }}px;
 
     --lavee-cat-cols-desktop: {{ section.settings.items_to_show_desktop | default: 4 }};
     --lavee-cat-cols-tablet: {{ section.settings.items_to_show_tablet | default: 2 }};
-    --lavee-cat-cols-mobile: {{ section.settings.items_to_show_mobile | default: 2 }};
+    --lavee-cat-cols-mobile: {{ section.settings.items_to_show_mobile | default: '1.5' }};
 
     --lavee-cat-card-outer-padding: {{ section.settings.card_outer_padding | default: 8 }}px;
     --lavee-cat-card-inner-padding: {{ section.settings.card_inner_padding | default: 20 }}px;
@@ -79,10 +78,19 @@
   }
 {%- endstyle -%}
 
-<div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding">
-  <div class="lavee-{{ section.settings.container_type | default: 'container' }}">
-    
-    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank or section.settings.show_slider_arrows -%}
+<div class="lavee-category-section lavee-category-section--{{ section.settings.color_scheme | default: 'ivory' }} section-{{ section.id }}-padding
+  lavee-arrows-desktop-{{ section.settings.show_arrows_desktop }}
+  lavee-arrows-mobile-{{ section.settings.show_arrows_mobile }}
+  lavee-arrows-pos-desktop-{{ section.settings.arrows_position_desktop | default: 'top_right' }}
+  lavee-arrows-pos-mobile-{{ section.settings.arrows_position_mobile | default: 'top_right' }}"
+  id="LaveeCategorySection-{{ section.id }}"
+>
+  
+  {%- comment -%}
+    1. Header Content & Typography ALWAYS inside Centered Container
+  {%- endcomment -%}
+  <div class="lavee-container">
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank or section.settings.show_arrows_desktop or section.settings.show_arrows_mobile -%}
       <header class="lavee-category-header lavee-category-header--{{ section.settings.heading_alignment | default: 'left' }}">
         <div class="lavee-category-header-content">
           {%- if section.settings.eyebrow != blank -%}
@@ -98,33 +106,36 @@
           {%- endif -%}
         </div>
 
-        {%- if section.settings.show_slider_arrows -%}
-          <div class="lavee-category-top-arrows">
-            <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">
-              ‹
-            </button>
-            <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">
-              ›
-            </button>
-          </div>
-        {%- endif -%}
+        {%- comment -%} Top Right Header Aligned Arrows {%- endcomment -%}
+        <div class="lavee-category-top-arrows">
+          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
+          <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+        </div>
       </header>
     {%- endif -%}
+  </div>
 
-    {%- comment -%}
-      Main Container: Grid vs Slider Mode
-    {%- endcomment -%}
+  {%- comment -%}
+    2. Category Track Container (Fluid 100% or Centered Container)
+  {%- endcomment -%}
+  <div class="lavee-{{ section.settings.container_type | default: 'container-fluid' }}">
     <div 
       class="lavee-category-wrapper 
         lavee-category-layout-desktop-{{ section.settings.layout_desktop | default: 'grid' }}
         lavee-category-layout-tablet-{{ section.settings.layout_tablet | default: 'grid' }}
-        lavee-category-layout-mobile-{{ section.settings.layout_mobile | default: 'grid' }}
+        lavee-category-layout-mobile-{{ section.settings.layout_mobile | default: 'slider' }}
         lavee-category-cols-mobile-{{ section.settings.items_to_show_mobile | replace: '.', '-' | default: '1-5' }}"
       data-lavee-slider="{{ section.settings.layout_desktop }}"
       data-lavee-slider-mobile="{{ section.settings.layout_mobile }}"
       data-autoplay="{{ section.settings.slider_autoplay }}"
       data-speed="{{ section.settings.slider_autoplay_speed | default: 5 }}"
     >
+      {%- comment -%} Side Center Overlay Arrows {%- endcomment -%}
+      <div class="lavee-category-side-arrows">
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+      </div>
+
       <div class="lavee-category-track" data-pencil-name="Category Grid">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
@@ -255,27 +266,31 @@
             </div>
           {%- endfor -%}
         {%- endif -%}
+      </div>
+
+      {%- comment -%} Bottom Arrows Container {%- endcomment -%}
+      <div class="lavee-category-bottom-arrows">
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--prev" aria-label="Previous categories">‹</button>
+        <button type="button" class="lavee-slider-arrow lavee-slider-arrow--next" aria-label="Next categories">›</button>
+      </div>
+
       {%- if section.settings.show_slider_dots -%}
         <div class="lavee-slider-pagination" aria-hidden="true"></div>
       {%- endif -%}
     </div>
-
   </div>
+
 </div>
 
 <script>
   (function() {
     function initCategorySliders() {
-      const sectionWrappers = document.querySelectorAll('.lavee-category-wrapper');
-      sectionWrappers.forEach(wrapper => {
-        const track = wrapper.querySelector('.lavee-category-track');
-        const prevBtn = wrapper.querySelector('.lavee-slider-arrow--prev');
-        const nextBtn = wrapper.querySelector('.lavee-slider-arrow--next');
-        const pagination = wrapper.querySelector('.lavee-slider-pagination');
-        if (!track) return;
+      const sections = document.querySelectorAll('.lavee-category-section');
+      sections.forEach(section => {
+        const wrapper = section.querySelector('.lavee-category-wrapper');
+        const track = section.querySelector('.lavee-category-track');
+        if (!track || !wrapper) return;
 
-        const isDesktopSlider = wrapper.getAttribute('data-lavee-slider') === 'slider';
-        const isMobileSlider = wrapper.getAttribute('data-lavee-slider-mobile') === 'slider';
         const isAutoplay = wrapper.getAttribute('data-autoplay') === 'true';
         const speed = parseInt(wrapper.getAttribute('data-speed') || '5', 10) * 1000;
 
@@ -289,8 +304,13 @@
           track.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' });
         }
 
-        if (prevBtn) prevBtn.addEventListener('click', scrollPrev);
-        if (nextBtn) nextBtn.addEventListener('click', scrollNext);
+        section.querySelectorAll('.lavee-slider-arrow--prev').forEach(btn => {
+          btn.addEventListener('click', scrollPrev);
+        });
+
+        section.querySelectorAll('.lavee-slider-arrow--next').forEach(btn => {
+          btn.addEventListener('click', scrollNext);
+        });
 
         let autoplayTimer = null;
         if (isAutoplay) {
@@ -331,7 +351,7 @@
     {
       "type": "select",
       "id": "container_type",
-      "label": "Container Width Type",
+      "label": "Cards Track Container Width Type",
       "options": [
         { "value": "container-fluid", "label": "Full Width (100% Fullscreen Fluid)" },
         { "value": "container", "label": "Centered Container (Max 1440px)" }
@@ -405,13 +425,45 @@
     },
     {
       "type": "header",
-      "content": "Slider Settings (Active in Slider Mode)"
+      "content": "Next/Prev Arrow Controls & Positions"
     },
     {
       "type": "checkbox",
-      "id": "show_slider_arrows",
-      "label": "Show Slider Prev/Next Arrows",
+      "id": "show_arrows_desktop",
+      "label": "Show Arrows (Desktop & Tablet)",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_mobile",
+      "label": "Show Arrows (Mobile)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "arrows_position_desktop",
+      "label": "Arrow Position (Desktop & Tablet)",
+      "options": [
+        { "value": "top_right", "label": "Top Right (In Header)" },
+        { "value": "bottom_right", "label": "Bottom Right" },
+        { "value": "bottom_left", "label": "Bottom Left" },
+        { "value": "bottom_center", "label": "Bottom Center" },
+        { "value": "center_sides", "label": "Center Sides (Card Overlay)" }
+      ],
+      "default": "top_right"
+    },
+    {
+      "type": "select",
+      "id": "arrows_position_mobile",
+      "label": "Arrow Position (Mobile)",
+      "options": [
+        { "value": "top_right", "label": "Top Right (In Header)" },
+        { "value": "bottom_right", "label": "Bottom Right" },
+        { "value": "bottom_left", "label": "Bottom Left" },
+        { "value": "bottom_center", "label": "Bottom Center" },
+        { "value": "center_sides", "label": "Center Sides (Card Overlay)" }
+      ],
+      "default": "top_right"
     },
     {
       "type": "checkbox",
