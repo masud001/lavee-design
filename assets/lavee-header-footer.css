@@ -684,10 +684,13 @@ body.lavee-mobile-menu-open {
 
 .lavee-footer__divider {
   height: 1px;
-  background-color: var(--lavee-border);
+  min-height: 1px;
+  background-color: var(--lavee-border, #D8D2CA);
   width: 100%;
   margin: 0;
   flex-shrink: 0;
+  display: block;
+  opacity: 1;
 }
 
 /* Element 2: Top Reassurance Bar */

@@ -43,7 +43,6 @@
             </div>
           {%- endfor -%}
         </div>
-        <div class="lavee-footer__divider" role="separator"></div>
       {%- else -%}
         <!-- Default Reassurance Bar -->
         <div class="lavee-footer__reassurance" role="region" aria-label="Customer Reassurance Benefits">
@@ -68,8 +67,9 @@
             <span class="lavee-footer__reassurance-sub lavee-mobile-only">Tracked 2-4 day shipping</span>
           </div>
         </div>
-        <div class="lavee-footer__divider" role="separator"></div>
       {%- endif -%}
+
+      <div class="lavee-footer__divider" role="separator"></div>
 
       <!-- Element 3 & 4: Main Footer Grid & Newsletter Box -->
       {%- assign menu_blocks = section.blocks | where: "type", "link_list" -%}
@@ -211,21 +211,11 @@
               <!-- Social Media Row -->
               {%- if block.settings.show_social -%}
                 <div class="lavee-footer__social-row" role="navigation" aria-label="Social Media Links">
-                  {%- if block.settings.social_tiktok_link != blank -%}
-                    <a href="{{ block.settings.social_tiktok_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">TIKTOK</a>
-                  {%- endif -%}
-                  {%- if block.settings.social_facebook_link != blank -%}
-                    <a href="{{ block.settings.social_facebook_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">FACEBOOK</a>
-                  {%- endif -%}
-                  {%- if block.settings.social_instagram_link != blank -%}
-                    <a href="{{ block.settings.social_instagram_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">INSTAGRAM</a>
-                  {%- endif -%}
-                  {%- if block.settings.social_pinterest_link != blank -%}
-                    <a href="{{ block.settings.social_pinterest_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">PINTEREST</a>
-                  {%- endif -%}
-                  {%- if block.settings.social_youtube_link != blank -%}
-                    <a href="{{ block.settings.social_youtube_link }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">YOUTUBE</a>
-                  {%- endif -%}
+                  <a href="{{ block.settings.social_tiktok_link | default: 'https://tiktok.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">TIKTOK</a>
+                  <a href="{{ block.settings.social_facebook_link | default: 'https://facebook.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">FACEBOOK</a>
+                  <a href="{{ block.settings.social_instagram_link | default: 'https://instagram.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">INSTAGRAM</a>
+                  <a href="{{ block.settings.social_pinterest_link | default: 'https://pinterest.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">PINTEREST</a>
+                  <a href="{{ block.settings.social_youtube_link | default: 'https://youtube.com' }}" target="_blank" rel="noopener noreferrer" class="lavee-footer__social-link">YOUTUBE</a>
                 </div>
               {%- endif -%}
             </div>
@@ -415,32 +405,27 @@
     {
       "type": "url",
       "id": "social_tiktok_link",
-      "label": "TikTok Link",
-      "default": "/#tiktok"
+      "label": "TikTok Link"
     },
     {
       "type": "url",
       "id": "social_facebook_link",
-      "label": "Facebook Link",
-      "default": "/#facebook"
+      "label": "Facebook Link"
     },
     {
       "type": "url",
       "id": "social_instagram_link",
-      "label": "Instagram Link",
-      "default": "/#instagram"
+      "label": "Instagram Link"
     },
     {
       "type": "url",
       "id": "social_pinterest_link",
-      "label": "Pinterest Link",
-      "default": "/#pinterest"
+      "label": "Pinterest Link"
     },
     {
       "type": "url",
       "id": "social_youtube_link",
-      "label": "YouTube Link",
-      "default": "/#youtube"
+      "label": "YouTube Link"
     },
     {
       "type": "header",
@@ -565,32 +550,27 @@
         {
           "type": "url",
           "id": "social_tiktok_link",
-          "label": "TikTok Link",
-          "default": "/#tiktok"
+          "label": "TikTok Link"
         },
         {
           "type": "url",
           "id": "social_facebook_link",
-          "label": "Facebook Link",
-          "default": "/#facebook"
+          "label": "Facebook Link"
         },
         {
           "type": "url",
           "id": "social_instagram_link",
-          "label": "Instagram Link",
-          "default": "/#instagram"
+          "label": "Instagram Link"
         },
         {
           "type": "url",
           "id": "social_pinterest_link",
-          "label": "Pinterest Link",
-          "default": "/#pinterest"
+          "label": "Pinterest Link"
         },
         {
           "type": "url",
           "id": "social_youtube_link",
-          "label": "YouTube Link",
-          "default": "/#youtube"
+          "label": "YouTube Link"
         }
       ]
     }
