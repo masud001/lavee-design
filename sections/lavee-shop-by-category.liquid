@@ -263,16 +263,7 @@
               <a href="{{ category_url }}" class="lavee-category-card" aria-label="{{ category_title | escape }}">
                 <div class="lavee-category-image-wrap">
                   {%- if media_type == 'video' or video_shopify != blank or raw_video_url != blank -%}
-                    {%- if video_shopify != blank -%}
-                      {{ video_shopify | video_tag: 
-                        autoplay: true, 
-                        loop: true, 
-                        muted: true, 
-                        controls: false, 
-                        playsinline: true,
-                        class: 'lavee-category-video'
-                      }}
-                    {%- elsif is_youtube and youtube_id != blank -%}
+                    {%- if is_youtube and youtube_id != blank -%}
                       <iframe 
                         class="lavee-category-video-iframe" 
                         src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&enablejsapi=1&disablekb=1&iv_load_policy=3&autohide=1&fs=0" 
@@ -293,6 +284,15 @@
                         tabindex="-1"
                         aria-hidden="true"
                       ></iframe>
+                    {%- elsif video_shopify != blank and video_shopify.sources != blank -%}
+                      {{ video_shopify | video_tag: 
+                        autoplay: true, 
+                        loop: true, 
+                        muted: true, 
+                        controls: false, 
+                        playsinline: true,
+                        class: 'lavee-category-video'
+                      }}
                     {%- elsif raw_video_url != blank -%}
                       <video class="lavee-category-video" autoplay loop muted playsinline disablePictureInPicture controlsList="nodownload noremoteplayback">
                         <source src="{{ raw_video_url }}" type="video/mp4">
@@ -1440,12 +1440,14 @@
         {
           "type": "video",
           "id": "video_shopify",
-          "label": "Shopify Hosted Video"
+          "label": "Shopify Uploaded Video File",
+          "info": "Select a video uploaded in Shopify Admin > Content > Files."
         },
         {
           "type": "text",
           "id": "video_url",
-          "label": "External Video MP4/WebM URL"
+          "label": "External Video / Shorts / Reels / MP4 URL",
+          "info": "Paste YouTube link, YouTube Shorts, Instagram Reel, or direct MP4 URL."
         },
         {
           "type": "header",
