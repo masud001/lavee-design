@@ -501,7 +501,7 @@
   width: 100%;
   height: 100%;
   border-radius: var(--lavee-cat-inner-radius, 4px);
-  border: 1px solid var(--lavee-cat-inner-border-color, rgba(255, 255, 255, 0.7));
+  border: var(--lavee-cat-inner-border-width, 0px) solid var(--lavee-cat-inner-border-color, rgba(255, 255, 255, 0.7));
   padding: var(--lavee-cat-card-inner-padding, 20px);
   z-index: 3;
   display: flex;
