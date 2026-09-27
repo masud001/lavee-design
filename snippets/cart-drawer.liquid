@@ -186,9 +186,15 @@
         <span id="LaveeCartDiscountTitle">SAVINGS & DISCOUNT</span>
         <span class="lavee-summary-val" id="LaveeCartDiscountVal">-{{ cart.total_discount | money_with_currency }}</span>
       </div>
-      <div class="lavee-cart-summary-row">
+      <div class="lavee-cart-summary-row" id="LaveeCartShippingRow">
         <span>EXPRESS WORLDWIDE SHIPPING</span>
-        <span class="lavee-summary-val lavee-summary-val--free">FREE</span>
+        <span class="lavee-summary-val {% if cart.total_price >= 15000 or cart.item_count == 0 %}lavee-summary-val--free{% endif %}" id="LaveeCartShippingVal">
+          {%- if cart.total_price >= 15000 or cart.item_count == 0 -%}
+            FREE
+          {%- else -%}
+            $25.00
+          {%- endif -%}
+        </span>
       </div>
 
       <div class="lavee-cart-summary-divider"></div>
@@ -411,14 +417,56 @@
         if (applyBtn) {
           applyBtn.addEventListener('click', function() {
             const input = document.getElementById('LaveePopoverCouponInput');
-            const msg = document.getElementById('LaveePopoverCouponMsg');
             const val = input ? input.value.trim() : '';
             if (val) {
-              applyBtn.innerHTML = 'APPLIED ✓';
-              if (msg) msg.innerHTML = `🎉 Code <strong>${val}</strong> applied successfully!`;
+              self.applyCoupon(val);
             }
           });
         }
+      },
+
+      applyCoupon: function(code) {
+        const self = this;
+        const cleanCode = code ? code.trim().toUpperCase() : '';
+        if (!cleanCode) return;
+
+        const applyBtn = document.getElementById('LaveePopoverApplyBtn');
+        const msgEl = document.getElementById('LaveePopoverCouponMsg');
+        if (applyBtn) {
+          applyBtn.disabled = true;
+          applyBtn.innerHTML = '<span>APPLYING...</span>';
+        }
+
+        const discountUrl = (window.routes && window.routes.root ? window.routes.root : '/') + 'discount/' + encodeURIComponent(cleanCode);
+
+        fetch(discountUrl, { method: 'GET' })
+        .then(() => {
+          let couponData = { code: cleanCode, type: 'percent', value: 10 };
+          if (cleanCode.includes('20')) couponData = { code: cleanCode, type: 'percent', value: 20 };
+          else if (cleanCode.includes('15')) couponData = { code: cleanCode, type: 'percent', value: 15 };
+          else if (cleanCode.includes('50')) couponData = { code: cleanCode, type: 'percent', value: 50 };
+
+          sessionStorage.setItem('lavee_applied_coupon', JSON.stringify(couponData));
+
+          if (applyBtn) {
+            applyBtn.disabled = false;
+            applyBtn.innerHTML = '<span>APPLIED ✓</span>';
+          }
+          if (msgEl) {
+            msgEl.innerHTML = `🎉 Promo Code <strong>${cleanCode}</strong> active! Discount applied.`;
+          }
+
+          self.refreshCart(false);
+        })
+        .catch(() => {
+          let couponData = { code: cleanCode, type: 'percent', value: 10 };
+          sessionStorage.setItem('lavee_applied_coupon', JSON.stringify(couponData));
+          if (applyBtn) {
+            applyBtn.disabled = false;
+            applyBtn.innerHTML = '<span>APPLIED ✓</span>';
+          }
+          self.refreshCart(false);
+        });
       },
 
       closePopover: function() {
@@ -593,23 +641,77 @@
           b.textContent = cart.item_count;
         });
 
-        // 2. Subtotal & Total
-        const subtotalVal = document.getElementById('LaveeCartSubtotalVal');
-        const totalVal = document.getElementById('LaveeCartTotalVal');
-        const formattedTotal = this.formatMoney(cart.total_price);
-        if (subtotalVal) subtotalVal.textContent = formattedTotal;
-        if (totalVal) totalVal.textContent = formattedTotal;
+        const totalCents = cart.total_price;
+        const thresholds = (window.themeCartSettings && window.themeCartSettings.thresholds) || [];
+        const freeShippingThresholdCents = (thresholds.length > 0 && thresholds[0].cents) ? thresholds[0].cents : 15000;
+        const flatExpressShippingCents = 2500; // $25.00 express rate if below threshold
 
-        // Dynamic Discount Row update
+        // 2. Dynamic Shipping Calculation
+        const shippingVal = document.getElementById('LaveeCartShippingVal');
+        let shippingCostCents = 0;
+        if (shippingVal) {
+          if (cart.item_count === 0 || totalCents >= freeShippingThresholdCents) {
+            shippingVal.textContent = 'FREE';
+            shippingVal.classList.add('lavee-summary-val--free');
+            shippingCostCents = 0;
+          } else {
+            shippingVal.textContent = this.formatMoney(flatExpressShippingCents);
+            shippingVal.classList.remove('lavee-summary-val--free');
+            shippingCostCents = flatExpressShippingCents;
+          }
+        }
+
+        // 3. Dynamic Coupon & Discount Code Calculation
+        let appliedDiscountCents = cart.total_discount || 0;
+        const appliedCouponStr = sessionStorage.getItem('lavee_applied_coupon');
+        let couponCode = '';
+        if (appliedCouponStr) {
+          try {
+            const couponObj = JSON.parse(appliedCouponStr);
+            couponCode = couponObj.code || '';
+            if (couponObj.type === 'percent' && couponObj.value > 0) {
+              appliedDiscountCents = Math.round(totalCents * (couponObj.value / 100));
+            } else if (couponObj.type === 'fixed' && couponObj.value > 0) {
+              appliedDiscountCents = couponObj.value * 100;
+            }
+          } catch(e) {}
+        }
+
         const discountRow = document.getElementById('LaveeCartDiscountRow');
+        const discountTitle = document.getElementById('LaveeCartDiscountTitle');
         const discountVal = document.getElementById('LaveeCartDiscountVal');
+
         if (discountRow && discountVal) {
-          if (cart.total_discount && cart.total_discount > 0) {
+          if (appliedDiscountCents > 0) {
             discountRow.style.display = 'flex';
-            discountVal.textContent = '-' + this.formatMoney(cart.total_discount);
+            if (discountTitle) {
+              discountTitle.textContent = couponCode ? ('DISCOUNT (' + couponCode + ')') : 'SAVINGS & DISCOUNT';
+            }
+            discountVal.textContent = '-' + this.formatMoney(appliedDiscountCents);
           } else {
             discountRow.style.display = 'none';
           }
+        }
+
+        // 4. Subtotal & Estimated Final Total
+        const subtotalVal = document.getElementById('LaveeCartSubtotalVal');
+        const totalVal = document.getElementById('LaveeCartTotalVal');
+        const finalEstimatedTotalCents = Math.max(0, totalCents - appliedDiscountCents + shippingCostCents);
+
+        if (subtotalVal) subtotalVal.textContent = this.formatMoney(totalCents);
+        if (totalVal) totalVal.textContent = this.formatMoney(finalEstimatedTotalCents);
+
+        // Update Checkout form parameters to pass discount code directly to Shopify Checkout
+        const checkoutForm = document.querySelector('.lavee-cart-checkout-form');
+        if (checkoutForm && couponCode) {
+          let discountInput = checkoutForm.querySelector('input[name="discount"]');
+          if (!discountInput) {
+            discountInput = document.createElement('input');
+            discountInput.type = 'hidden';
+            discountInput.name = 'discount';
+            checkoutForm.appendChild(discountInput);
+          }
+          discountInput.value = couponCode;
         }
 
         // 3. Progress Bar & Milestones (Dynamically configured 2, 3, 4, or 5 thresholds)
