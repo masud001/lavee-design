@@ -91,32 +91,32 @@
           "type": "category_item",
           "settings": {
             "title": "DRESSES",
-            "subtitle": "42 PIECES",
-            "button_text": "EXPLORE CATEGORY"
+            "button_text": "Shop Dresses →",
+            "image_url": "https://images.unsplash.com/photo-1708434034707-0580ada65d8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
           }
         },
         "cat_sets": {
           "type": "category_item",
           "settings": {
-            "title": "SETS",
-            "subtitle": "28 PIECES",
-            "button_text": "EXPLORE CATEGORY"
+            "title": "MATCHING SETS",
+            "button_text": "Shop Sets →",
+            "image_url": "https://images.unsplash.com/photo-1773574488217-eb936b733cae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
           }
         },
         "cat_tops": {
           "type": "category_item",
           "settings": {
-            "title": "TOPS",
-            "subtitle": "34 PIECES",
-            "button_text": "EXPLORE CATEGORY"
+            "title": "TOPS & CORSETS",
+            "button_text": "Shop Tops →",
+            "image_url": "https://images.unsplash.com/photo-1710090411838-5f846e289b2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
           }
         },
         "cat_occasion": {
           "type": "category_item",
           "settings": {
-            "title": "OCCASION",
-            "subtitle": "19 PIECES",
-            "button_text": "EXPLORE CATEGORY"
+            "title": "OCCASIONWEAR",
+            "button_text": "Shop Occasion →",
+            "image_url": "https://images.unsplash.com/photo-1593530097577-bbf5f393ad7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
           }
         }
       },
@@ -127,14 +127,24 @@
         "cat_occasion"
       ],
       "settings": {
-        "eyebrow": "CURATED ATELIER EDITS",
         "heading": "SHOP BY CATEGORY",
         "heading_alignment": "left",
         "container_type": "container",
         "color_scheme": "ivory",
         "columns_desktop": 4,
         "columns_mobile": "2",
-        "card_height_desktop": 520,
+        "card_border_color": "#D8D2CA",
+        "card_border_width": 1,
+        "show_inner_border": true,
+        "inner_border_color": "#FFFFFF",
+        "card_corner_radius": 8,
+        "inner_corner_radius": 4,
+        "pill_corner_radius": 4,
+        "grid_gap_desktop": 24,
+        "grid_gap_mobile": 16,
+        "card_outer_padding": 8,
+        "card_inner_padding": 20,
+        "card_height_desktop": 540,
         "card_height_mobile": 420,
         "padding_top": 80,
         "padding_bottom": 80,
