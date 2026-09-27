@@ -985,11 +985,12 @@
   border: 1.5px solid #D4AF37;
   color: #161616;
   box-shadow: none !important;
+  transition: border-color 0.35s ease, background 0.35s ease, color 0.35s ease, transform 0.35s ease;
 }
 
 .lavee-btn--outline:hover {
   background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-  border-color: #D4AF37;
+  border-color: transparent !important;
   color: #FFFFFF;
   box-shadow: none !important;
   transform: translateY(-2px);
@@ -1000,15 +1001,16 @@
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-color: #D4AF37;
+  border: 1.5px solid #D4AF37;
   color: #D4AF37;
   box-shadow: none !important;
+  transition: border-color 0.35s ease, background 0.35s ease, color 0.35s ease, transform 0.35s ease;
 }
 
 .lavee-category-section--dark .lavee-btn--outline:hover,
 .lavee-category-section--burgundy .lavee-btn--outline:hover {
   background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-  border-color: #D4AF37;
+  border-color: transparent !important;
   color: #161616;
   box-shadow: none !important;
   transform: translateY(-2px);
