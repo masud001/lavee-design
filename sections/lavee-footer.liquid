@@ -4,6 +4,7 @@
   La Vee Ultimate Luxury Dynamic Footer - Node ID: twkN3 / Section 16
   - Block-by-Block Admin Customizer Architecture (Reassurance items with Icons, Dynamic Link Lists, Newsletter Box, Custom Dividers)
   - Customizable Divider Lines (Color, Thickness, Width, Opacity, Margins)
+  - Customizable Brand Logo (Text / Image) Above Acknowledgement Statement
   - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
   - Mobile Accordions for Navigation Columns with smooth animation & centered alignment
 {% endcomment %}
@@ -320,9 +321,28 @@
 
       </div>
 
-      <!-- Element 5: Brand Acknowledgement Statement -->
+      <!-- Element 5: Brand Acknowledgement Statement & Custom Logo -->
       {%- if section.settings.show_acknowledgement -%}
         <div class="lavee-footer__acknowledgement">
+          {%- if section.settings.show_acknowledgement_logo -%}
+            <div class="lavee-footer__acknowledgement-logo">
+              {%- if section.settings.acknowledgement_logo_image != blank -%}
+                <img 
+                  src="{{ section.settings.acknowledgement_logo_image | image_url: width: 400 }}" 
+                  alt="{{ section.settings.acknowledgement_logo_text | default: shop.name }}" 
+                  width="{{ section.settings.acknowledgement_logo_width | default: 120 }}"
+                  height="auto"
+                  loading="lazy"
+                  class="lavee-footer__acknowledgement-logo-img"
+                >
+              {%- elsif section.settings.acknowledgement_logo_text != blank -%}
+                <span class="lavee-footer__acknowledgement-logo-text">
+                  {{ section.settings.acknowledgement_logo_text }}
+                </span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
           <p class="lavee-footer__acknowledgement-text">
             {{ section.settings.acknowledgement_text | default: "La Vee acknowledges the Traditional Custodians of the land on which we gather & pay our respects to Elders past, present and emerging." }}
           </p>
@@ -542,13 +562,40 @@
     },
     {
       "type": "header",
-      "content": "Brand Acknowledgement"
+      "content": "Brand Acknowledgement & Logo"
     },
     {
       "type": "checkbox",
       "id": "show_acknowledgement",
       "label": "Show Brand Acknowledgement",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_acknowledgement_logo",
+      "label": "Show Logo Above Acknowledgement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "acknowledgement_logo_text",
+      "label": "Brand Logo Text",
+      "default": "LA VEE"
+    },
+    {
+      "type": "image_picker",
+      "id": "acknowledgement_logo_image",
+      "label": "Brand Logo Image (Overrides Text if uploaded)"
+    },
+    {
+      "type": "range",
+      "id": "acknowledgement_logo_width",
+      "min": 40,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Brand Logo Image Width",
+      "default": 120
     },
     {
       "type": "textarea",
@@ -791,7 +838,6 @@
         {
           "type": "reassurance_item",
           "settings": {
-            "icon": "card",
             "title": "BUY NOW PAY LATER",
             "subtext_desktop": "Klarna & Afterpay available",
             "subtext_mobile": "Klarna & Afterpay"

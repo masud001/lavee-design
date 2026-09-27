@@ -972,15 +972,39 @@ body.lavee-mobile-menu-open {
   color: var(--lavee-burgundy);
 }
 
-/* Element 5: Brand Acknowledgement Statement */
+/* Element 5: Brand Acknowledgement Statement & Custom Logo */
 .lavee-footer__acknowledgement {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 12px;
   padding: 8px 48px;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
+}
+
+.lavee-footer__acknowledgement-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.lavee-footer__acknowledgement-logo-text {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--lavee-burgundy, #6E1F2A);
+  text-transform: uppercase;
+}
+
+.lavee-footer__acknowledgement-logo-img {
+  display: block;
+  object-fit: contain;
+  height: auto;
 }
 
 .lavee-footer__acknowledgement-text {
