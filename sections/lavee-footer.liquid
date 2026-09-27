@@ -2,7 +2,7 @@
 
 {% comment %}
   La Vee Ultimate Luxury Dynamic Footer - Node ID: twkN3 / Section 16
-  - Block-by-Block Admin Customizer Architecture (Reassurance items, Dynamic Link Lists, Newsletter Box)
+  - Block-by-Block Admin Customizer Architecture (Reassurance items, Dynamic Link Lists, Newsletter Box, Custom Dividers)
   - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
   - Mobile Accordions for Navigation Columns with smooth animation & centered alignment
 {% endcomment %}
@@ -265,8 +265,10 @@
             {{ section.settings.acknowledgement_text | default: "La Vee acknowledges the Traditional Custodians of the land on which we gather & pay our respects to Elders past, present and emerging." }}
           </p>
         </div>
-        <div class="lavee-footer__divider" role="separator"></div>
       {%- endif -%}
+
+      <!-- Bottom Divider Line (Always Displayed Above Bottom Utility Bar) -->
+      <div class="lavee-footer__divider" role="separator"></div>
 
       <!-- Element 6: Bottom Utility Bar -->
       <div class="lavee-footer__bottom">
@@ -571,6 +573,18 @@
           "type": "url",
           "id": "social_youtube_link",
           "label": "YouTube Link"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider Line",
+      "settings": [
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Divider Line Color",
+          "default": "#D8D2CA"
         }
       ]
     }
