@@ -472,9 +472,11 @@
             data-text-more="{{ section.settings.grid_button_text | default: 'EXPLORE ALL CATEGORIES' | escape }}"
             data-text-less="SHOW LESS"
           >
-            <svg class="lavee-btn-border-draw" width="100%" height="100%">
-              <rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="4" ry="4" vector-effect="non-scaling-stroke"></rect>
-            </svg>
+            {%- if section.settings.enable_button_ring_animation != false -%}
+              <svg class="lavee-btn-ring-draw" width="100%" height="100%">
+                <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="5" ry="5" vector-effect="non-scaling-stroke"></rect>
+              </svg>
+            {%- endif -%}
             <span>{{ section.settings.grid_button_text | default: 'EXPLORE ALL CATEGORIES' | escape }}</span>
             <svg class="lavee-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
@@ -483,9 +485,11 @@
             href="{{ section.settings.grid_button_link | default: '/collections' }}" 
             class="lavee-btn lavee-grid-link-btn lavee-btn--{{ section.settings.grid_button_style | default: 'outline' }}"
           >
-            <svg class="lavee-btn-border-draw" width="100%" height="100%">
-              <rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="4" ry="4" vector-effect="non-scaling-stroke"></rect>
-            </svg>
+            {%- if section.settings.enable_button_ring_animation != false -%}
+              <svg class="lavee-btn-ring-draw" width="100%" height="100%">
+                <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="5" ry="5" vector-effect="non-scaling-stroke"></rect>
+              </svg>
+            {%- endif -%}
             <span>{{ section.settings.grid_button_text | default: 'VIEW ALL COLLECTIONS' | escape }}</span>
             <svg class="lavee-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -548,17 +552,17 @@
       });
     }
 
-    function initButtonGSAPBorderDraw() {
+    function initButtonGSAPRingDraw() {
       const buttons = document.querySelectorAll('.lavee-btn');
       buttons.forEach(btn => {
-        if (btn.getAttribute('data-border-draw-init') === 'true') return;
-        btn.setAttribute('data-border-draw-init', 'true');
+        if (btn.getAttribute('data-ring-draw-init') === 'true') return;
+        btn.setAttribute('data-ring-draw-init', 'true');
 
-        const rect = btn.querySelector('.lavee-btn-border-draw rect');
+        const rect = btn.querySelector('.lavee-btn-ring-draw rect');
         if (!rect) return;
 
         try {
-          const length = rect.getTotalLength ? rect.getTotalLength() : 600;
+          const length = rect.getTotalLength ? rect.getTotalLength() : 650;
           rect.style.strokeDasharray = length;
           rect.style.strokeDashoffset = length;
 
@@ -589,7 +593,7 @@
 
     function initCategorySliders() {
       initStaggerTitles();
-      initButtonGSAPBorderDraw();
+      initButtonGSAPRingDraw();
       const sections = document.querySelectorAll('.lavee-category-section');
       sections.forEach(section => {
         const wrapper = section.querySelector('.lavee-category-wrapper');
@@ -839,6 +843,12 @@
         { "value": "glass", "label": "Frosted Glass" }
       ],
       "default": "outline"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_button_ring_animation",
+      "label": "Enable Outer Ring SVG Draw Animation on Hover",
+      "default": true
     },
     {
       "type": "header",
