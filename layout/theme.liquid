@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#F7F4EF">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -14,6 +14,8 @@
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <title>
       {{ page_title }}
@@ -24,7 +26,26 @@
 
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
+    {% else %}
+      <meta name="description" content="{{ shop.description | default: 'La Vee Luxury Fashion - Premium high fashion collections, bespoke tailoring & luxury designs.' | escape }}">
     {% endif %}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": {{ shop.name | default: "La Vee" | json }},
+        "url": {{ request.origin | default: "https://lavee-design.myshopify.com" | json }}
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": {{ shop.name | default: "La Vee" | json }},
+        "url": {{ request.origin | default: "https://lavee-design.myshopify.com" | json }}
+      }
+    </script>
 
     {% render 'meta-tags' %}
 

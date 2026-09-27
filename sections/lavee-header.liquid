@@ -92,11 +92,14 @@
 {%- endstyle -%}
 
 {%- capture header_logo_html -%}
-  <a href="{{ routes.root_url }}" class="lavee-header__logo">
+  {%- if request.page_type == 'index' -%}
+    <h1 class="lavee-header__logo-heading" style="margin: 0; padding: 0; font-size: inherit; font-weight: inherit; line-height: inherit;">
+  {%- endif -%}
+  <a href="{{ routes.root_url }}" class="lavee-header__logo" aria-label="{{ shop.name | default: 'La Vee Home' }}">
     {%- case section.settings.logo_type -%}
       {%- when 'image' -%}
         {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--standard' }}
+          {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--standard', fetchpriority: 'high' }}
           {%- if section.settings.enable_transparent and section.settings.logo_transparent != blank -%}
             {{ section.settings.logo_transparent | image_url: width: 400 | image_tag: alt: shop.name, class: 'lavee-header__logo-img lavee-logo--transparent' }}
           {%- endif -%}
@@ -117,6 +120,9 @@
         <span class="lavee-header__logo-text">{{ section.settings.logo_text | default: "LA VEE" }}</span>
     {%- endcase -%}
   </a>
+  {%- if request.page_type == 'index' -%}
+    </h1>
+  {%- endif -%}
 {%- endcapture -%}
 
 {%- capture header_menu_html -%}
@@ -160,7 +166,7 @@
         <button 
           type="button" 
           class="lavee-header__mobile-toggle" 
-          aria-label="{{ 'sections.header.menu' | t | default: 'Toggle Mobile Menu' }}"
+          aria-label="{{ 'sections.header.menu' | t | default: 'Toggle Mobile Navigation Menu' }}"
           aria-expanded="false"
           aria-controls="LaveeMobileDrawer"
           onclick="toggleLaveeMobileMenu()"
@@ -194,9 +200,9 @@
         {%- endif -%}
 
         <div class="lavee-header__actions">
-          <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop">SEARCH</a>
-          <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop">WISHLIST</a>
-          <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag">
+          <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="Search Products">SEARCH</a>
+          <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="View Wishlist">WISHLIST</a>
+          <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag" aria-label="Shopping Bag containing {% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %} items">
             BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
           </a>
         </div>
@@ -212,14 +218,14 @@
   </div>
 
   <!-- Mobile Drawer Menu Overlay -->
-  <div id="LaveeMobileDrawer" class="lavee-mobile-drawer" aria-hidden="true">
+  <div id="LaveeMobileDrawer" class="lavee-mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu" aria-hidden="true">
     <div class="lavee-mobile-drawer__overlay" onclick="toggleLaveeMobileMenu()"></div>
     <div class="lavee-mobile-drawer__content">
       <div class="lavee-mobile-drawer__header">
         <span class="lavee-mobile-drawer__title">{{ section.settings.logo_text | default: "LA VEE" }}</span>
-        <button type="button" class="lavee-mobile-drawer__close" aria-label="Close menu" onclick="toggleLaveeMobileMenu()">✕</button>
+        <button type="button" class="lavee-mobile-drawer__close" aria-label="Close navigation menu" onclick="toggleLaveeMobileMenu()">✕</button>
       </div>
-      <nav class="lavee-mobile-drawer__nav">
+      <nav class="lavee-mobile-drawer__nav" aria-label="Mobile Menu Navigation">
         {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
           {%- for link in section.settings.menu.links -%}
             {%- assign is_new_in = false -%}

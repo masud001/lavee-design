@@ -111,35 +111,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. GSAP INTERACTIVE HOVER ENGINE FOR ALL FROSTED GLASS CONTROLS & BUTTONS
   const interactiveElements = document.querySelectorAll(
-    '.lavee-hero-btn, .lavee-hero-audio-btn, .lavee-hero-nav-btn, .lavee-hero-tab-pill, .lavee-hero-badge, .lavee-btn, .button'
+    '.lavee-hero-btn, .lavee-hero-audio-btn, .lavee-hero-nav-btn, .lavee-hero-tab-pill, .lavee-btn, .button'
   );
 
   interactiveElements.forEach((el) => {
     const arrow = el.querySelector('.lavee-hero-btn-arrow, .lavee-hero-btn-icon');
-    const text = el.querySelector('.lavee-hero-tab-pill__title, .lavee-hero-audio-text');
+    const text = el.querySelector('.lavee-hero-tab-pill__title, .lavee-hero-audio-text, span:not(.lavee-hero-btn-arrow):not(.lavee-hero-btn-icon)');
+    const isPrimary = el.classList.contains('lavee-hero-btn--primary');
+    const isSecondary = el.classList.contains('lavee-hero-btn--secondary');
+    const isAudio = el.classList.contains('lavee-hero-audio-btn');
+    const isNav = el.classList.contains('lavee-hero-nav-btn');
+    const isTab = el.classList.contains('lavee-hero-tab-pill');
 
     el.addEventListener('mouseenter', () => {
+      if (el.hasAttribute('disabled') || el.classList.contains('is-disabled')) return;
+
+      // Button scale & elevation
       gsap.to(el, {
-        y: -3,
-        scale: 1.035,
-        duration: 0.3,
+        y: -4,
+        scale: 1.04,
+        duration: 0.35,
         ease: 'power2.out',
         overwrite: 'auto'
       });
 
-      if (arrow) {
-        gsap.to(arrow, {
-          x: 4,
-          duration: 0.25,
+      // Background color & border animations based on button type
+      if (isPrimary) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(145, 38, 52, 0.98)',
+          borderColor: 'rgba(212, 175, 55, 0.85)',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.4), 0 12px 32px rgba(110, 31, 42, 0.65)',
+          duration: 0.35,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      } else if (isSecondary) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(255, 255, 255, 0.28)',
+          borderColor: '#FFFFFF',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.4), 0 12px 32px rgba(0, 0, 0, 0.45)',
+          duration: 0.35,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      } else if (isAudio) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(22, 22, 22, 0.85)',
+          borderColor: 'rgba(212, 175, 55, 0.7)',
+          color: '#D4AF37',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.35), 0 10px 32px rgba(0, 0, 0, 0.5)',
+          duration: 0.35,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      } else if (isNav) {
+        gsap.to(el, {
+          backgroundColor: '#6E1F2A',
+          borderColor: '#D4AF37',
+          color: '#FFFFFF',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(110, 31, 42, 0.6)',
+          duration: 0.35,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      } else if (isTab && !el.classList.contains('is-active')) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(35, 35, 35, 0.85)',
+          borderColor: 'rgba(255, 255, 255, 0.4)',
+          color: '#FFFFFF',
+          duration: 0.35,
           ease: 'power2.out',
           overwrite: 'auto'
         });
       }
 
+      // Arrow animation
+      if (arrow) {
+        gsap.to(arrow, {
+          x: 6,
+          scale: 1.15,
+          duration: 0.3,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      }
+
+      // Text letter spacing animation
       if (text) {
         gsap.to(text, {
-          letterSpacing: '0.08em',
-          duration: 0.25,
+          letterSpacing: '0.15em',
+          duration: 0.3,
           ease: 'power2.out',
           overwrite: 'auto'
         });
@@ -147,27 +208,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     el.addEventListener('mouseleave', () => {
+      // Revert Button scale & elevation
       gsap.to(el, {
         y: 0,
         scale: 1,
-        duration: 0.3,
+        duration: 0.35,
         ease: 'power2.inOut',
         overwrite: 'auto'
       });
 
-      if (arrow) {
-        gsap.to(arrow, {
-          x: 0,
-          duration: 0.25,
+      // Revert background color & border
+      if (isPrimary) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(110, 31, 42, 0.85)',
+          borderColor: 'rgba(212, 175, 55, 0.4)',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 24px rgba(110, 31, 42, 0.4)',
+          duration: 0.35,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      } else if (isSecondary) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(255, 255, 255, 0.12)',
+          borderColor: 'rgba(255, 255, 255, 0.32)',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.25)',
+          duration: 0.35,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      } else if (isAudio) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(22, 22, 22, 0.45)',
+          borderColor: 'rgba(255, 255, 255, 0.22)',
+          color: '#FFFFFF',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+          duration: 0.35,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      } else if (isNav) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(22, 22, 22, 0.45)',
+          borderColor: 'rgba(255, 255, 255, 0.22)',
+          color: '#FFFFFF',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3)',
+          duration: 0.35,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      } else if (isTab && !el.classList.contains('is-active')) {
+        gsap.to(el, {
+          backgroundColor: 'rgba(22, 22, 22, 0.55)',
+          borderColor: 'rgba(255, 255, 255, 0.18)',
+          color: 'rgba(255, 255, 255, 0.85)',
+          duration: 0.35,
           ease: 'power2.inOut',
           overwrite: 'auto'
         });
       }
 
+      // Revert Arrow animation
+      if (arrow) {
+        gsap.to(arrow, {
+          x: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: 'power2.inOut',
+          overwrite: 'auto'
+        });
+      }
+
+      // Revert Text letter spacing
       if (text) {
         gsap.to(text, {
-          letterSpacing: '0.05em',
-          duration: 0.25,
+          letterSpacing: isTab ? '0.05em' : '0.12em',
+          duration: 0.3,
           ease: 'power2.inOut',
           overwrite: 'auto'
         });

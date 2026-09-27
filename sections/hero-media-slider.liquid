@@ -1,15 +1,18 @@
 {{ 'section-hero-media-slider.css' | asset_url | stylesheet_tag }}
 
-{%- comment -%}
-  La Vee Luxury Hero Media Slider (Campaign Video & Image Slider) - Node ID: B95Eo
-  - Responsive Widths: Container Fluid (100% Full Width) vs Container (Max 1440px Centered)
-  - Autoplay Campaign Video with Live Badge & Audio Toggle Pill (SOUND: ON / 4K CINEMATIC PRORES)
-  - Interactive Slide Tabs at bottom right (01. Campaign Film, 02. Silk Gowns, etc.)
-  - Dual CTAs, Entrance Animations, Slide Counter, Line Progress Bar & Touch Swipe
-{%- endcomment -%}
+{%- style -%}
+  @media screen and (max-width: 768px) {
+    {%- if section.settings.section_height_mobile == 'custom' -%}
+      #shopify-section-{{ section.id }} .lavee-hero-wrapper {
+        height: {{ section.settings.section_height_mobile_custom }}px !important;
+        min-height: {{ section.settings.section_height_mobile_custom }}px !important;
+      }
+    {%- endif -%}
+  }
+{%- endstyle -%}
 
 <div 
-  class="lavee-hero-wrapper lavee-hero-height--{{ section.settings.section_height }}"
+  class="lavee-hero-wrapper lavee-hero-height--{{ section.settings.section_height }} lavee-hero-mobile-height--{{ section.settings.section_height_mobile | default: 'medium' }} lavee-hero-bg--{{ section.settings.background_preset | default: 'burgundy_noir' }}"
   data-section-id="{{ section.id }}"
   data-autoplay="{{ section.settings.autoplay }}"
   data-speed="{{ section.settings.autoplay_speed }}"
@@ -17,28 +20,6 @@
   <div class="lavee-{{ section.settings.container_type }}" style="height: 100%;">
     <div class="lavee-hero-slider" id="LaveeHeroSlider-{{ section.id }}">
       
-      <!-- Top Bar Controls: Live Badge & Audio Toggle Pill -->
-      <div class="lavee-hero-controls-top">
-        {%- if section.settings.show_live_badge -%}
-          <div class="lavee-hero-badge">
-            <span class="lavee-hero-badge__dot"></span>
-            {{ section.settings.live_badge_text | default: "VIDEO LOOKBOOK • AUTUMN/WINTER 2026" }}
-          </div>
-        {%- else -%}
-          <div></div>
-        {%- endif -%}
-
-        <button 
-          type="button" 
-          class="lavee-hero-audio-btn" 
-          aria-label="Toggle Campaign Video Audio"
-          onclick="toggleLaveeHeroAudio(this)"
-        >
-          <span class="lavee-hero-audio-icon">🔊</span>
-          <span class="lavee-hero-audio-text">{{ section.settings.audio_btn_text | default: "SOUND: ON | 4K CINEMATIC PRORES" }}</span>
-        </button>
-      </div>
-
       <!-- Main Slides Track -->
       <div class="lavee-hero-slider__track" id="LaveeHeroTrack-{{ section.id }}">
         {%- if section.blocks.size > 0 -%}
@@ -57,7 +38,11 @@
                     <source src="{{ block.settings.video_url }}" type="video/mp4">
                   </video>
                 {%- elsif block.settings.image != blank -%}
-                  {{ block.settings.image | image_url: width: 2200 | image_tag: alt: block.settings.heading, loading: 'lazy' }}
+                  {%- if forloop.first -%}
+                    {{ block.settings.image | image_url: width: 2200 | image_tag: alt: block.settings.heading, loading: 'eager', fetchpriority: 'high' }}
+                  {%- else -%}
+                    {{ block.settings.image | image_url: width: 2200 | image_tag: alt: block.settings.heading, loading: 'lazy' }}
+                  {%- endif -%}
                 {%- else -%}
                   <div class="lavee-hero-slide__fallback" style="background-color: #3E151A; width: 100%; height: 100%;"></div>
                 {%- endif -%}
@@ -125,89 +110,131 @@
         {%- endif -%}
       </div>
 
-      <!-- Bottom Bar Controls: Slide Counter, Nav Arrows, Line Progress, & Slide Selector Tabs -->
+      <!-- Bottom Bar Controls: Slide Counter, Nav Arrows, Line Progress, Audio Toggle & Slide Selector Tabs -->
       {%- assign total_slides = section.blocks.size -%}
       {%- if total_slides == 0 -%}{%- assign total_slides = 4 -%}{%- endif -%}
       
       <div class="lavee-hero-controls-bottom">
-        <!-- Left Side: Nav Arrows + Counter + Progress Bar -->
-        <div class="lavee-hero-controls-left">
-          <div class="lavee-hero-nav-btns">
-            <button 
-              type="button" 
-              class="lavee-hero-nav-btn lavee-hero-nav-btn--prev" 
-              aria-label="Previous Slide"
-              onclick="prevLaveeHeroSlide('{{ section.id }}')"
-            >
-              ‹
-            </button>
-          </div>
-
-          <div class="lavee-hero-counter">
-            <span class="lavee-hero-counter__current" id="LaveeHeroCurrent-{{ section.id }}">01</span>
-            <span class="lavee-hero-counter__divider">/</span>
-            <span class="lavee-hero-counter__total">0{{ total_slides }}</span>
-          </div>
-
-          <div class="lavee-hero-nav-btns">
-            <button 
-              type="button" 
-              class="lavee-hero-nav-btn lavee-hero-nav-btn--next" 
-              aria-label="Next Slide"
-              onclick="nextLaveeHeroSlide('{{ section.id }}')"
-            >
-              ›
-            </button>
-          </div>
-
-          <!-- Line Progress Bar -->
-          <div class="lavee-hero-progress-track">
-            <div class="lavee-hero-progress-bar" id="LaveeHeroProgress-{{ section.id }}"></div>
-          </div>
-        </div>
-
-        <!-- Right Side: Slide Selector Tabs (Pen.dev Design Spec) -->
-        <div class="lavee-hero-tabs" id="LaveeHeroTabs-{{ section.id }}">
-          {%- if section.blocks.size > 0 -%}
-            {%- for block in section.blocks -%}
+        {%- if section.settings.show_nav_controls -%}
+          <!-- Left Side: Nav Arrows + Counter + Line Progress Bar -->
+          <div class="lavee-hero-controls-left">
+            <div class="lavee-hero-nav-btns">
               <button 
-                type="button"
-                class="lavee-hero-tab-pill{% if forloop.first %} is-active{% endif %}"
-                data-slide-target="{{ forloop.index0 }}"
-                onclick="goToLaveeHeroSlide('{{ section.id }}', {{ forloop.index0 }})"
+                type="button" 
+                class="lavee-hero-nav-btn lavee-hero-nav-btn--prev" 
+                aria-label="Previous Slide"
+                onclick="prevLaveeHeroSlide('{{ section.id }}')"
               >
-                <span class="lavee-hero-tab-pill__icon">
-                  {%- if block.settings.video != blank or block.settings.video_url != blank -%}
-                    ►
-                  {%- else -%}
-                    📷
-                  {%- endif -%}
-                </span>
-                <span class="lavee-hero-tab-pill__title">
-                  {{ block.settings.tab_title | default: block.settings.heading | default: 'Slide' }}
-                </span>
+                ‹
               </button>
-            {%- endfor -%}
-          {%- else -%}
-            <!-- Fallback Pen.dev Design Tabs -->
-            <button type="button" class="lavee-hero-tab-pill is-active" onclick="goToLaveeHeroSlide('{{ section.id }}', 0)">
-              <span class="lavee-hero-tab-pill__icon">►</span>
-              <span class="lavee-hero-tab-pill__title">01. Campaign Film</span>
+            </div>
+
+            <div class="lavee-hero-counter">
+              <span class="lavee-hero-counter__current" id="LaveeHeroCurrent-{{ section.id }}">01</span>
+              <span class="lavee-hero-counter__divider">/</span>
+              <span class="lavee-hero-counter__total">0{{ total_slides }}</span>
+            </div>
+
+            <div class="lavee-hero-nav-btns">
+              <button 
+                type="button" 
+                class="lavee-hero-nav-btn lavee-hero-nav-btn--next" 
+                aria-label="Next Slide"
+                onclick="nextLaveeHeroSlide('{{ section.id }}')"
+              >
+                ›
+              </button>
+            </div>
+
+            <!-- Line Progress Bar -->
+            <div class="lavee-hero-progress-track">
+              <div class="lavee-hero-progress-bar" id="LaveeHeroProgress-{{ section.id }}"></div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_audio_control -%}
+          <!-- Center Audio/Video Control Toggle Button (Hero Section Niche) -->
+          <div class="lavee-hero-controls-audio-wrapper">
+            <button 
+              type="button" 
+              class="lavee-hero-audio-btn" 
+              id="LaveeHeroAudioBtn-{{ section.id }}"
+              aria-label="Toggle Audio"
+              onclick="toggleLaveeHeroAudio(this)"
+            >
+              <span class="lavee-hero-audio-icon">🔇</span>
+              <span class="lavee-hero-audio-text">SOUND OFF</span>
             </button>
-            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 1)">
-              <span class="lavee-hero-tab-pill__icon">📷</span>
-              <span class="lavee-hero-tab-pill__title">02. Silk Gowns</span>
-            </button>
-            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 2)">
-              <span class="lavee-hero-tab-pill__icon">📷</span>
-              <span class="lavee-hero-tab-pill__title">03. Atelier Craft</span>
-            </button>
-            <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 3)">
-              <span class="lavee-hero-tab-pill__icon">►</span>
-              <span class="lavee-hero-tab-pill__title">04. Tailored Edit</span>
-            </button>
-          {%- endif -%}
-        </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_slide_tabs -%}
+          <!-- Right Side: Slide Selector Tabs (Desktop Spec) -->
+          <div class="lavee-hero-tabs" id="LaveeHeroTabs-{{ section.id }}">
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <button 
+                  type="button"
+                  class="lavee-hero-tab-pill{% if forloop.first %} is-active{% endif %}"
+                  data-slide-target="{{ forloop.index0 }}"
+                  onclick="goToLaveeHeroSlide('{{ section.id }}', {{ forloop.index0 }})"
+                >
+                  <span class="lavee-hero-tab-pill__icon">
+                    {%- if block.settings.video != blank or block.settings.video_url != blank -%}
+                      ►
+                    {%- else -%}
+                      📷
+                    {%- endif -%}
+                  </span>
+                  <span class="lavee-hero-tab-pill__title">
+                    {{ block.settings.tab_title | default: block.settings.heading | default: 'Slide' }}
+                  </span>
+                </button>
+              {%- endfor -%}
+            {%- else -%}
+              <!-- Fallback Pen.dev Design Tabs -->
+              <button type="button" class="lavee-hero-tab-pill is-active" onclick="goToLaveeHeroSlide('{{ section.id }}', 0)">
+                <span class="lavee-hero-tab-pill__icon">►</span>
+                <span class="lavee-hero-tab-pill__title">01. Campaign Film</span>
+              </button>
+              <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 1)">
+                <span class="lavee-hero-tab-pill__icon">📷</span>
+                <span class="lavee-hero-tab-pill__title">02. Silk Gowns</span>
+              </button>
+              <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 2)">
+                <span class="lavee-hero-tab-pill__icon">📷</span>
+                <span class="lavee-hero-tab-pill__title">03. Atelier Craft</span>
+              </button>
+              <button type="button" class="lavee-hero-tab-pill" onclick="goToLaveeHeroSlide('{{ section.id }}', 3)">
+                <span class="lavee-hero-tab-pill__icon">►</span>
+                <span class="lavee-hero-tab-pill__title">04. Tailored Edit</span>
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_mobile_pagination -%}
+          <!-- Mobile Pagination Dots (Replaces Tabs on Mobile Spec) -->
+          <div class="lavee-hero-pagination" id="LaveeHeroPagination-{{ section.id }}" aria-label="Slide Pagination">
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <button 
+                  type="button" 
+                  class="lavee-hero-pagination-dot{% if forloop.first %} is-active{% endif %}"
+                  aria-label="Go to slide {{ forloop.index }}"
+                  onclick="goToLaveeHeroSlide('{{ section.id }}', {{ forloop.index0 }})"
+                ></button>
+              {%- endfor -%}
+            {%- else -%}
+              <button type="button" class="lavee-hero-pagination-dot is-active" aria-label="Go to slide 1" onclick="goToLaveeHeroSlide('{{ section.id }}', 0)"></button>
+              <button type="button" class="lavee-hero-pagination-dot" aria-label="Go to slide 2" onclick="goToLaveeHeroSlide('{{ section.id }}', 1)"></button>
+              <button type="button" class="lavee-hero-pagination-dot" aria-label="Go to slide 3" onclick="goToLaveeHeroSlide('{{ section.id }}', 2)"></button>
+              <button type="button" class="lavee-hero-pagination-dot" aria-label="Go to slide 4" onclick="goToLaveeHeroSlide('{{ section.id }}', 3)"></button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
       </div>
 
     </div>
@@ -216,25 +243,29 @@
 
 <script>
   function toggleLaveeHeroAudio(btn) {
+    if (btn.hasAttribute('disabled') || btn.classList.contains('is-disabled')) return;
     const slider = btn.closest('.lavee-hero-wrapper');
     if (!slider) return;
-    const videos = slider.querySelectorAll('video');
-    if (!videos.length) return;
+    const mediaElements = slider.querySelectorAll('video, audio');
+    if (!mediaElements.length) return;
     
     const icon = btn.querySelector('.lavee-hero-audio-icon');
     const text = btn.querySelector('.lavee-hero-audio-text');
-    const isMuted = videos[0].muted;
+    const wasMuted = mediaElements[0].muted;
     
-    videos.forEach(v => {
-      v.muted = !isMuted;
+    mediaElements.forEach(m => {
+      m.muted = !wasMuted;
+      if (!m.muted) {
+        m.play().catch(() => {});
+      }
     });
     
-    if (isMuted) {
+    if (wasMuted) {
       if (icon) icon.textContent = '🔊';
-      if (text) text.textContent = 'SOUND: ON | 4K CINEMATIC PRORES';
+      if (text) text.textContent = 'SOUND ON';
     } else {
       if (icon) icon.textContent = '🔇';
-      if (text) text.textContent = 'SOUND: MUTE | 4K CINEMATIC PRORES';
+      if (text) text.textContent = 'SOUND OFF';
     }
   }
 
@@ -247,16 +278,63 @@
     const counterCurrent = wrapper.querySelector('#LaveeHeroCurrent-' + sectionId);
     const progressBar = wrapper.querySelector('#LaveeHeroProgress-' + sectionId);
     const tabPills = wrapper.querySelectorAll('.lavee-hero-tab-pill');
+    const paginationDots = wrapper.querySelectorAll('.lavee-hero-pagination-dot');
+    const audioBtn = wrapper.querySelector('#LaveeHeroAudioBtn-' + sectionId) || wrapper.querySelector('.lavee-hero-audio-btn');
     
     if (!slides.length) return;
+    
+    // Ensure all videos/audios are muted by default
+    wrapper.querySelectorAll('video, audio').forEach(v => {
+      v.muted = true;
+    });
     
     let currentIndex = 0;
     const totalSlides = slides.length;
     const isAutoplay = wrapper.dataset.autoplay === 'true';
     const speedSeconds = parseInt(wrapper.dataset.speed) || 5;
-    let progressInterval = null;
-    let progressPercent = 0;
+    let progressTimer = null;
     
+    function animateLaveeSlideContent(activeSlide) {
+      if (!activeSlide) return;
+      
+      slides.forEach(slide => {
+        if (slide !== activeSlide) {
+          const inactiveElements = slide.querySelectorAll('.lavee-hero-eyebrow, .lavee-hero-title, .lavee-hero-subtext, .lavee-hero-buttons');
+          if (typeof gsap !== 'undefined') {
+            gsap.set(inactiveElements, { opacity: 0, scale: 0.85, y: 0 });
+          }
+        }
+      });
+
+      const activeElements = activeSlide.querySelectorAll('.lavee-hero-eyebrow, .lavee-hero-title, .lavee-hero-subtext, .lavee-hero-buttons');
+      if (typeof gsap !== 'undefined') {
+        gsap.killTweensOf(activeElements);
+        gsap.fromTo(
+          activeElements,
+          { opacity: 0, scale: 0.84, y: 0, transformOrigin: 'center center' },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.1,
+            ease: 'back.out(1.4)',
+            overwrite: 'auto'
+          }
+        );
+
+        const activeMedia = activeSlide.querySelector('.lavee-hero-slide__media img, .lavee-hero-slide__media video');
+        if (activeMedia) {
+          gsap.killTweensOf(activeMedia);
+          gsap.fromTo(
+            activeMedia,
+            { scale: 1.15 },
+            { scale: 1.0, duration: 1.4, ease: 'power2.out', overwrite: 'auto' }
+          );
+        }
+      }
+    }
+
     function updateSlide(index) {
       if (index < 0) index = totalSlides - 1;
       if (index >= totalSlides) index = 0;
@@ -273,29 +351,87 @@
       tabPills.forEach((pill, idx) => {
         pill.classList.toggle('is-active', idx === currentIndex);
       });
+
+      paginationDots.forEach((dot, idx) => {
+        dot.classList.toggle('is-active', idx === currentIndex);
+      });
       
       if (counterCurrent) {
         counterCurrent.textContent = (currentIndex + 1 < 10 ? '0' : '') + (currentIndex + 1);
+      }
+
+      // Run GSAP entrance animation for active slide content
+      animateLaveeSlideContent(slides[currentIndex]);
+      
+      // Update Audio Control Button enable/disable state based on video/audio presence
+      if (audioBtn) {
+        const activeSlide = slides[currentIndex];
+        const activeMedia = activeSlide ? activeSlide.querySelector('video, audio') : null;
+        const anyMedia = wrapper.querySelector('video, audio');
+        
+        if (activeMedia) {
+          audioBtn.removeAttribute('disabled');
+          audioBtn.classList.remove('is-disabled');
+          audioBtn.style.opacity = '1';
+          audioBtn.style.pointerEvents = 'auto';
+          
+          const isMuted = activeMedia.muted;
+          const icon = audioBtn.querySelector('.lavee-hero-audio-icon');
+          const text = audioBtn.querySelector('.lavee-hero-audio-text');
+          if (icon) icon.textContent = isMuted ? '🔇' : '🔊';
+          if (text) text.textContent = isMuted ? 'SOUND OFF' : 'SOUND ON';
+        } else if (anyMedia) {
+          audioBtn.setAttribute('disabled', 'true');
+          audioBtn.classList.add('is-disabled');
+          audioBtn.style.opacity = '0.4';
+          audioBtn.style.pointerEvents = 'none';
+        } else {
+          audioBtn.setAttribute('disabled', 'true');
+          audioBtn.classList.add('is-disabled');
+          audioBtn.style.opacity = '0.4';
+          audioBtn.style.pointerEvents = 'none';
+        }
       }
       
       resetProgress();
     }
     
     function resetProgress() {
-      if (progressInterval) clearInterval(progressInterval);
-      progressPercent = 0;
-      if (progressBar) progressBar.style.width = '0%';
+      if (!progressBar) return;
       
-      if (isAutoplay && totalSlides > 1) {
-        const step = 100 / (speedSeconds * 20);
-        progressInterval = setInterval(() => {
-          progressPercent += step;
-          if (progressBar) progressBar.style.width = Math.min(progressPercent, 100) + '%';
-          if (progressPercent >= 100) {
-            clearInterval(progressInterval);
+      if (typeof gsap !== 'undefined') {
+        gsap.killTweensOf(progressBar);
+        gsap.set(progressBar, { width: '0%' });
+        
+        if (isAutoplay && totalSlides > 1) {
+          gsap.to(progressBar, {
+            width: '100%',
+            duration: speedSeconds,
+            ease: 'none',
+            onComplete: function() {
+              updateSlide(currentIndex + 1);
+            }
+          });
+        } else {
+          gsap.set(progressBar, { width: '100%' });
+        }
+      } else {
+        if (progressTimer) clearTimeout(progressTimer);
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        
+        if (isAutoplay && totalSlides > 1) {
+          setTimeout(() => {
+            progressBar.style.transition = `width ${speedSeconds}s linear`;
+            progressBar.style.width = '100%';
+          }, 30);
+          
+          progressTimer = setTimeout(() => {
             updateSlide(currentIndex + 1);
-          }
-        }, 50);
+          }, speedSeconds * 1000);
+        } else {
+          progressBar.style.width = '100%';
+        }
       }
     }
     
@@ -387,13 +523,37 @@
     {
       "type": "select",
       "id": "section_height",
-      "label": "Section Height Preset",
+      "label": "Desktop Section Height Preset",
       "options": [
         { "value": "fullscreen", "label": "Full Screen (100vh)" },
         { "value": "large", "label": "Large (800px)" },
         { "value": "medium", "label": "Medium (650px)" }
       ],
       "default": "fullscreen"
+    },
+    {
+      "type": "select",
+      "id": "section_height_mobile",
+      "label": "Mobile Section Height Preset",
+      "options": [
+        { "value": "fullscreen", "label": "Mobile Full Screen (100vh)" },
+        { "value": "large", "label": "Mobile Large (620px)" },
+        { "value": "medium", "label": "Mobile Medium (520px)" },
+        { "value": "small", "label": "Mobile Compact (440px)" },
+        { "value": "custom", "label": "Custom Pixel Height (Set Slider Below)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile_custom",
+      "min": 280,
+      "max": 850,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Custom Height (px)",
+      "info": "Applies when Mobile Height Preset is set to Custom",
+      "default": 520
     },
     {
       "type": "range",
@@ -406,26 +566,43 @@
       "default": 40
     },
     {
+      "type": "select",
+      "id": "background_preset",
+      "label": "Luxury Background Aesthetic Preset",
+      "options": [
+        { "value": "burgundy_noir", "label": "Haute Couture Burgundy & Ebony Noir (Default)" },
+        { "value": "deep_espresso", "label": "Deep Velvet Espresso & Amber Noir" },
+        { "value": "midnight_plum", "label": "Midnight Royal Plum & Slate Noir" }
+      ],
+      "default": "burgundy_noir"
+    },
+    {
       "type": "header",
-      "content": "Live Badge & Audio Controls"
+      "content": "Hero Controls Toggle Settings"
     },
     {
       "type": "checkbox",
-      "id": "show_live_badge",
-      "label": "Show Live Lookbook Badge",
+      "id": "show_audio_control",
+      "label": "Show Audio / Video Control Button",
       "default": true
     },
     {
-      "type": "text",
-      "id": "live_badge_text",
-      "label": "Live Badge Content",
-      "default": "VIDEO LOOKBOOK • AUTUMN/WINTER 2026"
+      "type": "checkbox",
+      "id": "show_nav_controls",
+      "label": "Show Navigation Arrows & Counter",
+      "default": true
     },
     {
-      "type": "text",
-      "id": "audio_btn_text",
-      "label": "Audio Button Initial Text",
-      "default": "SOUND: ON | 4K CINEMATIC PRORES"
+      "type": "checkbox",
+      "id": "show_slide_tabs",
+      "label": "Show Slide Selector Tabs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile_pagination",
+      "label": "Show Mobile Pagination Dots",
+      "default": true
     },
     {
       "type": "header",

@@ -34,6 +34,7 @@
         "overlay_opacity": 40,
         "show_live_badge": true,
         "live_badge_text": "LIVE CAMPAIGN LOOKBOOK",
+        "show_mobile_pagination": true,
         "autoplay": true,
         "autoplay_speed": 5
       }

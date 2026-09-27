@@ -7,7 +7,7 @@
   - Mobile Accordions for Navigation Columns with smooth animation & centered alignment
 {% endcomment %}
 
-<footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color | default: '#F7F4EF' }};">
+<footer class="lavee-footer-wrapper" style="background-color: {{ section.settings.bg_color | default: '#F7F4EF' }};" role="contentinfo" aria-label="Site Footer">
   <div class="lavee-{{ section.settings.container_type }}">
     <div class="lavee-footer">
       
@@ -18,10 +18,10 @@
         </h2>
       </div>
 
-      <div class="lavee-footer__divider"></div>
+      <div class="lavee-footer__divider" role="separator"></div>
 
       <!-- Element 2: Top Reassurance Bar (Desktop Row / Mobile Box Grid) -->
-      <div class="lavee-footer__reassurance">
+      <div class="lavee-footer__reassurance" role="region" aria-label="Customer Reassurance Benefits">
         <div class="lavee-footer__reassurance-item">
           <span class="lavee-footer__reassurance-title">RETURNS &amp; REFUNDS</span>
           <span class="lavee-footer__reassurance-sub lavee-desktop-only">Easy 30-day exchange policy</span>
@@ -44,21 +44,27 @@
         </div>
       </div>
 
-      <div class="lavee-footer__divider"></div>
+      <div class="lavee-footer__divider" role="separator"></div>
 
       <!-- Element 3 & 4: Main Footer Grid & Newsletter Box -->
       <div class="lavee-footer__grid">
         
         <!-- Left Navigation Columns (Desktop Grid / Mobile Accordions) -->
-        <div class="lavee-footer__columns">
+        <div class="lavee-footer__columns" role="navigation" aria-label="Footer Quick Links">
           
           <!-- Column 1: Need Help -->
           <div class="lavee-footer__col">
-            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+            <button 
+              type="button" 
+              id="FooterCol1Header"
+              class="lavee-footer__accordion-btn" 
+              aria-expanded="false" 
+              aria-controls="FooterCol1Content"
+            >
               <span class="lavee-footer__col-title">NEED SOME HELP?</span>
-              <span class="lavee-footer__accordion-icon">+</span>
+              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
             </button>
-            <div class="lavee-footer__col-content">
+            <div id="FooterCol1Content" class="lavee-footer__col-content" aria-labelledby="FooterCol1Header">
               <ul class="lavee-footer__col-list">
                 <li><a href="{{ routes.root_url }}pages/contact" class="lavee-footer__col-link">Contact Us</a></li>
                 <li><a href="{{ routes.root_url }}pages/faqs" class="lavee-footer__col-link">FAQs &amp; Help Center</a></li>
@@ -72,11 +78,17 @@
 
           <!-- Column 2: About La Vee -->
           <div class="lavee-footer__col">
-            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+            <button 
+              type="button" 
+              id="FooterCol2Header"
+              class="lavee-footer__accordion-btn" 
+              aria-expanded="false"
+              aria-controls="FooterCol2Content"
+            >
               <span class="lavee-footer__col-title">ABOUT LA VEE</span>
-              <span class="lavee-footer__accordion-icon">+</span>
+              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
             </button>
-            <div class="lavee-footer__col-content">
+            <div id="FooterCol2Content" class="lavee-footer__col-content" aria-labelledby="FooterCol2Header">
               <ul class="lavee-footer__col-list">
                 <li><a href="{{ routes.root_url }}pages/our-story" class="lavee-footer__col-link">House Of La Vee</a></li>
                 <li><a href="{{ routes.root_url }}pages/sustainability" class="lavee-footer__col-link">Sustainability</a></li>
@@ -89,11 +101,17 @@
 
           <!-- Column 3: Terms & Legals -->
           <div class="lavee-footer__col">
-            <button type="button" class="lavee-footer__accordion-btn" aria-expanded="false">
+            <button 
+              type="button" 
+              id="FooterCol3Header"
+              class="lavee-footer__accordion-btn" 
+              aria-expanded="false"
+              aria-controls="FooterCol3Content"
+            >
               <span class="lavee-footer__col-title">TERMS &amp; LEGALS</span>
-              <span class="lavee-footer__accordion-icon">+</span>
+              <span class="lavee-footer__accordion-icon" aria-hidden="true">+</span>
             </button>
-            <div class="lavee-footer__col-content">
+            <div id="FooterCol3Content" class="lavee-footer__col-content" aria-labelledby="FooterCol3Header">
               <ul class="lavee-footer__col-list">
                 <li><a href="{{ routes.root_url }}policies/terms-of-service" class="lavee-footer__col-link">Terms &amp; Conditions</a></li>
                 <li><a href="{{ routes.root_url }}policies/privacy-policy" class="lavee-footer__col-link">Privacy Policy</a></li>
@@ -107,7 +125,7 @@
         </div>
 
         <!-- Right Newsletter & Social Box -->
-        <div class="lavee-footer__newsletter-card">
+        <div class="lavee-footer__newsletter-card" role="region" aria-label="Newsletter Subscription">
           <h3 class="lavee-footer__newsletter-title">StayCONNECTED</h3>
           <p class="lavee-footer__newsletter-desc">
             Sign up for exclusive access to new collection drops, secret VIP sales, and 10% off your first order.
@@ -116,24 +134,27 @@
           {% form 'customer', class: 'lavee-footer__form' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="lavee-footer__input-wrapper">
+              <label for="LaveeFooterEmailInput" class="visually-hidden">Email address for newsletter subscription</label>
               <input 
+                id="LaveeFooterEmailInput"
                 type="email" 
                 name="contact[email]" 
                 class="lavee-footer__input" 
                 placeholder="Enter your email address..."
+                autocomplete="email"
                 required
               >
-              <button type="submit" class="lavee-footer__submit">SUBSCRIBE</button>
+              <button type="submit" class="lavee-footer__submit" aria-label="Subscribe to newsletter">SUBSCRIBE</button>
             </div>
           {% endform %}
 
           <!-- Social Media Row -->
-          <div class="lavee-footer__social-row">
-            <a href="https://tiktok.com" target="_blank" rel="noopener" class="lavee-footer__social-link">TIKTOK</a>
-            <a href="https://facebook.com" target="_blank" rel="noopener" class="lavee-footer__social-link">FACEBOOK</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener" class="lavee-footer__social-link">INSTAGRAM</a>
-            <a href="https://pinterest.com" target="_blank" rel="noopener" class="lavee-footer__social-link">PINTEREST</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener" class="lavee-footer__social-link lavee-desktop-only">YOUTUBE</a>
+          <div class="lavee-footer__social-row" role="navigation" aria-label="Social Media Links">
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on TikTok (opens in a new tab)" class="lavee-footer__social-link">TIKTOK</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Facebook (opens in a new tab)" class="lavee-footer__social-link">FACEBOOK</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Instagram (opens in a new tab)" class="lavee-footer__social-link">INSTAGRAM</a>
+            <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Follow La Vee on Pinterest (opens in a new tab)" class="lavee-footer__social-link">PINTEREST</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to La Vee on YouTube (opens in a new tab)" class="lavee-footer__social-link lavee-desktop-only">YOUTUBE</a>
           </div>
         </div>
 
@@ -146,14 +167,14 @@
         </p>
       </div>
 
-      <div class="lavee-footer__divider"></div>
+      <div class="lavee-footer__divider" role="separator"></div>
 
       <!-- Element 6: Bottom Utility Bar -->
       <div class="lavee-footer__bottom">
         <!-- Currency & Country Selector -->
         <div class="lavee-footer__currency-selector">
-          <button type="button" class="lavee-footer__currency-btn">
-            United States (USD $) <span class="lavee-footer__currency-arrow">▼</span>
+          <button type="button" class="lavee-footer__currency-btn" aria-label="Select Country and Currency (Currently set to United States USD)">
+            United States (USD $) <span class="lavee-footer__currency-arrow" aria-hidden="true">▼</span>
           </button>
         </div>
 
