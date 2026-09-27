@@ -202,8 +202,8 @@
         <div class="lavee-header__actions">
           <a href="{{ routes.search_url }}" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="Search Products">SEARCH</a>
           <a href="{{ routes.root_url }}pages/wishlist" class="lavee-header__action-link lavee-header__action-link--desktop" aria-label="View Wishlist">WISHLIST</a>
-          <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag" aria-label="Shopping Bag containing {% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %} items">
-            BAG ({% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %})
+          <a href="{{ routes.cart_url }}" class="lavee-header__action-link lavee-header__action-link--bag" data-action="open-cart-drawer" id="cart-icon-bubble" aria-label="Shopping Bag containing {% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %} items">
+            BAG (<span data-cart-count>{% if cart != null %}{{ cart.item_count }}{% else %}0{% endif %}</span>)
           </a>
         </div>
       </div>
